@@ -11,9 +11,11 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 import android.content.Context;
+
 import android.graphics.AvoidXfermode.Mode;
 import android.util.Log;
 import android.widget.Toast;
+
 
 public class FileAccess {
 	public void writeToFile(Context context, String data) {

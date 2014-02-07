@@ -1,23 +1,17 @@
 package com.example.keepthebeat;
 
-import android.media.MediaPlayer;
-import android.media.MediaRecorder;
 import android.os.Bundle;
-import android.os.Handler;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.util.Log;
-import android.view.Display;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.Toast;
 
 public class Game extends Activity {
 
@@ -80,7 +74,7 @@ public class Game extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.game, menu);
+		getMenuInflater().inflate(R.layout.menu, menu);
 		return true;
 	}
 
@@ -94,4 +88,23 @@ public class Game extends Activity {
 	public static void log(Object origin, Object message) {
 		Log.d(origin.getClass().getName(), "" + message);
 	}
+	
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Doc menus : http://developer.android.com/guide/topics/ui/menus.html
+        switch (item.getItemId()) {
+          case R.id.option:
+              Toast.makeText(Game.this, "Option", Toast.LENGTH_SHORT).show();
+              return true;
+          case R.id.returnToTitle:
+              // TODO : return to main menu
+              return true; 
+          case R.id.stats:
+              // TODO : stats view
+              return true; 
+          case R.id.quit:
+              finish();
+              return true;
+        }
+        return false;
+    }
 }
