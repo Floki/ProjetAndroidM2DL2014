@@ -19,7 +19,7 @@ public class GameShape extends ShapeDrawable{
 		height = Game.screenHeight * 15/100;
 		width = height;
 		this.getPaint().setColor(Color.rgb(1,1,1));
-		this.setAlpha(100);
+		this.setAlpha(0);
 		setPosition(0,0);
 		
 		timeToFullDisplay = (System.currentTimeMillis() + Game.time);
@@ -28,7 +28,7 @@ public class GameShape extends ShapeDrawable{
 	public GameShape(Shape shape) {
 		super(shape);
 		this.getPaint().setColor(Color.rgb(1,1,1));
-		this.setAlpha(100);
+		this.setAlpha(0);
 		setPosition(0,0);
 	}
 	
@@ -39,6 +39,7 @@ public class GameShape extends ShapeDrawable{
 		int computeColor = 255 - absTimeDifference / timeForOneColorChange;
 		computeColor = Math.max(Math.min(computeColor, 255), 0);
 		this.getPaint().setColor(Color.rgb(computeColor, computeColor, computeColor));
+		this.setAlpha(computeColor);
 		if(computeColor == 0 && System.currentTimeMillis() > timeToFullDisplay) {
 			this.getPaint().setAlpha(0);
 			stillUse = false;
