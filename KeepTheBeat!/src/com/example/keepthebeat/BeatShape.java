@@ -13,8 +13,6 @@ public class BeatShape extends GameShape {
 	private int width = 75;
 	private int height = 75;
 	private TriangleShape shape;
-	private boolean stillUse = true;
-	private long timeToFullDisplay = 0;
 	
 	public BeatShape() {
 		super();
@@ -31,25 +29,7 @@ public class BeatShape extends GameShape {
 		shape = new TriangleShape(x[0], y[0], x[1], y[1], x[2], y[2]);
 		this.getPaint().setColor(Color.rgb(1,1,1));
 		this.setAlpha(255);
-		timeToFullDisplay = (System.currentTimeMillis() + Game.time);
-	}
-	
-	public void hideMore() {
-		// TURN OFF YOUR BRAIN
-		int absTimeDifference = (int) Math.abs(timeToFullDisplay - System.currentTimeMillis());
-		int timeForOneColorChange = (int) (Game.time / 255);
-		int computeColor = 255 - absTimeDifference / timeForOneColorChange;
-		computeColor = Math.max(Math.min(computeColor, 255), 0);
-		this.getPaint().setColor(Color.rgb(computeColor, computeColor, computeColor));
-		if(computeColor == 0 && System.currentTimeMillis() > timeToFullDisplay) {
-			this.getPaint().setAlpha(0);
-			stillUse = false;
-		}
-		// THANK YOU, YOU CAN TURN IT ON NOW
-	}
-	
-	public boolean stillUse() {
-		return stillUse;
+		
 	}
 	
 	public void draw(Canvas canvas) {

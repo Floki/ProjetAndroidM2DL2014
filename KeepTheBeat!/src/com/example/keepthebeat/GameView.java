@@ -38,7 +38,7 @@ public class GameView extends View implements GameListener{
 	protected void onDraw(Canvas canvas) {
 		for(ShapeDrawable drawable : drawables) {
 			Game.log(this, "Tell to draw");
-			BeatShape beat = (BeatShape)drawable;
+			GameShape beat = (GameShape)drawable;
 			beat.draw(canvas);
 		}	
 	}

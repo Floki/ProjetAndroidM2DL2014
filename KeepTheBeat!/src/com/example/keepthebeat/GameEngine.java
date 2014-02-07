@@ -8,17 +8,17 @@ import android.os.Handler;
 import android.util.Log;
 
 public class GameEngine extends GameNotifier implements GameListener{
-	// Conserve la puissance du dernier son joué
+	// Conserve la puissance du dernier son jouï¿½
 	private double lastAmplitude;
-	// Conserve la puissance maximale trouvé jusqu'à maintenant
+	// Conserve la puissance maximale trouvï¿½ jusqu'ï¿½ maintenant
 	private double maxSongAmplitude;
-	// Position du touché de l'utilisateur
+	// Position du touchï¿½ de l'utilisateur
 	private float userTouchX;
 	private float userTouchY;
 	// Position courant de l'actionneur si on devait l'afficher
 	private double actionnerX;
 	private double actionnerY;
-	// Variable nécessaire au calcul de la prochaine position d'un futur actionneur
+	// Variable nï¿½cessaire au calcul de la prochaine position d'un futur actionneur
 	private double actionnerMoveX;
 	private double actionnerMoveY;
 	private double actionnerMoveMinSpeed;
@@ -28,8 +28,8 @@ public class GameEngine extends GameNotifier implements GameListener{
 	// Boucle du jeux
 	private Handler gameLoop;
 	private Runnable whatGameLoopDo;
-	// Liste des actionneurs à afficher
-	private List<BeatShape> actionners;
+	// Liste des actionneurs ï¿½ afficher
+	private List<GameShape> actionners;
 	
 	
 	public GameEngine(int width, int height) {
@@ -44,7 +44,7 @@ public class GameEngine extends GameNotifier implements GameListener{
 		actionnerMoveY = (Math.random() - 0.5) * actionnerMoveMinSpeed * 10;
 		gameLoop = new Handler();
 		gameLoop.postDelayed(whatGameLoopDo, 10);
-		actionners = new ArrayList<BeatShape>();
+		actionners = new ArrayList<GameShape>();
 		whatGameLoopDo = new Runnable() {
 			@Override 
 			public void run() {
@@ -54,12 +54,18 @@ public class GameEngine extends GameNotifier implements GameListener{
 		whatGameLoopDo();
 	}
 	
+	public void addGameShape( float x, float y) {
+		GameShape beatShape = new GameShape();
+		beatShape.setPosition((int)x, (int)y, gameWidth, gameHeight);
+		actionners.add(beatShape);
+	}
+	
 	/**
-	 * Permet de savoir si le son joué nécessite une action du joueur
-	 * @param amplitude Amplitude du son joué
+	 * Permet de savoir si le son jouï¿½ nï¿½cessite une action du joueur
+	 * @param amplitude Amplitude du son jouï¿½
 	 */
 	public void computePlayerActionFromTheAmplitude(double amplitude) {
-		// On récupère l'amplitude maximale du son joué
+		// On rï¿½cupï¿½re l'amplitude maximale du son jouï¿½
 		maxSongAmplitude = Math.max(maxSongAmplitude, amplitude);
 		// Si le son est un son fort 
 		// OU si l'on est sur un pente ascendant
@@ -73,7 +79,7 @@ public class GameEngine extends GameNotifier implements GameListener{
 		else if(amplitude > 0.95 * maxSongAmplitude) {
 			actionnerMoveMinSpeed = Math.min(actionnerMoveMinSpeed + 0.1,3);
 		}
-		// Si le son se calme un instant, on déclenche un évènement
+		// Si le son se calme un instant, on dï¿½clenche un ï¿½vï¿½nement
 		else if(amplitude < maxSongAmplitude * 0.2) {
 			actionnerX = Math.random() * gameWidth;
 			actionnerY = Math.random() * gameHeight;
@@ -82,7 +88,7 @@ public class GameEngine extends GameNotifier implements GameListener{
 		else {
 			actionnerMoveMinSpeed = Math.max(actionnerMoveMinSpeed - 1,2);
 		}
-		// Mémorise l'ancienne amplitude
+		// Mï¿½morise l'ancienne amplitude
 		lastAmplitude = amplitude;
 	}
 	
@@ -125,14 +131,14 @@ public class GameEngine extends GameNotifier implements GameListener{
 	 */
 	private void whatGameLoopDo() {
 		computeNextActionnerPosition();
-		List<BeatShape> actionnersToRemove = new ArrayList<BeatShape>();
-		for(BeatShape actionner : actionners) {
+		List<GameShape> actionnersToRemove = new ArrayList<GameShape>();
+		for(GameShape actionner : actionners) {
 			if(!actionner.stillUse()) {
 				actionnersToRemove.add(actionner);
 			}
 			actionner.hideMore();
 		}
-		for(BeatShape actionnerToRemove : actionnersToRemove) {
+		for(GameShape actionnerToRemove : actionnersToRemove) {
 			actionners.remove(actionnerToRemove);
 			actionnerToRemove = null;
 		}

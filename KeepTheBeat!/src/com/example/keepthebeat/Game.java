@@ -18,7 +18,7 @@ public class Game extends Activity {
 	// Variables globales du jeu
 	public static long time = 750;
 	
-	// Attributs privés
+	// Attributs privï¿½s
 	// Vue du jeu
 	private GameView gameView;
 	// Moteur du son
@@ -34,18 +34,18 @@ public class Game extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
                                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-		// On crée la vue
+		// On crï¿½e la vue
 		setContentView(R.layout.activity_game);
 		gameView = (GameView)findViewById(R.id.gameView);
 		
-		// On créé le moteur de son
+		// On crï¿½ï¿½ le moteur de son
 		soundEngine = new SoundEngine(Game.this);
-		// On crée le moteur du jeu
+		// On crï¿½e le moteur du jeu
 		gameEngine = new GameEngine(getWindowManager().getDefaultDisplay().getWidth(), 
 									getWindowManager().getDefaultDisplay().getHeight());
 		soundEngine.addToTheListnersTheListener(gameEngine);
 		gameEngine.addToTheListnersTheListener(gameView);
-		// On envoie la position touché par l'utilisateur
+		// On envoie la position touchï¿½ par l'utilisateur
 		gameView.setOnTouchListener(new OnTouchListener() {
 			
 			@Override
@@ -53,9 +53,11 @@ public class Game extends Activity {
 				final int action = event.getAction();
 				switch(action) {
 				case MotionEvent.ACTION_DOWN:
+					gameEngine.addGameShape( event.getX(), event.getY());
 					break;
 				case MotionEvent.ACTION_MOVE:
 					gameEngine.setUserTouchPosition(event.getX(), event.getY());
+					gameEngine.addGameShape( event.getX(), event.getY());
 					FileAccess fA = new FileAccess();
 					fA.writeToFile(Game.this, "test.vlf", event.getX() + " " + event.getY() + " " + soundEngine.getCurrentMusicTime());
 					break;
