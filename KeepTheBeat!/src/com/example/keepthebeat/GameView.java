@@ -11,6 +11,7 @@ import android.R.drawable;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.media.AudioFormat;
@@ -22,10 +23,13 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 
 public class GameView extends View implements GameListener{
 
 	private List<ShapeDrawable> drawables;
+	private String scoreLabel = "";
+	
 	public GameView(Context context) {
 		super(context);
 		drawables = new ArrayList<ShapeDrawable>();
@@ -43,6 +47,11 @@ public class GameView extends View implements GameListener{
 			GameShape beat = (GameShape)drawable;
 			beat.draw(canvas);
 		}	
+		Paint scorePaint = new Paint();
+		scorePaint.setColor(Color.WHITE);
+		scorePaint.setAlpha(255);
+		scorePaint.setTextSize(20);
+		canvas.drawText(scoreLabel, 50, 50, scorePaint);
 	}
 
 	@Override
@@ -57,5 +66,10 @@ public class GameView extends View implements GameListener{
 			drawables = (List<ShapeDrawable>) param;
 			invalidate();
 		}
+		if(action.equals("score") && param instanceof Integer) {
+			scoreLabel = "" + ((Integer)param).intValue();
+			invalidate();
+		}
 	}
+	
 }

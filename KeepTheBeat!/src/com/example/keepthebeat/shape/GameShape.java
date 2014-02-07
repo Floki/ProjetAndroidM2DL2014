@@ -16,6 +16,8 @@ public class GameShape extends ShapeDrawable{
 	private long timeToHide = 0;
 	private long hideTimer = 0;
 	private long showTimer = 0;
+	private int xPosition;
+	private int yPosition;
 	
 	public GameShape(long showTimer, long hideTimer) {
 		super(new OvalShape());
@@ -76,12 +78,27 @@ public class GameShape extends ShapeDrawable{
 	}
 	
 	public void setPosition(int x, int y) {
-		int newX = Math.min(Math.max(x, width/2), Game.screenWidth - width/2);
-		int newY = Math.min(Math.max(y, height/2), Game.screenHeight - height/2);
-		this.setBounds(newX - width  / 2
-				  ,newY - height / 2
-				  ,newX + width  / 2
-				  ,newY + height / 2);
+		xPosition = Math.min(Math.max(x, width/2), Game.screenWidth - width/2);
+		yPosition = Math.min(Math.max(y, height/2), Game.screenHeight - height/2);
+		this.setBounds(xPosition - width  / 2
+				  ,yPosition - height / 2
+				  ,xPosition + width  / 2
+				  ,yPosition + height / 2);
 	}
 	
+	public int getX() {
+		return xPosition;
+	}
+	
+	public int getY() {
+		return yPosition;
+	}
+	
+	public int getHeight() {
+		return height;
+	}
+	
+	public int getWidth() {
+		return width;
+	}	
 }

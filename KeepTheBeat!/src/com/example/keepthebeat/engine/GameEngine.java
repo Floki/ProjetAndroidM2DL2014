@@ -12,6 +12,7 @@ import com.example.keepthebeat.GameNotifier;
 import com.example.keepthebeat.shape.BeatShape;
 import com.example.keepthebeat.shape.GameShape;
 
+import android.R;
 import android.os.Handler;
 import android.util.Log;
 
@@ -23,6 +24,7 @@ public class GameEngine extends GameNotifier implements GameListener{
 	// Position du touch� de l'utilisateur
 	private float userTouchX;
 	private float userTouchY;
+	private boolean userIsTouching;
 	// Position courant de l'actionneur si on devait l'afficher
 	private double actionnerX;
 	private double actionnerY;
@@ -40,9 +42,13 @@ public class GameEngine extends GameNotifier implements GameListener{
 	private List<GameShape> actionners;
 	// Pattern line
 	private Map<String,String> pattern;
+	// Score
+	private int score;
 	
 	
 	public GameEngine() {
+		score = 0;
+		userIsTouching = false;
 		lastAmplitude = 0;
 		maxSongAmplitude = 0;
 		pattern = new HashMap<String, String>();
@@ -154,13 +160,20 @@ public class GameEngine extends GameNotifier implements GameListener{
 				actionnersToRemove.add(actionner);
 			}
 			actionner.hideMore();
+			if(userIsTouching) {
+				int distance = (int) Math.sqrt((actionner.getX() - userTouchX) * (actionner.getX() - userTouchX) 
+											 + (actionner.getY() - userTouchY) * (actionner.getY() - userTouchY));
+				if(distance < actionner.getHeight() / 2 && distance < actionner.getWidth()) {
+					score += 10;
+				}
+			}
 		}
 		for(GameShape actionnerToRemove : actionnersToRemove) {
 			actionners.remove(actionnerToRemove);
 			actionnerToRemove = null;
 		}
-	
 		sendToTheListenersTheStringAndTheParam("redraw", actionners);
+		sendToTheListenersTheStringAndTheParam("score", new Integer(score));
 		gameLoop.postDelayed(whatGameLoopDo, 1);
 	}
 
@@ -178,5 +191,9 @@ public class GameEngine extends GameNotifier implements GameListener{
 			//Game.log(this, "Put pattern " + ""+new Integer(information[2]).intValue() + " " + new Integer(information[1]).intValue()+" "+new Integer(information[2]).intValue());
 			pattern.put(""+new Float(information[2]).intValue(), new Float(information[0]).intValue()+" "+new Float(information[1]).intValue());
 		}
+	}
+	
+	public void isTouching(boolean touch) {
+		userIsTouching = touch;
 	}
 }
