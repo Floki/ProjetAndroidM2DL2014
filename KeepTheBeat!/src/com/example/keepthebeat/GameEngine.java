@@ -12,6 +12,9 @@ public class GameEngine extends GameNotifier implements GameListener{
 	private double lastAmplitude;
 	// Conserve la puissance maximale trouvé jusqu'à maintenant
 	private double maxSongAmplitude;
+	// Position du touché de l'utilisateur
+	private float userTouchX;
+	private float userTouchY;
 	// Position courant de l'actionneur si on devait l'afficher
 	private double actionnerX;
 	private double actionnerY;
@@ -136,5 +139,11 @@ public class GameEngine extends GameNotifier implements GameListener{
 	
 		sendToTheListenersTheStringAndTheParam("redraw", actionners);
 		gameLoop.postDelayed(whatGameLoopDo, 1);
+	}
+
+	public void setUserTouchPosition(float x, float y) {
+		userTouchX = x;
+		userTouchY = y;
+		Game.log(this, "Touch : [" + userTouchX + "," + userTouchY + "]");
 	}
 }

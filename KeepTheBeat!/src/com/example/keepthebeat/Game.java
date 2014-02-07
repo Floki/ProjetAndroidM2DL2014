@@ -1,11 +1,7 @@
 package com.example.keepthebeat;
 
-import android.hardware.display.DisplayManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
-import android.media.audiofx.Equalizer;
-import android.media.audiofx.Visualizer;
-import android.media.audiofx.Visualizer.OnDataCaptureListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.annotation.SuppressLint;
@@ -13,8 +9,10 @@ import android.app.Activity;
 import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -53,6 +51,26 @@ public class Game extends Activity {
 									getWindowManager().getDefaultDisplay().getHeight());
 		soundEngine.addToTheListnersTheListener(gameEngine);
 		gameEngine.addToTheListnersTheListener(gameView);
+		// On envoie la position touché par l'utilisateur
+		gameView.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				final int action = event.getAction();
+				switch(action) {
+				case MotionEvent.ACTION_DOWN:
+					break;
+				case MotionEvent.ACTION_MOVE:
+					gameEngine.setUserTouchPosition(event.getX(), event.getY());
+					break;
+				case MotionEvent.ACTION_UP:
+					break;
+				case MotionEvent.ACTION_CANCEL:
+					break;
+				}
+				return true;
+			}
+		});
 		
 		soundEngine.PlayOrPause();
 	}
