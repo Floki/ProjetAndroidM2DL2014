@@ -24,6 +24,12 @@ public class Game extends Activity {
 	//public static long time = 750;
 	public static int screenHeight;
 	public static int screenWidth;
+	// Taille virtuelle
+	public final static int virtualSize = 1000;
+	public static int screenYToVirtualY(int screenPosition)  {return (screenPosition * virtualSize) / screenHeight; }
+	public static int screenXToVirtualX(int screenPosition)  {return (screenPosition * virtualSize) / screenWidth; }
+	public static int virtualYToScreenY(int virtualPosition) {return (virtualPosition * screenHeight) / virtualSize; }
+	public static int virtualXToScreenX(int virtualPosition) {return (virtualPosition * screenWidth) / virtualSize ; }
 	
 	// Attributs priv�s
 	// Vue du jeu
@@ -75,7 +81,9 @@ public class Game extends Activity {
 				case MotionEvent.ACTION_MOVE:
 					gameEngine.isTouching(true);
 					gameEngine.addGameShape( event.getX(), event.getY());
-					FileAccess.writeToFile("test.vlf", event.getX() + " " + event.getY() + " " + soundEngine.getCurrentMusicTime() + "\n");		
+					int virtualX = screenXToVirtualX((int) event.getX());
+					int virtualY = screenYToVirtualY((int) event.getY());
+					FileAccess.writeToFile("test.vlf", virtualX + " " + virtualY + " " + soundEngine.getCurrentMusicTime() + "\n");		
 					gameEngine.setUserTouchPosition(event.getX(), event.getY());
 					break;
 				case MotionEvent.ACTION_UP:

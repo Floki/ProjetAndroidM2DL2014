@@ -17,6 +17,7 @@ import android.os.Handler;
 import android.util.Log;
 
 public class GameEngine extends GameNotifier implements GameListener{
+	
 	// Conserve la puissance du dernier son jou�
 	private double lastAmplitude;
 	// Conserve la puissance maximale trouv� jusqu'� maintenant
@@ -189,7 +190,7 @@ public class GameEngine extends GameNotifier implements GameListener{
 		for(String line: patternLines) {
 			String[] information = line.split(" ");
 			//Game.log(this, "Put pattern " + ""+new Integer(information[2]).intValue() + " " + new Integer(information[1]).intValue()+" "+new Integer(information[2]).intValue());
-			pattern.put(""+new Float(information[2]).intValue(), new Float(information[0]).intValue()+" "+new Float(information[1]).intValue());
+			pattern.put(""+new Float(information[2]).intValue(), Game.virtualXToScreenX(new Float(information[0]).intValue())+" "+Game.virtualYToScreenY(new Float(information[1]).intValue()));
 		}
 	}
 	
