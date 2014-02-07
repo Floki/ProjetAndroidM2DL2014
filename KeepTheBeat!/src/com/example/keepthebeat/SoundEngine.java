@@ -16,7 +16,7 @@ import android.widget.TextView;
 public class SoundEngine extends GameNotifier{
 	
 	// Lit la musique silencieusement en avance
-	private MediaPlayer mWitnessPlayer; 
+	//private MediaPlayer mWitnessPlayer; 
 	// Lit la musique
 	private MediaPlayer mRealPlayer; 
 	// Récupère les informations sur la musique
@@ -29,16 +29,13 @@ public class SoundEngine extends GameNotifier{
 	public SoundEngine(Context context) {
 		// Initialisation des lecteur réels et témoins
 		int mediaToOpen = 0;
-		if(Math.random() > 0.5) {
-			mediaToOpen = R.raw.testsound1;
-		}
-		else {
-			mediaToOpen = R.raw.testsound2;
-		}
+		mediaToOpen = R.raw.testsound1;
+
+
 		mRealPlayer = MediaPlayer.create(context, mediaToOpen);
-		mWitnessPlayer = MediaPlayer.create(context, mediaToOpen);
-		// Coupe le volume du lecteur témoin, sevira seulement à récupérer les infos
-		mWitnessPlayer.setVolume(0, 0);
+//		mWitnessPlayer = MediaPlayer.create(context, mediaToOpen);
+//		// Coupe le volume du lecteur témoin, sevira seulement à récupérer les infos
+//		mWitnessPlayer.setVolume(0, 0);
 		
 		// On initialise le nécessaire pour récupérer les informations 
 		// sur le son joué
@@ -84,12 +81,12 @@ public class SoundEngine extends GameNotifier{
 	public void playIfNeedToPlay(boolean needToPlay) {
 		if(needToPlay) {
 			mRealPlayer.start();
-			mWitnessPlayer.seekTo(mRealPlayer.getCurrentPosition() + (int)Game.time);
-			mWitnessPlayer.start();
+//			mWitnessPlayer.seekTo(mRealPlayer.getCurrentPosition() + (int)Game.time);
+//			mWitnessPlayer.start();
 		}
 		else {
 			mRealPlayer.pause();
-			mWitnessPlayer.pause();
+//			mWitnessPlayer.pause();
 		}
 		isPlaying = needToPlay;
 	}
@@ -106,7 +103,7 @@ public class SoundEngine extends GameNotifier{
 	 */
 	public void onDestroy() {
 		mRealPlayer.stop();
-		mWitnessPlayer.stop();
+//		mWitnessPlayer.stop();
 	}
 
 	public float getCurrentMusicTime() {

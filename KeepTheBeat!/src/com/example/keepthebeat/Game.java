@@ -62,7 +62,8 @@ public class Game extends Activity {
 					break;
 				case MotionEvent.ACTION_MOVE:
 					gameEngine.setUserTouchPosition(event.getX(), event.getY());
-					FileAccess.WriteSettings("output.vlf", Game.this, event.getX() + " " + event.getY() + soundEngine.getCurrentMusicTime());
+					FileAccess fA = new FileAccess();
+					fA.writeToFile(Game.this, event.getX() + " " + event.getY() + soundEngine.getCurrentMusicTime());
 					break;
 				case MotionEvent.ACTION_UP:
 					break;
