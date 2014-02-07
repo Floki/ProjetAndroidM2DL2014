@@ -45,18 +45,10 @@ public class GameEngine extends GameNotifier implements GameListener{
 	public GameEngine() {
 		lastAmplitude = 0;
 		maxSongAmplitude = 0;
-<<<<<<< HEAD
-		pattern = new HashMap<String, String>();
-		gameWidth = width;
-		gameHeight = height;
-		actionnerX = width / 2;
-		actionnerY = height / 2;
-=======
 		gameWidth = Game.screenWidth;
 		gameHeight = Game.screenHeight;
 		actionnerX = gameWidth / 2;
 		actionnerY = gameHeight / 2;
->>>>>>> eef1db94f0ace99ef9560d07ab654ebb9ea679bc
 		actionnerMoveMinSpeed = 5;
 		actionnerMoveX = (Math.random() - 0.5) * actionnerMoveMinSpeed * 10;
 		actionnerMoveY = (Math.random() - 0.5) * actionnerMoveMinSpeed * 10;
