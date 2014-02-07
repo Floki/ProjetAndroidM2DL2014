@@ -30,11 +30,14 @@ public class Game extends Activity {
 	private SoundEngine soundEngine;
 	// Moteur du jeu
 	private GameEngine gameEngine;
+	//TODO Remove when not use
+	private boolean fileExist;
 
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		fileExist = FileAccess.fileExist("test.vlf");
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
                                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -53,6 +56,7 @@ public class Game extends Activity {
 		gameEngine = new GameEngine();
 		soundEngine.addToTheListnersTheListener(gameEngine);
 		gameEngine.addToTheListnersTheListener(gameView);
+
 		// On envoie la position touch� par l'utilisateur
 		gameView.setOnTouchListener(new OnTouchListener() {
 			
@@ -66,8 +70,9 @@ public class Game extends Activity {
 				case MotionEvent.ACTION_MOVE:
 					gameEngine.setUserTouchPosition(event.getX(), event.getY());
 					gameEngine.addGameShape( event.getX(), event.getY());
-					FileAccess fA = new FileAccess();
-					fA.writeToFile(Game.this, "test.vlf", event.getX() + " " + event.getY() + " " + soundEngine.getCurrentMusicTime() + "\n");
+					if(!fileExist) {
+						FileAccess.writeToFile("test.vlf", event.getX() + " " + event.getY() + " " + soundEngine.getCurrentMusicTime() + "\n");
+					}
 					break;
 				case MotionEvent.ACTION_UP:
 					break;
