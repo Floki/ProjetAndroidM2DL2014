@@ -45,6 +45,7 @@ public class GameEngine extends GameNotifier implements GameListener{
 	public GameEngine() {
 		lastAmplitude = 0;
 		maxSongAmplitude = 0;
+		pattern = new HashMap<String, String>();
 		gameWidth = Game.screenWidth;
 		gameHeight = Game.screenHeight;
 		actionnerX = gameWidth / 2;
@@ -175,7 +176,7 @@ public class GameEngine extends GameNotifier implements GameListener{
 		for(String line: patternLines) {
 			String[] information = line.split(" ");
 			//Game.log(this, "Put pattern " + ""+new Integer(information[2]).intValue() + " " + new Integer(information[1]).intValue()+" "+new Integer(information[2]).intValue());
-			pattern.put(""+new Float(information[2]).intValue(), new Float(information[1]).intValue()+" "+new Float(information[2]).intValue());
+			pattern.put(""+new Float(information[2]).intValue(), new Float(information[0]).intValue()+" "+new Float(information[1]).intValue());
 		}
 	}
 }

@@ -67,12 +67,10 @@ public class Game extends Activity {
 				final int action = event.getAction();
 				switch(action) {
 				case MotionEvent.ACTION_DOWN:
-					gameEngine.addGameShape( event.getX(), event.getY());
-					break;
 				case MotionEvent.ACTION_MOVE:
-					gameEngine.setUserTouchPosition(event.getX(), event.getY());
 					gameEngine.addGameShape( event.getX(), event.getY());
-					FileAccess.writeToFile("test.vlf", event.getX() + " " + event.getY() + " " + soundEngine.getCurrentMusicTime() + "\n");
+					FileAccess.writeToFile("test.vlf", event.getX() + " " + event.getY() + " " + soundEngine.getCurrentMusicTime() + "\n");		
+					gameEngine.setUserTouchPosition(event.getX(), event.getY());
 					break;
 				case MotionEvent.ACTION_UP:
 					break;
