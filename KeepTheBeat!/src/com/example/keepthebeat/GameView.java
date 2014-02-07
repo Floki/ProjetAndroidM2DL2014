@@ -8,6 +8,7 @@ import java.util.List;
 import android.R.drawable;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.media.AudioFormat;
@@ -26,10 +27,12 @@ public class GameView extends View implements GameListener{
 	public GameView(Context context) {
 		super(context);
 		drawables = new ArrayList<ShapeDrawable>();
+		setBackgroundColor(Color.BLUE);
 	}
 	public GameView(Context context, AttributeSet attr) {
 		super(context, attr);
 		drawables = new ArrayList<ShapeDrawable>();
+		setBackgroundColor(Color.BLUE);
 	}
 
 	protected void onDraw(Canvas canvas) {
