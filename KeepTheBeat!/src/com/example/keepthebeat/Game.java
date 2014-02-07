@@ -20,6 +20,8 @@ public class Game extends Activity {
 
 	// Variables globales du jeu
 	public static long time = 750;
+	public static int screenHeight;
+	public static int screenWidth;
 	
 	// Attributs priv�s
 	// Vue du jeu
@@ -40,6 +42,10 @@ public class Game extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
                                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        //recuperation de la taille du device
+        screenHeight = getWindowManager().getDefaultDisplay().getHeight();
+        screenWidth = getWindowManager().getDefaultDisplay().getWidth();
+        
 		// On cr�e la vue
 		setContentView(R.layout.activity_game);
 		gameView = (GameView)findViewById(R.id.gameView);
@@ -47,8 +53,7 @@ public class Game extends Activity {
 		// On cr�� le moteur de son
 		soundEngine = new SoundEngine(Game.this);
 		// On cr�e le moteur du jeu
-		gameEngine = new GameEngine(getWindowManager().getDefaultDisplay().getWidth(), 
-									getWindowManager().getDefaultDisplay().getHeight());
+		gameEngine = new GameEngine();
 		soundEngine.addToTheListnersTheListener(gameEngine);
 		gameEngine.addToTheListnersTheListener(gameView);
 		if(FileAccess.fileExist("test.vlf")) {

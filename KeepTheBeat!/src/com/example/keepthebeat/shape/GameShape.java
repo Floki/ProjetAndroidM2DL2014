@@ -8,14 +8,16 @@ import android.graphics.drawable.shapes.OvalShape;
 import android.graphics.drawable.shapes.Shape;
 
 public class GameShape extends ShapeDrawable{
-	private int width = 175;
-	private int height = 175;
+	private int width;
+	private int height;
 	
 	private boolean stillUse = true;
 	private long timeToFullDisplay = 0;
 	
 	public GameShape() {
 		super(new OvalShape());
+		height = Game.screenHeight * 15/100;
+		width = height;
 		this.getPaint().setColor(Color.rgb(1,1,1));
 		this.setAlpha(100);
 		setPosition(0,0);
@@ -48,16 +50,13 @@ public class GameShape extends ShapeDrawable{
 		return stillUse;
 	}
 	
-	public void setPosition(int x, int y, int displayWidth, int displayHeight) {
-		int newX = Math.min(Math.max(x, width), displayWidth - width);
-		int newY = Math.min(Math.max(y, height), displayHeight - height);
-		this.setPosition(newX, newY);
+	public void setPosition(int x, int y) {
+		int newX = Math.min(Math.max(x, width/2), Game.screenWidth - width/2);
+		int newY = Math.min(Math.max(y, height/2), Game.screenHeight - height/2);
+		this.setBounds(newX - width  / 2
+				  ,newY - height / 2
+				  ,newX + width  / 2
+				  ,newY + height / 2);
 	}
 	
-	public void setPosition(int x, int y) {
-		this.setBounds(x - width  / 2
-					  ,y - height / 2
-					  ,x + width  / 2
-					  ,y + height / 2);
-	}
 }
