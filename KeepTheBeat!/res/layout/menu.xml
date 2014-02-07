@@ -3,15 +3,15 @@
 <item android:id="@+id/option" 
       android:title="Options">
  
-     <menu android:id="@+id/sousmenu">
-	 <item android:id="@+id/favoris"
-	       android:title="Favoris"   />	
+     <menu android:id="@+id/submenu">
+	 	<item android:id="@+id/returnToTitle"
+	       	android:title="Return to title"   />	
  
-	 <item android:id="@+id/stats"
-	       android:title="Stats"  />
+	 	<item android:id="@+id/stats"
+	       	android:title="Stats"  />
      </menu>
 </item>
  
-<item android:id="@+id/quitter" 
-     android:title="Quitter"/>
+<item android:id="@+id/quit" 
+     android:title="Quit"/>
 </menu>

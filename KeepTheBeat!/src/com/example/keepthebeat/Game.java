@@ -89,12 +89,18 @@ public class Game extends Activity {
 	}
 	
 	public boolean onOptionsItemSelected(MenuItem item) {
-        //On regarde quel item a été cliqué grâce à son id et on déclenche une action
+		// Doc menus : http://developer.android.com/guide/topics/ui/menus.html
         switch (item.getItemId()) {
-           case R.id.option:
+          case R.id.option:
               Toast.makeText(Game.this, "Option", Toast.LENGTH_SHORT).show();
               return true;
-          case R.id.quitter:
+          case R.id.returnToTitle:
+              // TODO : return to main menu
+              return true; 
+          case R.id.stats:
+              // TODO : stats view
+              return true; 
+          case R.id.quit:
               finish();
               return true;
         }
