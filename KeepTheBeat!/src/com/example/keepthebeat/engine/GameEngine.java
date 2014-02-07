@@ -38,13 +38,13 @@ public class GameEngine extends GameNotifier implements GameListener{
 	private List<GameShape> actionners;
 	
 	
-	public GameEngine(int width, int height) {
+	public GameEngine() {
 		lastAmplitude = 0;
 		maxSongAmplitude = 0;
-		gameWidth = width;
-		gameHeight = height;
-		actionnerX = width / 2;
-		actionnerY = height / 2;
+		gameWidth = Game.screenWidth;
+		gameHeight = Game.screenHeight;
+		actionnerX = gameWidth / 2;
+		actionnerY = gameHeight / 2;
 		actionnerMoveMinSpeed = 5;
 		actionnerMoveX = (Math.random() - 0.5) * actionnerMoveMinSpeed * 10;
 		actionnerMoveY = (Math.random() - 0.5) * actionnerMoveMinSpeed * 10;
@@ -62,7 +62,7 @@ public class GameEngine extends GameNotifier implements GameListener{
 	
 	public void addGameShape( float x, float y) {
 		GameShape beatShape = new GameShape();
-		beatShape.setPosition((int)x, (int)y, gameWidth, gameHeight);
+		beatShape.setPosition((int)x, (int)y);
 		actionners.add(beatShape);
 	}
 	
@@ -79,7 +79,7 @@ public class GameEngine extends GameNotifier implements GameListener{
 		if(amplitude > 0.9 * maxSongAmplitude || (amplitude > 1300 && lastAmplitude > 1300 && amplitude > lastAmplitude * ((13000 - Math.min(amplitude/2, 3001))/10000))) {
 			// On dessine une image
 			BeatShape beatShape = new BeatShape();
-			beatShape.setPosition((int)actionnerX, (int)actionnerY, gameWidth, gameHeight);
+			beatShape.setPosition((int)actionnerX, (int)actionnerY);
 			actionners.add(beatShape);
 		}
 		else if(amplitude > 0.95 * maxSongAmplitude) {
