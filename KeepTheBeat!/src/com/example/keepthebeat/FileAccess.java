@@ -1,6 +1,7 @@
 package com.example.keepthebeat;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -15,11 +16,21 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class FileAccess {
+	public static String keepTheBeatFolder = "/sdcard/KeepTheBeat";
+	public static String patternFolder = "/pattern/";
+	
 	public void writeToFile(Context context, String fileName, String data) {
 	    try {
-	        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(fileName, Context.MODE_WORLD_READABLE));
-	        Game.log("", context.getFileStreamPath(fileName));
-	        outputStreamWriter.write(data);
+	    	String path = FileAccess.keepTheBeatFolder + FileAccess.patternFolder;
+	    	File patternFolder = new File(path);
+	    	if(!patternFolder.exists()) {
+	    		patternFolder.mkdirs();
+	    	}
+	    	File outFile = new File(path + "pattern1.vlf");
+	    	outFile.createNewFile();
+	        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(outFile, true));
+	        Game.log("", "File : " + outFile.getAbsolutePath());
+	        outputStreamWriter.append(data);
 	        outputStreamWriter.close();
 	    }
 	    catch (IOException e) {
