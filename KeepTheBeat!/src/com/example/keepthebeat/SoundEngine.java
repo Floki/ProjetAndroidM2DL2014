@@ -108,5 +108,9 @@ public class SoundEngine extends GameNotifier{
 		mRealPlayer.stop();
 		mWitnessPlayer.stop();
 	}
+
+	public float getCurrentMusicTime() {
+		return mRealPlayer.getCurrentPosition();
+	}
 	
 }
