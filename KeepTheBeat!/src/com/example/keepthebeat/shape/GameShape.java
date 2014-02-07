@@ -1,4 +1,6 @@
-package com.example.keepthebeat;
+package com.example.keepthebeat.shape;
+
+import com.example.keepthebeat.Game;
 
 import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;

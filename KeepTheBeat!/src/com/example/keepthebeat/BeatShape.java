@@ -1,5 +1,8 @@
 package com.example.keepthebeat;
 
+import com.example.keepthebeat.shape.GameShape;
+import com.example.keepthebeat.shape.TriangleShape;
+
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
