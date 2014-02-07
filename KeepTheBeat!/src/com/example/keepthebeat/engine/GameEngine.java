@@ -11,6 +11,7 @@ import com.example.keepthebeat.GameListener;
 import com.example.keepthebeat.GameNotifier;
 import com.example.keepthebeat.shape.BeatShape;
 import com.example.keepthebeat.shape.GameShape;
+import com.example.keepthebeat.utils.Constants;
 
 import android.R;
 import android.os.Handler;
@@ -72,7 +73,7 @@ public class GameEngine extends GameNotifier implements GameListener{
 	}
 	
 	public void addGameShape( float x, float y) {
-		GameShape beatShape = new GameShape(1000,2000);
+		GameShape beatShape = new GameShape(Constants.showTimer,Constants.hideTimer);
 		beatShape.setPosition((int)x, (int)y);
 		actionners.add(beatShape);
 	}
@@ -149,7 +150,7 @@ public class GameEngine extends GameNotifier implements GameListener{
 	private void whatGameLoopDo() {
 		computeNextActionnerPosition();
 		List<GameShape> actionnersToRemove = new ArrayList<GameShape>();
-		int currentMusicTime = (int) SoundEngine.getCurrentMusicTime();
+		int currentMusicTime = SoundEngine.getCurrentMusicTime() - (int)Constants.showTimer/10;
 		if(pattern.containsKey(""+currentMusicTime)) {
 			int x = new Integer(pattern.get(""+currentMusicTime).split(" ")[0]).intValue();
 			int y = new Integer(pattern.get(""+currentMusicTime).split(" ")[1]).intValue();
