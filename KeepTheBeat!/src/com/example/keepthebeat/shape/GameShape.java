@@ -20,6 +20,7 @@ public class GameShape extends ShapeDrawable{
 	private int yPosition;
 	
 	private boolean goodMoment = false;
+	private boolean exploding = false;
 	
 	public GameShape(long showTimer, long hideTimer) {
 		super(new OvalShape());
@@ -59,16 +60,31 @@ public class GameShape extends ShapeDrawable{
 			if( System.currentTimeMillis() > getTimeToFullDisplay() ){
 				//hide the shape
 				absTimeDifference = (int)(getTimeToFullHide() - System.currentTimeMillis());
-				timeForOneColorChange = (int) (hideTimer / 255);
+				timeForOneColorChange = Math.max((int) (hideTimer / 255),1);
 				computeColor =  absTimeDifference / timeForOneColorChange;
 				computeColor = Math.max(Math.min(computeColor, 255), 0);
-				if( System.currentTimeMillis() < ( getTimeToFullDisplay() + ( ((int)hideTimer) * Constants.timerGoodPercent/100) ) ) {
-					this.getPaint().setColor(Color.rgb(0, 255, 0));
-					goodMoment = true;
+				if( exploding ) {
+					if( goodMoment ) {
+						//show that moment what good, ie GG
+						this.getPaint().setColor(Color.rgb(255,193,37));
+					}
+					else {
+						//show that moment what not good, ie user is a looser
+						this.getPaint().setColor(Color.rgb(255, 0, 0));
+					}
+					height = (Game.screenHeight * (255-computeColor)/600);
+					width = height;
+					setPosition(getX(), getY());
 				}
 				else {
-					this.getPaint().setColor(Color.rgb(computeColor, computeColor, computeColor));
-					goodMoment = false;
+					if( System.currentTimeMillis() < ( getTimeToFullDisplay() + ( ((int)hideTimer) * Constants.timerGoodPercent/100) ) ) {
+						this.getPaint().setColor(Color.rgb(0, 255, 0));
+						goodMoment = true;
+					}
+					else {
+						this.getPaint().setColor(Color.rgb(computeColor, computeColor, computeColor));
+						goodMoment = false;
+					}
 				}
 				this.setAlpha(computeColor);
 				if( computeColor == 0 ) {
@@ -79,7 +95,7 @@ public class GameShape extends ShapeDrawable{
 			else {
 				//show the shape
 				absTimeDifference = (int)(getTimeToFullDisplay() - System.currentTimeMillis());
-				timeForOneColorChange = (int) (showTimer / 255);
+				timeForOneColorChange = Math.max((int) (showTimer / 255),1);
 				computeColor = 255 - absTimeDifference / timeForOneColorChange;
 				computeColor = Math.max(Math.min(computeColor, 255), 0);
 				
@@ -97,9 +113,11 @@ public class GameShape extends ShapeDrawable{
 		}
 	}
 	
-	public void hideInNext( long timer ) {
-		this.hideTimer = timer;
-		this.showTimer = 1;
+	public void hideAndExplode() {
+		showTimer = 1;
+		hideTimer = 250;
+		currentTimeAtAdd = System.currentTimeMillis();
+		exploding  = true;
 	}
 	
 	public boolean stillUse() {
@@ -132,6 +150,10 @@ public class GameShape extends ShapeDrawable{
 	}
 	
 	public boolean isGoodMoment() {
-		return this.goodMoment;
+		return this.goodMoment && !exploding;
+	}
+	
+	public boolean isExploding() {
+		return this.exploding;
 	}
 }

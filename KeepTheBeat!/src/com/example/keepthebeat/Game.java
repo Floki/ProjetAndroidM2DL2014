@@ -78,10 +78,10 @@ public class Game extends Activity {
 				case MotionEvent.ACTION_DOWN:
 				case MotionEvent.ACTION_MOVE:
 					gameEngine.isTouching(true);
-					gameEngine.addGameShape( event.getX(), event.getY());
+//					gameEngine.addGameShape( event.getX(), event.getY());
 					int virtualX = screenXToVirtualX((int) event.getX());
 					int virtualY = screenYToVirtualY((int) event.getY());
-					FileAccess.writeToFile("test.vlf", virtualX + " " + virtualY + " " + soundEngine.getCurrentMusicTime() + "\n");		
+//					FileAccess.writeToFile("test.vlf", virtualX + " " + virtualY + " " + soundEngine.getCurrentMusicTime() + "\n");		
 					gameEngine.setUserTouchPosition(event.getX(), event.getY());
 					break;
 				case MotionEvent.ACTION_UP:

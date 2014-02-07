@@ -162,11 +162,12 @@ public class GameEngine extends GameNotifier implements GameListener{
 				actionnersToRemove.add(actionner);
 			}
 			actionner.hideMore();
-			if(userIsTouching) {
+			if(userIsTouching && !actionner.isExploding()) {
 				int distance = (int) Math.sqrt((actionner.getX() - userTouchX) * (actionner.getX() - userTouchX) 
 											 + (actionner.getY() - userTouchY) * (actionner.getY() - userTouchY));
 				if(distance < actionner.getHeight() / 2 && distance < actionner.getWidth()) {
 					score += 10 * (actionner.isGoodMoment()?100:1);
+					actionner.hideAndExplode();
 				}
 			}
 		}
