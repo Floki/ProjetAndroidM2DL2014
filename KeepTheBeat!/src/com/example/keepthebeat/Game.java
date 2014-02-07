@@ -1,5 +1,8 @@
 package com.example.keepthebeat;
 
+import com.example.keepthebeat.engine.GameEngine;
+import com.example.keepthebeat.engine.SoundEngine;
+
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;

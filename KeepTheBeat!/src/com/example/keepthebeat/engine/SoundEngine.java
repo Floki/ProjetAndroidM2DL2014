@@ -1,4 +1,8 @@
-package com.example.keepthebeat;
+package com.example.keepthebeat.engine;
+
+import com.example.keepthebeat.GameNotifier;
+import com.example.keepthebeat.R;
+import com.example.keepthebeat.R.raw;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -19,7 +23,7 @@ public class SoundEngine extends GameNotifier{
 	//private MediaPlayer mWitnessPlayer; 
 	// Lit la musique
 	private MediaPlayer mRealPlayer; 
-	// Récupère les informations sur la musique
+	// Rï¿½cupï¿½re les informations sur la musique
 //	private Visualizer mVisualizer;
 //	private Equalizer mEqualizer;
 	// Lecture en cour
@@ -27,24 +31,24 @@ public class SoundEngine extends GameNotifier{
 	
 	@SuppressLint("NewApi")
 	public SoundEngine(Context context) {
-		// Initialisation des lecteur réels et témoins
+		// Initialisation des lecteur rï¿½els et tï¿½moins
 		int mediaToOpen = 0;
 		mediaToOpen = R.raw.testsound1;
 
 
 		mRealPlayer = MediaPlayer.create(context, mediaToOpen);
 //		mWitnessPlayer = MediaPlayer.create(context, mediaToOpen);
-//		// Coupe le volume du lecteur témoin, sevira seulement à récupérer les infos
+//		// Coupe le volume du lecteur tï¿½moin, sevira seulement ï¿½ rï¿½cupï¿½rer les infos
 //		mWitnessPlayer.setVolume(0, 0);
 		
-		// On initialise le nécessaire pour récupérer les informations 
-		// sur le son joué
+		// On initialise le nï¿½cessaire pour rï¿½cupï¿½rer les informations 
+		// sur le son jouï¿½
 //		mEqualizer = new Equalizer(0, mWitnessPlayer.getAudioSessionId());
 //		mEqualizer.setEnabled(true); // need to enable equalizer
 //		mVisualizer = new Visualizer(mWitnessPlayer.getAudioSessionId());
 //		mVisualizer.setCaptureSize(Visualizer.getCaptureSizeRange()[1]);
 //		
-//		// Lors de la lecture on récupère les informations
+//		// Lors de la lecture on rï¿½cupï¿½re les informations
 //		// sur le fichier lu
 //		mVisualizer.setDataCaptureListener(new OnDataCaptureListener() {
 //			@Override
@@ -66,7 +70,7 @@ public class SoundEngine extends GameNotifier{
 //						amplitude += dbValue;
 //					}
 //				}
-//				// Et on la transfère au moteur du jeux
+//				// Et on la transfï¿½re au moteur du jeux
 //				sendToTheListenersTheStringAndTheParam("amplitude", new Double(amplitude));
 //			}
 //
@@ -75,7 +79,7 @@ public class SoundEngine extends GameNotifier{
 	}
 	
 	/**
-	 * Démarre ou stoppe la musique suivant au choix
+	 * Dï¿½marre ou stoppe la musique suivant au choix
 	 * @param needToPlay T = Play, F = Pause
 	 */
 	public void playIfNeedToPlay(boolean needToPlay) {
@@ -92,7 +96,7 @@ public class SoundEngine extends GameNotifier{
 	}
 	
 	/**
-	 * Démarre ou stoppe la musique
+	 * Dï¿½marre ou stoppe la musique
 	 */
 	public void PlayOrPause() {
 		playIfNeedToPlay(!isPlaying);

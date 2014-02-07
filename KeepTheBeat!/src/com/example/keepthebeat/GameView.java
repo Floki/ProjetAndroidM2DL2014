@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.List;
 
+import com.example.keepthebeat.shape.GameShape;
+
 import android.R.drawable;
 import android.content.Context;
 import android.graphics.Canvas;

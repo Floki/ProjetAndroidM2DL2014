@@ -1,8 +1,14 @@
-package com.example.keepthebeat;
+package com.example.keepthebeat.engine;
 
 import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.List;
+
+import com.example.keepthebeat.BeatShape;
+import com.example.keepthebeat.Game;
+import com.example.keepthebeat.GameListener;
+import com.example.keepthebeat.GameNotifier;
+import com.example.keepthebeat.shape.GameShape;
 
 import android.os.Handler;
 import android.util.Log;
