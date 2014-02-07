@@ -166,7 +166,7 @@ public class GameEngine extends GameNotifier implements GameListener{
 				int distance = (int) Math.sqrt((actionner.getX() - userTouchX) * (actionner.getX() - userTouchX) 
 											 + (actionner.getY() - userTouchY) * (actionner.getY() - userTouchY));
 				if(distance < actionner.getHeight() / 2 && distance < actionner.getWidth()) {
-					score += 10;
+					score += 10 * (actionner.isGoodMoment()?100:1);
 				}
 			}
 		}
