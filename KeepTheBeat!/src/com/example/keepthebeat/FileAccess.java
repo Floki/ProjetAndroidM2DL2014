@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
+import android.app.Application;
 import android.content.Context;
 import android.graphics.AvoidXfermode.Mode;
 import android.util.Log;
@@ -29,12 +30,12 @@ public class FileAccess {
 	    	File outFile = new File(path + "pattern1.vlf");
 	    	outFile.createNewFile();
 	        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(outFile, true));
-	        Game.log("", "File : " + outFile.getAbsolutePath());
+	        Game.log("", "File write : " + outFile.getAbsolutePath());
 	        outputStreamWriter.append(data);
 	        outputStreamWriter.close();
 	    }
 	    catch (IOException e) {
-	        Log.e("Exception", "File write failed: " + e.toString());
+	    	Game.log("Exception", "File write failed: " + e.toString());
 	    } 
 	}
 
@@ -45,6 +46,7 @@ public class FileAccess {
 	    File file = new File(path + "pattern1.vlf");
 	    if ( file.exists() ) {
 	        FileInputStream fis = null;
+	        Game.log("", "File read : " + file.getAbsolutePath());
 	        try {
 	            fis = new FileInputStream(file);
 	            char current;

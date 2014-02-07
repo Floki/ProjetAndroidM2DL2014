@@ -1,5 +1,7 @@
 package com.example.keepthebeat;
 
+import java.io.File;
+
 import com.example.keepthebeat.engine.GameEngine;
 import com.example.keepthebeat.engine.SoundEngine;
 
@@ -37,6 +39,9 @@ public class Game extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		File storage = getApplication().getExternalFilesDir(null);
+		FileAccess.keepTheBeatFolder = storage.getPath();
+		Game.log("", "File : " + FileAccess.keepTheBeatFolder );
 		fileExist = FileAccess.fileExist("test.vlf");
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
