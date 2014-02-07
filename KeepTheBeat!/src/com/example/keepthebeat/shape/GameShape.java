@@ -1,6 +1,7 @@
 package com.example.keepthebeat.shape;
 
 import com.example.keepthebeat.Game;
+import com.example.keepthebeat.utils.Constants;
 
 import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
@@ -18,9 +19,11 @@ public class GameShape extends ShapeDrawable{
 	private int xPosition;
 	private int yPosition;
 	
+	private boolean goodMoment = false;
+	
 	public GameShape(long showTimer, long hideTimer) {
 		super(new OvalShape());
-		height = Game.screenHeight * 15/100;
+		height = (Game.screenHeight * Constants.shapeSizePercent/100);
 		width = height;
 		this.getPaint().setColor(Color.rgb(1,1,1));
 		this.setAlpha(0);
@@ -59,7 +62,14 @@ public class GameShape extends ShapeDrawable{
 				timeForOneColorChange = (int) (hideTimer / 255);
 				computeColor =  absTimeDifference / timeForOneColorChange;
 				computeColor = Math.max(Math.min(computeColor, 255), 0);
-				this.getPaint().setColor(Color.rgb(computeColor, computeColor, computeColor));
+				if( System.currentTimeMillis() < ( getTimeToFullDisplay() + ( ((int)hideTimer) * Constants.timerGoodPercent/100) ) ) {
+					this.getPaint().setColor(Color.rgb(0, 255, 0));
+					goodMoment = true;
+				}
+				else {
+					this.getPaint().setColor(Color.rgb(computeColor, computeColor, computeColor));
+					goodMoment = false;
+				}
 				this.setAlpha(computeColor);
 				if( computeColor == 0 ) {
 					this.getPaint().setAlpha(0);
@@ -72,7 +82,16 @@ public class GameShape extends ShapeDrawable{
 				timeForOneColorChange = (int) (showTimer / 255);
 				computeColor = 255 - absTimeDifference / timeForOneColorChange;
 				computeColor = Math.max(Math.min(computeColor, 255), 0);
-				this.getPaint().setColor(Color.rgb(computeColor, computeColor, computeColor));
+				
+				if( absTimeDifference < ( ((int)showTimer) * Constants.timerGoodPercent/100) ) {
+					this.getPaint().setColor(Color.rgb(0, 255, 0));
+					goodMoment = true;
+				}
+				else {
+					this.getPaint().setColor(Color.rgb(computeColor, computeColor, computeColor));
+					goodMoment = false;
+				}
+				
 				this.setAlpha(computeColor);
 			}
 		}
@@ -110,5 +129,9 @@ public class GameShape extends ShapeDrawable{
 	
 	public int getWidth() {
 		return width;
-	}	
+	}
+	
+	public boolean isGoodMoment() {
+		return this.goodMoment;
+	}
 }
