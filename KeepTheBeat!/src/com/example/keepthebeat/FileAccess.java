@@ -7,8 +7,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 import android.content.Context;
-import android.graphics.AvoidXfermode.Mode;
-import android.widget.Toast;
 
 public class FileAccess {
 	public static void WriteSettings(String file, Context context, String data){ 
