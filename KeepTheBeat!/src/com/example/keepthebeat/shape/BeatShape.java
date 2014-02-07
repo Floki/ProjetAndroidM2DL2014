@@ -1,7 +1,6 @@
-package com.example.keepthebeat;
+package com.example.keepthebeat.shape;
 
-import com.example.keepthebeat.shape.GameShape;
-import com.example.keepthebeat.shape.TriangleShape;
+import com.example.keepthebeat.Game;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -18,7 +17,7 @@ public class BeatShape extends GameShape {
 	private TriangleShape shape;
 	
 	public BeatShape() {
-		super();
+		super(1000,1000);
 		
 		int x[] = {0,0,0};
 		int y[] = {0,0,0};

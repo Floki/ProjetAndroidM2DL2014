@@ -6,10 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.example.keepthebeat.BeatShape;
 import com.example.keepthebeat.Game;
 import com.example.keepthebeat.GameListener;
 import com.example.keepthebeat.GameNotifier;
+import com.example.keepthebeat.shape.BeatShape;
 import com.example.keepthebeat.shape.GameShape;
 
 import android.os.Handler;
@@ -66,7 +66,7 @@ public class GameEngine extends GameNotifier implements GameListener{
 	}
 	
 	public void addGameShape( float x, float y) {
-		GameShape beatShape = new GameShape();
+		GameShape beatShape = new GameShape(750,750);
 		beatShape.setPosition((int)x, (int)y);
 		actionners.add(beatShape);
 	}

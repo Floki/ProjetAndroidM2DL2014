@@ -13,8 +13,11 @@ public class GameShape extends ShapeDrawable{
 	
 	private boolean stillUse = true;
 	private long timeToFullDisplay = 0;
+	private long timeToHide = 0;
+	private long hideTimer = 0;
+	private long showTimer = 0;
 	
-	public GameShape() {
+	public GameShape(long showTimer, long hideTimer) {
 		super(new OvalShape());
 		height = Game.screenHeight * 15/100;
 		width = height;
@@ -22,7 +25,11 @@ public class GameShape extends ShapeDrawable{
 		this.setAlpha(0);
 		setPosition(0,0);
 		
-		timeToFullDisplay = (System.currentTimeMillis() + Game.time);
+		this.showTimer = showTimer;
+		this.hideTimer = hideTimer;
+		
+		timeToFullDisplay = (System.currentTimeMillis() + showTimer);
+		timeToHide = timeToFullDisplay + hideTimer;
 	}
 	
 	public GameShape(Shape shape) {
@@ -33,16 +40,33 @@ public class GameShape extends ShapeDrawable{
 	}
 	
 	public void hideMore() {
-		// TURN OFF YOUR BRAIN
-		int absTimeDifference = (int) Math.abs(timeToFullDisplay - System.currentTimeMillis());
-		int timeForOneColorChange = (int) (Game.time / 255);
-		int computeColor = 255 - absTimeDifference / timeForOneColorChange;
-		computeColor = Math.max(Math.min(computeColor, 255), 0);
-		this.getPaint().setColor(Color.rgb(computeColor, computeColor, computeColor));
-		this.setAlpha(computeColor);
-		if(computeColor == 0 && System.currentTimeMillis() > timeToFullDisplay) {
-			this.getPaint().setAlpha(0);
-			stillUse = false;
+		if(stillUse) {
+			int absTimeDifference;
+			int timeForOneColorChange;
+			int computeColor;
+			if( System.currentTimeMillis() > timeToFullDisplay ){
+				//hide the shape
+				absTimeDifference = (int)(timeToHide - System.currentTimeMillis());
+				timeForOneColorChange = (int) (hideTimer / 255);
+				computeColor =  absTimeDifference / timeForOneColorChange - 255;
+
+			}
+			else {
+				//show the shape
+				absTimeDifference = (int)(timeToFullDisplay - System.currentTimeMillis());
+				timeForOneColorChange = (int) (showTimer / 255);
+				computeColor = 255 - absTimeDifference / timeForOneColorChange;
+			}
+			
+			// TURN OFF YOUR BRAIN
+	
+			computeColor = Math.max(Math.min(computeColor, 255), 0);
+			this.getPaint().setColor(Color.rgb(computeColor, computeColor, computeColor));
+			this.setAlpha(computeColor);
+			if(computeColor <= 0 && System.currentTimeMillis() > timeToHide) {
+				this.getPaint().setAlpha(0);
+				stillUse = false;
+			}
 		}
 		// THANK YOU, YOU CAN TURN IT ON NOW
 	}

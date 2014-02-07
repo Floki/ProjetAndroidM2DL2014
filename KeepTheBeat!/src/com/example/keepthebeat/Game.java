@@ -21,7 +21,7 @@ import android.widget.Toast;
 public class Game extends Activity {
 
 	// Variables globales du jeu
-	public static long time = 750;
+	//public static long time = 750;
 	public static int screenHeight;
 	public static int screenWidth;
 	

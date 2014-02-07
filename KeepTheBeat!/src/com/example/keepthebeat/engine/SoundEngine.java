@@ -110,7 +110,7 @@ public class SoundEngine extends GameNotifier{
 //		mWitnessPlayer.stop();
 	}
 
-	public static float getCurrentMusicTime() {
-		return mRealPlayer.getCurrentPosition();
+	public static int getCurrentMusicTime() {
+		return mRealPlayer.getCurrentPosition()/10;
 	}
 }
