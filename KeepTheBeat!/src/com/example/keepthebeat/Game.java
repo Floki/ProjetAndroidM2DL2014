@@ -51,7 +51,9 @@ public class Game extends Activity {
 									getWindowManager().getDefaultDisplay().getHeight());
 		soundEngine.addToTheListnersTheListener(gameEngine);
 		gameEngine.addToTheListnersTheListener(gameView);
-
+		if(FileAccess.fileExist("test.vlf")) {
+			gameEngine.setPatternFromString(FileAccess.readFileAsString("test.vlf"));
+		}
 		// On envoie la position touch� par l'utilisateur
 		gameView.setOnTouchListener(new OnTouchListener() {
 			
@@ -65,9 +67,7 @@ public class Game extends Activity {
 				case MotionEvent.ACTION_MOVE:
 					gameEngine.setUserTouchPosition(event.getX(), event.getY());
 					gameEngine.addGameShape( event.getX(), event.getY());
-					if(!fileExist) {
-						FileAccess.writeToFile("test.vlf", event.getX() + " " + event.getY() + " " + soundEngine.getCurrentMusicTime() + "\n");
-					}
+					FileAccess.writeToFile("test.vlf", event.getX() + " " + event.getY() + " " + soundEngine.getCurrentMusicTime() + "\n");
 					break;
 				case MotionEvent.ACTION_UP:
 					break;

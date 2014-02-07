@@ -2,7 +2,9 @@ package com.example.keepthebeat.engine;
 
 import java.util.ArrayList;
 import java.util.EventObject;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.example.keepthebeat.BeatShape;
 import com.example.keepthebeat.Game;
@@ -36,11 +38,14 @@ public class GameEngine extends GameNotifier implements GameListener{
 	private Runnable whatGameLoopDo;
 	// Liste des actionneurs � afficher
 	private List<GameShape> actionners;
+	// Pattern line
+	private Map<String,String> pattern;
 	
 	
 	public GameEngine(int width, int height) {
 		lastAmplitude = 0;
 		maxSongAmplitude = 0;
+		pattern = new HashMap<String, String>();
 		gameWidth = width;
 		gameHeight = height;
 		actionnerX = width / 2;
@@ -138,6 +143,12 @@ public class GameEngine extends GameNotifier implements GameListener{
 	private void whatGameLoopDo() {
 		computeNextActionnerPosition();
 		List<GameShape> actionnersToRemove = new ArrayList<GameShape>();
+		int currentMusicTime = (int) SoundEngine.getCurrentMusicTime();
+		if(pattern.containsKey(""+currentMusicTime)) {
+			int x = new Integer(pattern.get(""+currentMusicTime).split(" ")[0]).intValue();
+			int y = new Integer(pattern.get(""+currentMusicTime).split(" ")[1]).intValue();
+			addGameShape(x,y);
+		}
 		for(GameShape actionner : actionners) {
 			if(!actionner.stillUse()) {
 				actionnersToRemove.add(actionner);
@@ -157,5 +168,15 @@ public class GameEngine extends GameNotifier implements GameListener{
 		userTouchX = x;
 		userTouchY = y;
 		Game.log(this, "Touch : [" + userTouchX + "," + userTouchY + "]");
+	}
+
+	public void setPatternFromString(String stringPattern) {
+		Game.log(this, "New pattern : " + stringPattern);
+		String[] patternLines = stringPattern.split("\n");
+		for(String line: patternLines) {
+			String[] information = line.split(" ");
+			//Game.log(this, "Put pattern " + ""+new Integer(information[2]).intValue() + " " + new Integer(information[1]).intValue()+" "+new Integer(information[2]).intValue());
+			pattern.put(""+new Float(information[2]).intValue(), new Float(information[1]).intValue()+" "+new Float(information[2]).intValue());
+		}
 	}
 }

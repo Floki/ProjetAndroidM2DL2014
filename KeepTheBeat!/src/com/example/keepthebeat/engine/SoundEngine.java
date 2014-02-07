@@ -22,7 +22,7 @@ public class SoundEngine extends GameNotifier{
 	// Lit la musique silencieusement en avance
 	//private MediaPlayer mWitnessPlayer; 
 	// Lit la musique
-	private MediaPlayer mRealPlayer; 
+	private static MediaPlayer mRealPlayer; 
 	// R�cup�re les informations sur la musique
 //	private Visualizer mVisualizer;
 //	private Equalizer mEqualizer;
@@ -110,8 +110,7 @@ public class SoundEngine extends GameNotifier{
 //		mWitnessPlayer.stop();
 	}
 
-	public float getCurrentMusicTime() {
+	public static float getCurrentMusicTime() {
 		return mRealPlayer.getCurrentPosition();
 	}
-	
 }
