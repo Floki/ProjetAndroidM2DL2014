@@ -19,7 +19,7 @@ public class FileAccess {
 	public static String keepTheBeatFolder = "/sdcard/KeepTheBeat";
 	public static String patternFolder = "/pattern/";
 	
-	public void writeToFile(Context context, String fileName, String data) {
+	public static void writeToFile(String fileName, String data) {
 	    try {
 	    	String path = FileAccess.keepTheBeatFolder + FileAccess.patternFolder;
 	    	File patternFolder = new File(path);
@@ -38,9 +38,37 @@ public class FileAccess {
 	    } 
 	}
 
+	public static String readFileAsString(String filePath) {
 
-	private String readFromFile(Context context) {
+	    String result = "";
+	    String path = FileAccess.keepTheBeatFolder + FileAccess.patternFolder;
+	    File file = new File(path + "pattern1.vlf");
+	    if ( file.exists() ) {
+	        FileInputStream fis = null;
+	        try {
+	            fis = new FileInputStream(file);
+	            char current;
+	            while (fis.available() > 0) {
+	                current = (char) fis.read();
+	                result = result + String.valueOf(current);
+	            }
 
-	   return "";
+	        } catch (Exception e) {
+	            Log.d("TourGuide", e.toString());
+	        } finally {
+	            if (fis != null)
+	                try {
+	                    fis.close();
+	                } catch (IOException ignored) {
+	            }
+	        }
+	    }
+	    return result;
+	}
+	
+	public static boolean fileExist(String filePath) {
+		String path = FileAccess.keepTheBeatFolder + FileAccess.patternFolder;
+	    File file = new File(path + "pattern1.vlf");
+	    return file.exists();
 	}
 }
