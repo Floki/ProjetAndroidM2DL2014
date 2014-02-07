@@ -54,7 +54,7 @@ public class Game extends Activity {
 		// On cr�e la vue
 		setContentView(R.layout.activity_game);
 		gameView = (GameView)findViewById(R.id.gameView);
-		
+
 		// On cr�� le moteur de son
 		soundEngine = new SoundEngine(Game.this);
 		// On cr�e le moteur du jeu
@@ -73,13 +73,16 @@ public class Game extends Activity {
 				switch(action) {
 				case MotionEvent.ACTION_DOWN:
 				case MotionEvent.ACTION_MOVE:
+					gameEngine.isTouching(true);
 					gameEngine.addGameShape( event.getX(), event.getY());
 					FileAccess.writeToFile("test.vlf", event.getX() + " " + event.getY() + " " + soundEngine.getCurrentMusicTime() + "\n");		
 					gameEngine.setUserTouchPosition(event.getX(), event.getY());
 					break;
 				case MotionEvent.ACTION_UP:
+					gameEngine.isTouching(false);
 					break;
 				case MotionEvent.ACTION_CANCEL:
+					gameEngine.isTouching(false);
 					break;
 				}
 				return true;
