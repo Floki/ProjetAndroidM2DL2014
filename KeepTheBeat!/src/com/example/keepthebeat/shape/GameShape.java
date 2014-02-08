@@ -3,7 +3,9 @@ package com.example.keepthebeat.shape;
 import com.example.keepthebeat.Game;
 import com.example.keepthebeat.utils.Constants;
 
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.graphics.drawable.shapes.Shape;
@@ -20,6 +22,8 @@ public class GameShape extends ShapeDrawable{
 	private int yPosition;
 	
 	private int score;
+	
+	private String explodeString = "";
 	
 	private boolean goodMoment = false;
 	private boolean exploding = false;
@@ -182,6 +186,30 @@ public class GameShape extends ShapeDrawable{
 				  ,yPosition - height / 2
 				  ,xPosition + width  / 2
 				  ,yPosition + height / 2);
+	}
+	
+	public void draw(Canvas canvas) {
+		super.draw(canvas);
+		Paint paint = new Paint();
+		if( goodMoment ) {
+			paint.setColor(Color.rgb(0, 255, 0));
+		}
+		else {
+			paint.setColor(Color.rgb(255, 0, 0));
+		}
+		if( isBonus() ) {
+			paint.setColor( Color.rgb(255,215,0) );
+		}
+		paint.setAlpha( this.getPaint().getAlpha() );
+		int baseHeight = (Game.screenHeight * Constants.shapeSizePercent/100);
+		paint.setTextSize( baseHeight / 3 );
+		if( isExploding() ) {
+			canvas.drawText( explodeString, getX(), getY()-(int)(height/2), paint);
+		}
+	}
+	
+	public void setExplodingText( String text ) {
+		this.explodeString = text;
 	}
 	
 	public int getX() {

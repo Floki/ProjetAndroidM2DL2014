@@ -168,9 +168,16 @@ public class GameEngine extends GameNotifier implements GameListener{
 				if(distance < actionner.getHeight() / 2 && distance < actionner.getWidth()) {
 					if( actionner.isGoodMoment() || actionner.isBonus() ) { //a bonus is always a bonus because we are nice developers :)
 						score += actionner.getScore();
+						if( actionner.isBonus() ) {
+							actionner.setExplodingText( "BONUS + " + actionner.getScore() );
+						}
+						else {
+							actionner.setExplodingText( "+ " + actionner.getScore() );
+						}
 					}
 					else {
 						score = score - actionner.getScore() * Constants.tooLatePercent/100;
+						actionner.setExplodingText( "- " + actionner.getScore() * Constants.tooLatePercent/100 );
 					}
 					actionner.hideAndExplode();
 				}
