@@ -166,13 +166,23 @@ public class GameEngine extends GameNotifier implements GameListener{
 				int distance = (int) Math.sqrt((actionner.getX() - userTouchX) * (actionner.getX() - userTouchX) 
 											 + (actionner.getY() - userTouchY) * (actionner.getY() - userTouchY));
 				if(distance < actionner.getHeight() / 2 && distance < actionner.getWidth()) {
-					score += 10 * (actionner.isGoodMoment()?100:1);
+					if( actionner.isGoodMoment() || actionner.isBonus() ) { //a bonus is always a bonus because we are nice developers :)
+						score += actionner.getScore();
+					}
+					else {
+						score = score - actionner.getScore() * Constants.tooLatePercent/100;
+					}
 					actionner.hideAndExplode();
 				}
 			}
 		}
 		for(GameShape actionnerToRemove : actionnersToRemove) {
 			actionners.remove(actionnerToRemove);
+			//loose points if miss
+			if( !actionnerToRemove.isExploding() ) {
+				if( !actionnerToRemove.isBonus()) //a bonus is definitively not a malus because we are nice developers !
+					score = score - actionnerToRemove.getScore() * Constants.missPercent/100;
+			}
 			actionnerToRemove = null;
 		}
 		sendToTheListenersTheStringAndTheParam("redraw", actionners);

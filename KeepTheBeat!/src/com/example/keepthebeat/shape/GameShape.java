@@ -19,6 +19,8 @@ public class GameShape extends ShapeDrawable{
 	private int xPosition;
 	private int yPosition;
 	
+	private int score;
+	
 	private boolean goodMoment = false;
 	private boolean exploding = false;
 	
@@ -34,6 +36,18 @@ public class GameShape extends ShapeDrawable{
 		this.hideTimer = hideTimer;
 		
 		currentTimeAtAdd = System.currentTimeMillis();
+		
+		/*
+		 * compute Shape's score
+		 */
+		//is this Shape a bonus ?
+		int chance = (int)((Math.random() * Constants.bonusChance) + 1);
+		if( chance == (int)((Math.random() * Constants.bonusChance) + 1) ) {
+			score = Constants.baseScore + Constants.baseScore * chance / Constants.bonusChance;
+		}
+		else {
+			score = Constants.baseScore;
+		}
 
 	}
 	
@@ -66,11 +80,23 @@ public class GameShape extends ShapeDrawable{
 				if( exploding ) {
 					if( goodMoment ) {
 						//show that moment what good, ie GG
-						this.getPaint().setColor(Color.rgb(255,193,37));
+						if( !isBonus() ) {
+							this.getPaint().setColor(Color.rgb(255,193,37));
+						}
+						else {
+							// it is a BONUS !!
+							this.getPaint().setColor(Color.rgb(255,215,0));
+						}
 					}
 					else {
 						//show that moment what not good, ie user is a looser
-						this.getPaint().setColor(Color.rgb(255, 0, 0));
+						if( !isBonus() ) {
+							this.getPaint().setColor(Color.rgb(255, 0, 0));
+						}
+						else {
+							// it is a BONUS
+							this.getPaint().setColor(Color.rgb(255,215,0));
+						}
 					}
 					height = (Game.screenHeight * (255-computeColor)/600);
 					width = height;
@@ -78,11 +104,24 @@ public class GameShape extends ShapeDrawable{
 				}
 				else {
 					if( System.currentTimeMillis() < ( getTimeToFullDisplay() + ( ((int)hideTimer) * Constants.timerGoodPercent/100) ) ) {
-						this.getPaint().setColor(Color.rgb(0, 255, 0));
+						//is is good moment
+						if( !isBonus() ) {
+							this.getPaint().setColor(Color.rgb(0, 255, 0));
+						}
+						else {
+							// it is a BONUS !!
+							this.getPaint().setColor(Color.rgb(255,165,0));
+						}
 						goodMoment = true;
 					}
 					else {
-						this.getPaint().setColor(Color.rgb(computeColor, computeColor, computeColor));
+						if( !isBonus() ) {
+							this.getPaint().setColor(Color.rgb(computeColor, computeColor, computeColor));
+						}
+						else {
+							// it is a BONUS !!
+							this.getPaint().setColor(Color.rgb(255,165,0));
+						}
 						goodMoment = false;
 					}
 				}
@@ -100,11 +139,23 @@ public class GameShape extends ShapeDrawable{
 				computeColor = Math.max(Math.min(computeColor, 255), 0);
 				
 				if( absTimeDifference < ( ((int)showTimer) * Constants.timerGoodPercent/100) ) {
-					this.getPaint().setColor(Color.rgb(0, 255, 0));
+					if( !isBonus() ) {
+						this.getPaint().setColor(Color.rgb(0, 255, 0));
+					}
+					else {
+						// it is a BONUS !!
+						this.getPaint().setColor(Color.rgb(255,165,0));
+					}
 					goodMoment = true;
 				}
 				else {
-					this.getPaint().setColor(Color.rgb(computeColor, computeColor, computeColor));
+					if( !isBonus() ) {
+						this.getPaint().setColor(Color.rgb(computeColor, computeColor, computeColor));
+					}
+					else {
+						// it is a BONUS !!
+						this.getPaint().setColor(Color.rgb(255,165,0));
+					}
 					goodMoment = false;
 				}
 				
@@ -155,5 +206,13 @@ public class GameShape extends ShapeDrawable{
 	
 	public boolean isExploding() {
 		return this.exploding;
+	}
+	
+	public int getScore() {
+		return this.score;
+	}
+	
+	public boolean isBonus() {
+		return getScore() > Constants.baseScore;
 	}
 }
