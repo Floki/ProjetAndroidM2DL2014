@@ -1,6 +1,7 @@
 package com.example.keepthebeat.game.engine;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.EventObject;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +36,8 @@ public class GameEngine extends GameNotifier implements GameListener{
 	// Position courant de l'actionneur si on devait l'afficher
 	private double actionnerX;
 	private double actionnerY;
+	private double oldActionnerX;
+	private double oldActionnerY;
 	// Variable n�cessaire au calcul de la prochaine position d'un futur actionneur
 	private double actionnerMoveX;
 	private double actionnerMoveY;
@@ -43,12 +46,13 @@ public class GameEngine extends GameNotifier implements GameListener{
 	private int gameWidth;
 	private int gameHeight;
 	// Boucle du jeux
-	private Handler gameLoop;
-	private Runnable whatGameLoopDo;
+	private Handler mainLoop;
+	private Runnable whatMainLoopDo;
 	// Liste des actionneurs � afficher
 	private List<GameShape> actionners;
 	// Pattern line
-	private TreeMap<Long,Pair<Integer, Integer>> pattern;
+	private SortedMap<Long, Pair<Integer, Integer>> pattern;
+	private long lastComputedTime = 0;
 	// Score
 	private int score;
 	
@@ -66,16 +70,16 @@ public class GameEngine extends GameNotifier implements GameListener{
 		actionnerMoveMinSpeed = 5;
 		actionnerMoveX = (Math.random() - 0.5) * actionnerMoveMinSpeed * 10;
 		actionnerMoveY = (Math.random() - 0.5) * actionnerMoveMinSpeed * 10;
-		gameLoop = new Handler();
-		gameLoop.postDelayed(whatGameLoopDo, 10);
+		mainLoop = new Handler();
+		mainLoop.postDelayed(whatMainLoopDo, 10);
 		actionners = new ArrayList<GameShape>();
-		whatGameLoopDo = new Runnable() {
+		whatMainLoopDo = new Runnable() {
 			@Override 
 			public void run() {
-				whatGameLoopDo();
+				whatMainLoopDo();
 			}
 		};
-		whatGameLoopDo();
+		whatMainLoopDo();
 	}
 	
 	public void addGameShape( float x, float y) {
@@ -149,6 +153,16 @@ public class GameEngine extends GameNotifier implements GameListener{
 		}	
 	}
 	
+	private void whatMainLoopDo() {
+		if(Constants.mode == Constants.Mode.PLAY) {
+			whatGameLoopDo();
+		}
+		else if(Constants.mode == Constants.Mode.CREATE) {
+			whatCreationLoopDo();
+		}
+		mainLoop.postDelayed(whatMainLoopDo, 1);
+	}
+	
 	/**
 	 * Explain what the game engine regulary do
 	 */
@@ -156,10 +170,9 @@ public class GameEngine extends GameNotifier implements GameListener{
 		computeNextActionnerPosition();
 		List<GameShape> actionnersToRemove = new ArrayList<GameShape>();
 		long currentMusicTime = SoundEngine.getCurrentMusicTime() - (int)Constants.showTimer/10;
-		if(pattern.containsKey(currentMusicTime)) {
-			int x = Game.virtualXToScreenX(pattern.get(currentMusicTime).getFirst().intValue());
-			int y = Game.virtualYToScreenY(pattern.get(currentMusicTime).getSecond().intValue());
-			addGameShape(x,y);
+		SortedMap<Long,Pair<Integer,Integer>> subMap = pattern.subMap(Math.min(lastComputedTime,currentMusicTime), currentMusicTime);
+		if(subMap.size() > 0) {
+			addGameShapes(subMap.values());
 		}
 		for(GameShape actionner : actionners) {
 			if(!actionner.stillUse()) {
@@ -198,7 +211,30 @@ public class GameEngine extends GameNotifier implements GameListener{
 		}
 		sendToTheListenersTheStringAndTheParam("redraw", actionners);
 		sendToTheListenersTheStringAndTheParam("score", new Integer(score));
-		gameLoop.postDelayed(whatGameLoopDo, 1);
+		lastComputedTime = currentMusicTime;
+		pattern = pattern.tailMap(currentMusicTime);
+	}
+	
+	private void whatCreationLoopDo() {
+		List<GameShape> actionnersToRemove = new ArrayList<GameShape>();
+		for(GameShape actionner : actionners) {
+			if(!actionner.stillUse()) {
+				actionnersToRemove.add(actionner);
+			}
+			actionner.hideMore();
+		}
+		for(GameShape actionnerToRemove : actionnersToRemove) {
+			actionners.remove(actionnerToRemove);
+			actionnerToRemove = null;
+		}
+		sendToTheListenersTheStringAndTheParam("redraw", actionners);
+		lastComputedTime = SoundEngine.getCurrentMusicTime();
+	}
+
+	private void addGameShapes(Collection<Pair<Integer, Integer>> values) {
+		for(Pair<Integer, Integer> position: values) {
+			addGameShape(Game.virtualXToScreenX(position.getFirst()), Game.virtualYToScreenY(position.getSecond()));
+		}
 	}
 
 	public void setUserTouchPosition(float x, float y) {
@@ -221,10 +257,18 @@ public class GameEngine extends GameNotifier implements GameListener{
 	}
 
 	public void saveShape(float time, float x, float y) {
-		int savedX = Game.screenXToVirtualX((int) x);
-		int savedY = Game.screenYToVirtualY((int) y);
-		pattern.put((long)time, new Pair<Integer, Integer>(savedX,savedY));	
-		addGameShape(x, y);
+		if(SoundEngine.getCurrentMusicTime() > lastComputedTime + 100 ||
+		Game.virtualXToScreenX(50) < Tools.distanceBetweenPosition(new Float(oldActionnerX).intValue(), 
+										 new Float(oldActionnerY).intValue(), 
+										 new Float(x).intValue(), 
+										 new Float(y).intValue())) {
+			int savedX = Game.screenXToVirtualX(new Float(x).intValue());
+			int savedY = Game.screenYToVirtualY(new Float(y).intValue());
+			pattern.put((long)time, new Pair<Integer, Integer>(savedX,savedY));	
+			addGameShape(x, y);
+			oldActionnerX = x;
+			oldActionnerY = y;
+		}
 	}
 	
 	public void savePattern(String fileName) {
@@ -232,6 +276,6 @@ public class GameEngine extends GameNotifier implements GameListener{
 	}
 	
 	public void loadPattern(String fileName) {
-		pattern = (TreeMap<Long,Pair<Integer, Integer>>)FileAccess.deserialize(fileName);
+		pattern = (SortedMap<Long,Pair<Integer, Integer>>)FileAccess.deserialize(fileName);
 	}
 }
