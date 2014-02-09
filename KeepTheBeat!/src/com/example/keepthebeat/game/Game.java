@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -43,17 +44,21 @@ public class Game extends Activity {
 	private SoundEngine soundEngine;
 	// Moteur du jeu
 	private GameEngine gameEngine;
+	
+	// Pattern file name
+	private String fileName;
 
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		fileName = "test.vlf";
 		File storage = getApplication().getExternalFilesDir(null);
 		FileAccess.keepTheBeatFolder = storage.getPath();
 		Tools.log("", "File : " + FileAccess.keepTheBeatFolder );
 		if(Constants.mode == Constants.Mode.CREATE) {
 			// Delete file pattern
-			FileAccess.deleteFile("test.vlf");		
+			FileAccess.deleteFile(fileName);		
 		}
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
@@ -74,7 +79,8 @@ public class Game extends Activity {
 		soundEngine.addToTheListnersTheListener(gameEngine);
 		gameEngine.addToTheListnersTheListener(gameView);
 		if(FileAccess.fileExist("test.vlf") && Constants.mode == Constants.Mode.PLAY) {
-			gameEngine.setPatternFromString(FileAccess.readFileAsString("test.vlf"));
+			//gameEngine.setPatternFromString(FileAccess.readFileAsString(fileName));
+			gameEngine.loadPattern(fileName);
 		}
 		// On envoie la position touch� par l'utilisateur
 		gameView.setOnTouchListener(new OnTouchListener() {
@@ -86,19 +92,18 @@ public class Game extends Activity {
 				case MotionEvent.ACTION_DOWN:
 				case MotionEvent.ACTION_MOVE:
 					gameEngine.isTouching(true);
-					if(Constants.mode == Constants.Mode.CREATE) {
-						gameEngine.addGameShape( event.getX(), event.getY());
-						int virtualX = screenXToVirtualX((int) event.getX());
-						int virtualY = screenYToVirtualY((int) event.getY());
-						FileAccess.writeToFile("test.vlf", virtualX + " " + virtualY + " " + soundEngine.getCurrentMusicTime() + "\n");		
-					}
 					gameEngine.setUserTouchPosition(event.getX(), event.getY());
+					if(Constants.mode == Constants.Mode.CREATE) {
+						gameEngine.saveShape(soundEngine.getCurrentMusicTime() , event.getX(), event.getY());
+//						FileAccess.writeToFile(fileName, virtualX + " " + virtualY + " " + soundEngine.getCurrentMusicTime() + "\n");
+					}
 					break;
 				case MotionEvent.ACTION_UP:
 					gameEngine.isTouching(false);
 					break;
 				case MotionEvent.ACTION_CANCEL:
 					gameEngine.isTouching(false);
+					Toast.makeText(Game.this, "TEST", 1000);
 					break;
 				}
 				return true;
@@ -140,4 +145,15 @@ public class Game extends Activity {
         }
         return false;
     }
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	    if (keyCode == KeyEvent.KEYCODE_BACK) {
+	        if(Constants.mode == Constants.Mode.CREATE) {
+	    		gameEngine.savePattern(fileName);
+	        }
+	    }
+
+	    return super.onKeyDown(keyCode, event);
+	}
 }

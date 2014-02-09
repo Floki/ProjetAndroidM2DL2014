@@ -5,6 +5,8 @@ import java.util.EventObject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import com.example.keepthebeat.game.Game;
 import com.example.keepthebeat.game.GameListener;
@@ -12,6 +14,8 @@ import com.example.keepthebeat.game.GameNotifier;
 import com.example.keepthebeat.game.shape.BeatShape;
 import com.example.keepthebeat.game.shape.GameShape;
 import com.example.keepthebeat.utils.Constants;
+import com.example.keepthebeat.utils.FileAccess;
+import com.example.keepthebeat.utils.Pair;
 import com.example.keepthebeat.utils.Tools;
 
 import android.R;
@@ -44,7 +48,7 @@ public class GameEngine extends GameNotifier implements GameListener{
 	// Liste des actionneurs � afficher
 	private List<GameShape> actionners;
 	// Pattern line
-	private Map<String,String> pattern;
+	private TreeMap<Long,Pair<Integer, Integer>> pattern;
 	// Score
 	private int score;
 	
@@ -54,7 +58,7 @@ public class GameEngine extends GameNotifier implements GameListener{
 		userIsTouching = false;
 		lastAmplitude = 0;
 		maxSongAmplitude = 0;
-		pattern = new HashMap<String, String>();
+		pattern = new TreeMap<Long,Pair<Integer, Integer>>();
 		gameWidth = Game.screenWidth;
 		gameHeight = Game.screenHeight;
 		actionnerX = gameWidth / 2;
@@ -151,10 +155,10 @@ public class GameEngine extends GameNotifier implements GameListener{
 	private void whatGameLoopDo() {
 		computeNextActionnerPosition();
 		List<GameShape> actionnersToRemove = new ArrayList<GameShape>();
-		int currentMusicTime = SoundEngine.getCurrentMusicTime() - (int)Constants.showTimer/10;
-		if(pattern.containsKey(""+currentMusicTime)) {
-			int x = new Integer(pattern.get(""+currentMusicTime).split(" ")[0]).intValue();
-			int y = new Integer(pattern.get(""+currentMusicTime).split(" ")[1]).intValue();
+		long currentMusicTime = SoundEngine.getCurrentMusicTime() - (int)Constants.showTimer/10;
+		if(pattern.containsKey(currentMusicTime)) {
+			int x = Game.virtualXToScreenX(pattern.get(currentMusicTime).getFirst().intValue());
+			int y = Game.virtualYToScreenY(pattern.get(currentMusicTime).getSecond().intValue());
 			addGameShape(x,y);
 		}
 		for(GameShape actionner : actionners) {
@@ -207,11 +211,27 @@ public class GameEngine extends GameNotifier implements GameListener{
 		for(String line: patternLines) {
 			String[] information = line.split(" ");
 			//Game.log(this, "Put pattern " + ""+new Integer(information[2]).intValue() + " " + new Integer(information[1]).intValue()+" "+new Integer(information[2]).intValue());
-			pattern.put(""+new Float(information[2]).intValue(), Game.virtualXToScreenX(new Float(information[0]).intValue())+" "+Game.virtualYToScreenY(new Float(information[1]).intValue()));
+			//pattern.put(""+new Float(information[2]).intValue(), Game.virtualXToScreenX(new Float(information[0]).intValue())+" "+Game.virtualYToScreenY(new Float(information[1]).intValue()));
+			
 		}
 	}
 	
 	public void isTouching(boolean touch) {
 		userIsTouching = touch;
+	}
+
+	public void saveShape(float time, float x, float y) {
+		int savedX = Game.screenXToVirtualX((int) x);
+		int savedY = Game.screenYToVirtualY((int) y);
+		pattern.put((long)time, new Pair<Integer, Integer>(savedX,savedY));	
+		addGameShape(x, y);
+	}
+	
+	public void savePattern(String fileName) {
+		FileAccess.serialize(pattern, fileName);
+	}
+	
+	public void loadPattern(String fileName) {
+		pattern = (TreeMap<Long,Pair<Integer, Integer>>)FileAccess.deserialize(fileName);
 	}
 }

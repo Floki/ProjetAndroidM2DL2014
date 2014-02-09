@@ -8,7 +8,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
+import java.io.Serializable;
 
 import com.example.keepthebeat.game.Game;
 
@@ -21,15 +24,16 @@ import android.widget.Toast;
 public class FileAccess {
 	public static String keepTheBeatFolder = "/sdcard/KeepTheBeat";
 	public static String patternFolder = "/pattern/";
+	private static String patternPath() {return keepTheBeatFolder + patternFolder;}
+	private static String filePatternPath(String file) {return patternPath() + file;}
 	
 	public static void writeToFile(String fileName, String data) {
 	    try {
-	    	String path = FileAccess.keepTheBeatFolder + FileAccess.patternFolder;
-	    	File patternFolder = new File(path);
+	    	File patternFolder = new File(patternPath());
 	    	if(!patternFolder.exists()) {
 	    		patternFolder.mkdirs();
 	    	}
-	    	File outFile = new File(path + "pattern1.vlf");
+	    	File outFile = new File(filePatternPath(fileName));
 	    	outFile.createNewFile();
 	        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(outFile, true));
 	        outputStreamWriter.append(data);
@@ -40,11 +44,9 @@ public class FileAccess {
 	    } 
 	}
 
-	public static String readFileAsString(String filePath) {
-
+	public static String readFileAsString(String fileName) {
 	    String result = "";
-	    String path = FileAccess.keepTheBeatFolder + FileAccess.patternFolder;
-	    File file = new File(path + "pattern1.vlf");
+	    File file = new File(filePatternPath(fileName));
 	    if ( file.exists() ) {
 	        FileInputStream fis = null;
 	        Tools.log("", "File read : " + file.getAbsolutePath());
@@ -69,15 +71,40 @@ public class FileAccess {
 	    return result;
 	}
 	
-	public static void deleteFile(String filePath) {
-		String path = FileAccess.keepTheBeatFolder + FileAccess.patternFolder;
-	    File file = new File(path + "pattern1.vlf");
+	public static void deleteFile(String fileName) {
+	    File file = new File(filePatternPath(fileName));
 	    file.delete();
 	}
 	
-	public static boolean fileExist(String filePath) {
-		String path = FileAccess.keepTheBeatFolder + FileAccess.patternFolder;
-	    File file = new File(path + "pattern1.vlf");
+	public static boolean fileExist(String fileName) {
+	    File file = new File(filePatternPath(fileName));
 	    return file.exists();
+	}
+	
+	public static void serialize(Object serializable, String fileName) {
+		try{
+			FileOutputStream fileOut = new FileOutputStream(filePatternPath(fileName));
+			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+			objectOut.writeObject(serializable);
+		}catch(IOException ioe){
+			System.err.print(ioe);
+		}
+	}
+
+	public static Object deserialize(String fileName) {
+		try{
+			FileInputStream fileIn = new FileInputStream(filePatternPath(fileName));
+			ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+			Object object = objectIn.readObject();
+			return object;
+		}
+		catch(ClassNotFoundException e) {
+			System.err.print(e);
+			return null;
+		}
+		catch(IOException ioe){
+			System.err.print(ioe);
+			return null;
+		}
 	}
 }
