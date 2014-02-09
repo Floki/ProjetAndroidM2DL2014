@@ -69,6 +69,12 @@ public class FileAccess {
 	    return result;
 	}
 	
+	public static void deleteFile(String filePath) {
+		String path = FileAccess.keepTheBeatFolder + FileAccess.patternFolder;
+	    File file = new File(path + "pattern1.vlf");
+	    file.delete();
+	}
+	
 	public static boolean fileExist(String filePath) {
 		String path = FileAccess.keepTheBeatFolder + FileAccess.patternFolder;
 	    File file = new File(path + "pattern1.vlf");

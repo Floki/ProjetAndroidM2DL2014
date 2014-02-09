@@ -22,4 +22,10 @@ public class Constants {
 	public static int tooLatePercent = 10;
 	public static int missPercent = 50;
 	
+	/**
+	 * Mode
+	 */
+	public enum Mode {CREATE, PLAY};
+	public static Mode mode;
+	
 }

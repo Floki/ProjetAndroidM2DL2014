@@ -7,6 +7,7 @@ import com.example.keepthebeat.R.id;
 import com.example.keepthebeat.R.layout;
 import com.example.keepthebeat.game.engine.GameEngine;
 import com.example.keepthebeat.game.engine.SoundEngine;
+import com.example.keepthebeat.utils.Constants;
 import com.example.keepthebeat.utils.FileAccess;
 import com.example.keepthebeat.utils.Tools;
 
@@ -50,6 +51,10 @@ public class Game extends Activity {
 		File storage = getApplication().getExternalFilesDir(null);
 		FileAccess.keepTheBeatFolder = storage.getPath();
 		Tools.log("", "File : " + FileAccess.keepTheBeatFolder );
+		if(Constants.mode == Constants.Mode.CREATE) {
+			// Delete file pattern
+			FileAccess.deleteFile("test.vlf");		
+		}
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
                                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -68,7 +73,7 @@ public class Game extends Activity {
 		gameEngine = new GameEngine();
 		soundEngine.addToTheListnersTheListener(gameEngine);
 		gameEngine.addToTheListnersTheListener(gameView);
-		if(FileAccess.fileExist("test.vlf")) {
+		if(FileAccess.fileExist("test.vlf") && Constants.mode == Constants.Mode.PLAY) {
 			gameEngine.setPatternFromString(FileAccess.readFileAsString("test.vlf"));
 		}
 		// On envoie la position touch� par l'utilisateur
@@ -81,10 +86,12 @@ public class Game extends Activity {
 				case MotionEvent.ACTION_DOWN:
 				case MotionEvent.ACTION_MOVE:
 					gameEngine.isTouching(true);
-//					gameEngine.addGameShape( event.getX(), event.getY());
-					int virtualX = screenXToVirtualX((int) event.getX());
-					int virtualY = screenYToVirtualY((int) event.getY());
-//					FileAccess.writeToFile("test.vlf", virtualX + " " + virtualY + " " + soundEngine.getCurrentMusicTime() + "\n");		
+					if(Constants.mode == Constants.Mode.CREATE) {
+						gameEngine.addGameShape( event.getX(), event.getY());
+						int virtualX = screenXToVirtualX((int) event.getX());
+						int virtualY = screenYToVirtualY((int) event.getY());
+						FileAccess.writeToFile("test.vlf", virtualX + " " + virtualY + " " + soundEngine.getCurrentMusicTime() + "\n");		
+					}
 					gameEngine.setUserTouchPosition(event.getX(), event.getY());
 					break;
 				case MotionEvent.ACTION_UP:
