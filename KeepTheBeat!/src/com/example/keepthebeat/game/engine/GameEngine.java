@@ -1,4 +1,4 @@
-package com.example.keepthebeat.engine;
+package com.example.keepthebeat.game.engine;
 
 import java.util.ArrayList;
 import java.util.EventObject;
@@ -6,12 +6,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.example.keepthebeat.Game;
-import com.example.keepthebeat.GameListener;
-import com.example.keepthebeat.GameNotifier;
-import com.example.keepthebeat.shape.BeatShape;
-import com.example.keepthebeat.shape.GameShape;
+import com.example.keepthebeat.game.Game;
+import com.example.keepthebeat.game.GameListener;
+import com.example.keepthebeat.game.GameNotifier;
+import com.example.keepthebeat.game.shape.BeatShape;
+import com.example.keepthebeat.game.shape.GameShape;
 import com.example.keepthebeat.utils.Constants;
+import com.example.keepthebeat.utils.Tools;
 
 import android.R;
 import android.os.Handler;
@@ -117,7 +118,6 @@ public class GameEngine extends GameNotifier implements GameListener{
 	public void computeNextActionnerPosition() {
 		actionnerX += this.actionnerMoveX;
 		actionnerY += this.actionnerMoveY;
-		Game.log(this, "Actionner Pos : " + actionnerX + " " + actionnerY);
 		if(this.actionnerX < 0) {
 			actionnerMoveX = actionnerMoveMinSpeed + (Math.random() + 0.1) * actionnerMoveMinSpeed * 10;
 		}
@@ -200,11 +200,9 @@ public class GameEngine extends GameNotifier implements GameListener{
 	public void setUserTouchPosition(float x, float y) {
 		userTouchX = x;
 		userTouchY = y;
-		Game.log(this, "Touch : [" + userTouchX + "," + userTouchY + "]");
 	}
 
 	public void setPatternFromString(String stringPattern) {
-		Game.log(this, "New pattern : " + stringPattern);
 		String[] patternLines = stringPattern.split("\n");
 		for(String line: patternLines) {
 			String[] information = line.split(" ");

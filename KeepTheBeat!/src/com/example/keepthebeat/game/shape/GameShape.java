@@ -1,6 +1,6 @@
-package com.example.keepthebeat.shape;
+package com.example.keepthebeat.game.shape;
 
-import com.example.keepthebeat.Game;
+import com.example.keepthebeat.game.Game;
 import com.example.keepthebeat.utils.Constants;
 
 import android.graphics.Canvas;

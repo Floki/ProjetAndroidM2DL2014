@@ -1,4 +1,4 @@
-package com.example.keepthebeat.shape;
+package com.example.keepthebeat.game.shape;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;

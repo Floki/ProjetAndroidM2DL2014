@@ -1,4 +1,4 @@
-package com.example.keepthebeat;
+package com.example.keepthebeat.game;
 
 public interface GameListener {
 	

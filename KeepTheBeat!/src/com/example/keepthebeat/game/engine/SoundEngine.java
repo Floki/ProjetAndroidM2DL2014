@@ -1,8 +1,8 @@
-package com.example.keepthebeat.engine;
+package com.example.keepthebeat.game.engine;
 
-import com.example.keepthebeat.GameNotifier;
 import com.example.keepthebeat.R;
 import com.example.keepthebeat.R.raw;
+import com.example.keepthebeat.game.GameNotifier;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

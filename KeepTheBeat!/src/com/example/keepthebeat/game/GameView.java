@@ -1,11 +1,12 @@
-package com.example.keepthebeat;
+package com.example.keepthebeat.game;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.List;
 
-import com.example.keepthebeat.shape.GameShape;
+import com.example.keepthebeat.game.shape.GameShape;
+import com.example.keepthebeat.utils.Tools;
 
 import android.R.drawable;
 import android.content.Context;
@@ -43,7 +44,6 @@ public class GameView extends View implements GameListener{
 
 	protected void onDraw(Canvas canvas) {
 		for(ShapeDrawable drawable : drawables) {
-			Game.log(this, "Tell to draw");
 			GameShape beat = (GameShape)drawable;
 			beat.draw(canvas);
 		}	

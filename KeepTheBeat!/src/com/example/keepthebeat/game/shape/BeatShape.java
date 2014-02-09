@@ -1,6 +1,6 @@
-package com.example.keepthebeat.shape;
+package com.example.keepthebeat.game.shape;
 
-import com.example.keepthebeat.Game;
+import com.example.keepthebeat.game.Game;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -39,11 +39,7 @@ public class BeatShape extends GameShape {
 	}
 	
 	public void setPosition(int x, int y) {
-		Game.log(this,"setPosition( " + x + " , " + y + ")");
 		if(shape != null) {
-			Game.log(this, "Position : " + shape.getCenterX() + " " + shape.getCenterY()
-						 + "[" + shape.getX()[0] + "," + shape.getX()[1] + "," + shape.getX()[2] + "]"
-						 + "[" + shape.getY()[0] + "," + shape.getY()[1] + "," + shape.getY()[2] + "]");
 			shape.setPosition(x, y);
 		}
 	}

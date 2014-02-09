@@ -1,4 +1,4 @@
-package com.example.keepthebeat;
+package com.example.keepthebeat.utils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+
+import com.example.keepthebeat.game.Game;
 
 import android.app.Application;
 import android.content.Context;
@@ -30,12 +32,11 @@ public class FileAccess {
 	    	File outFile = new File(path + "pattern1.vlf");
 	    	outFile.createNewFile();
 	        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(outFile, true));
-	        Game.log("", "File write : " + outFile.getAbsolutePath());
 	        outputStreamWriter.append(data);
 	        outputStreamWriter.close();
 	    }
 	    catch (IOException e) {
-	    	Game.log("Exception", "File write failed: " + e.toString());
+	    	Tools.log("Exception", "File write failed: " + e.toString());
 	    } 
 	}
 
@@ -46,7 +47,7 @@ public class FileAccess {
 	    File file = new File(path + "pattern1.vlf");
 	    if ( file.exists() ) {
 	        FileInputStream fis = null;
-	        Game.log("", "File read : " + file.getAbsolutePath());
+	        Tools.log("", "File read : " + file.getAbsolutePath());
 	        try {
 	            fis = new FileInputStream(file);
 	            char current;

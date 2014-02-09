@@ -1,9 +1,14 @@
-package com.example.keepthebeat;
+package com.example.keepthebeat.game;
 
 import java.io.File;
 
-import com.example.keepthebeat.engine.GameEngine;
-import com.example.keepthebeat.engine.SoundEngine;
+import com.example.keepthebeat.R;
+import com.example.keepthebeat.R.id;
+import com.example.keepthebeat.R.layout;
+import com.example.keepthebeat.game.engine.GameEngine;
+import com.example.keepthebeat.game.engine.SoundEngine;
+import com.example.keepthebeat.utils.FileAccess;
+import com.example.keepthebeat.utils.Tools;
 
 import android.os.Bundle;
 import android.annotation.SuppressLint;
@@ -22,6 +27,7 @@ public class Game extends Activity {
 
 	public static int screenHeight;
 	public static int screenWidth;
+	
 	// Taille virtuelle
 	public final static int virtualSize = 1000;
 	public static int screenYToVirtualY(int screenPosition)  {return (screenPosition * virtualSize) / screenHeight; }
@@ -36,8 +42,6 @@ public class Game extends Activity {
 	private SoundEngine soundEngine;
 	// Moteur du jeu
 	private GameEngine gameEngine;
-	//TODO Remove when not use
-	private boolean fileExist;
 
 	@SuppressLint("NewApi")
 	@Override
@@ -45,8 +49,7 @@ public class Game extends Activity {
 		super.onCreate(savedInstanceState);
 		File storage = getApplication().getExternalFilesDir(null);
 		FileAccess.keepTheBeatFolder = storage.getPath();
-		Game.log("", "File : " + FileAccess.keepTheBeatFolder );
-		fileExist = FileAccess.fileExist("test.vlf");
+		Tools.log("", "File : " + FileAccess.keepTheBeatFolder );
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
                                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -110,10 +113,6 @@ public class Game extends Activity {
 		soundEngine.onDestroy();
 		soundEngine = null;
 		super.onDestroy();
-	}
-	
-	public static void log(Object origin, Object message) {
-		Log.d(origin.getClass().getName(), "" + message);
 	}
 	
 	public boolean onOptionsItemSelected(MenuItem item) {
