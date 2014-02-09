@@ -212,7 +212,7 @@ public class GameEngine extends GameNotifier implements GameListener{
 		sendToTheListenersTheStringAndTheParam("redraw", actionners);
 		sendToTheListenersTheStringAndTheParam("score", new Integer(score));
 		lastComputedTime = currentMusicTime;
-		pattern = pattern.tailMap(currentMusicTime);
+		pattern = new TreeMap<Long, Pair<Integer, Integer>>(pattern.tailMap(currentMusicTime));
 	}
 	
 	private void whatCreationLoopDo() {
