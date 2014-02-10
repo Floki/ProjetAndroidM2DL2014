@@ -45,20 +45,15 @@ public class GameEngine extends GameNotifier implements GameListener{
 	// Taille de l'aire de jeu
 	private int gameWidth;
 	private int gameHeight;
-	// Boucle du jeux
-	private Handler mainLoop;
-	private Runnable whatMainLoopDo;
 	// Liste des actionneurs � afficher
 	private List<GameShape> actionners;
 	// Pattern line
 	private SortedMap<Long, Pair<Integer, Integer>> pattern;
 	private long lastComputedTime = 0;
-	// Score
-	private int score;
 	
 	
 	public GameEngine() {
-		score = 0;
+		Constants.score = 0;
 		userIsTouching = false;
 		lastAmplitude = 0;
 		maxSongAmplitude = 0;
@@ -70,16 +65,7 @@ public class GameEngine extends GameNotifier implements GameListener{
 		actionnerMoveMinSpeed = 5;
 		actionnerMoveX = (Math.random() - 0.5) * actionnerMoveMinSpeed * 10;
 		actionnerMoveY = (Math.random() - 0.5) * actionnerMoveMinSpeed * 10;
-		mainLoop = new Handler();
-		mainLoop.postDelayed(whatMainLoopDo, 10);
 		actionners = new ArrayList<GameShape>();
-		whatMainLoopDo = new Thread() {
-			@Override 
-			public void run() {
-				whatMainLoopDo();
-			}
-		};
-		whatMainLoopDo();
 	}
 	
 	public void addGameShape( float x, float y) {
@@ -153,20 +139,19 @@ public class GameEngine extends GameNotifier implements GameListener{
 		}	
 	}
 	
-	private void whatMainLoopDo() {
+	public void engineLoop() {
 		if(Constants.mode == Constants.Mode.PLAY) {
-			whatGameLoopDo();
+			playLoop();
 		}
 		else if(Constants.mode == Constants.Mode.CREATE) {
-			whatCreationLoopDo();
+			createLoop();
 		}
-		mainLoop.postDelayed(whatMainLoopDo, 5);
 	}
 	
 	/**
 	 * Explain what the game engine regulary do
 	 */
-	private void whatGameLoopDo() {
+	private void playLoop() {
 		//computeNextActionnerPosition();
 		List<GameShape> actionnersTmp = new ArrayList<GameShape>(actionners);
 		for(GameShape actionner : actionnersTmp) {
@@ -176,7 +161,7 @@ public class GameEngine extends GameNotifier implements GameListener{
 											 + (actionner.getY() - userTouchY) * (actionner.getY() - userTouchY));
 				if(distance < actionner.getHeight() / 2 && distance < actionner.getWidth()) {
 					if( actionner.isGoodMoment() || actionner.isBonus() ) { //a bonus is always a bonus because we are nice developers :)
-						score += actionner.getScore();
+						Constants.score += actionner.getScore();
 						if( actionner.isBonus() ) {
 							actionner.setExplodingText( "BONUS + " + actionner.getScore() );
 						}
@@ -185,7 +170,7 @@ public class GameEngine extends GameNotifier implements GameListener{
 						}
 					}
 					else {
-						score = score - actionner.getScore() * Constants.tooLatePercent/100;
+						Constants.score -= actionner.getScore() * Constants.tooLatePercent/100;
 						actionner.setExplodingText( "- " + actionner.getScore() * Constants.tooLatePercent/100 );
 					}
 					actionner.hideAndExplode();
@@ -195,14 +180,13 @@ public class GameEngine extends GameNotifier implements GameListener{
 				actionners.remove(actionner);
 				if( !actionner.isExploding() ) {
 					if( !actionner.isBonus()) //a bonus is definitively not a malus because we are nice developers !
-						score = score - actionner.getScore() * Constants.missPercent/100;
+						Constants.score -= actionner.getScore() * Constants.missPercent/100;
 				}
 				actionner = null;
 			}
 		}
 
-		sendToTheListenersTheStringAndTheParam("redraw", actionners);
-		sendToTheListenersTheStringAndTheParam("score", new Integer(score));
+		Constants.pattern = actionners;
 		
 		long currentMusicTime = SoundEngine.getCurrentMusicTime() + (int)Constants.showTimer/10;
 		SortedMap<Long,Pair<Integer,Integer>> subMap = pattern.subMap(Math.min(lastComputedTime,currentMusicTime), currentMusicTime);
@@ -214,7 +198,7 @@ public class GameEngine extends GameNotifier implements GameListener{
 		pattern = new TreeMap<Long, Pair<Integer, Integer>>(pattern.tailMap(currentMusicTime));
 	}
 	
-	private void whatCreationLoopDo() {
+	private void createLoop() {
 		List<GameShape> actionnersTmp = new ArrayList<GameShape>(actionners);
 		for(GameShape actionner : actionnersTmp) {
 			if(!actionner.stillUse()) {
@@ -225,7 +209,8 @@ public class GameEngine extends GameNotifier implements GameListener{
 				actionner.hideMore();
 			}
 		}
-		sendToTheListenersTheStringAndTheParam("redraw", actionners);
+		Constants.pattern = actionners;
+
 		lastComputedTime = SoundEngine.getCurrentMusicTime();
 	}
 

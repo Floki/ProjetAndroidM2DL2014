@@ -6,13 +6,16 @@ import java.util.EventObject;
 import java.util.List;
 
 import com.example.keepthebeat.game.shape.GameShape;
+import com.example.keepthebeat.utils.Constants;
 import com.example.keepthebeat.utils.Tools;
 
 import android.R.drawable;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.media.AudioFormat;
@@ -23,13 +26,13 @@ import android.support.v4.view.MotionEventCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.widget.TextView;
 
-public class GameView extends View implements GameListener{
-
-	private List<ShapeDrawable> drawables;
-	private String scoreLabel = "";
+public class GameView extends SurfaceView {
+	private SurfaceHolder holder;
 	
 	public GameView(Context context) {
 		super(context);
@@ -40,40 +43,22 @@ public class GameView extends View implements GameListener{
 		init();
 	}
 	
+	@SuppressLint("WrongCall")
 	private void init() {
-		drawables = new ArrayList<ShapeDrawable>();
-		setBackgroundColor(Color.BLUE);
+		//setBackgroundColor(Color.BLUE);
 	}
 
 	protected void onDraw(Canvas canvas) {
-		for(ShapeDrawable drawable : drawables) {
-			GameShape beat = (GameShape)drawable;
-			beat.draw(canvas);
-		}	
+		canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+		if(Constants.pattern != null) {
+			List<GameShape> drawables = new ArrayList<GameShape>(Constants.pattern);
+			for(GameShape drawable : drawables) {
+				Tools.log(this, "Draw somethings here " + drawable.getPaint().getAlpha() + " " + drawable.getX() + " " + drawable.getY() );
+				drawable.draw(canvas);
+			}	
+		}
 		Paint scorePaint = new Paint();
 		scorePaint.setColor(Color.WHITE);
-		scorePaint.setAlpha(255);
-		scorePaint.setTextSize(20);
-		canvas.drawText(scoreLabel, 50, 50, scorePaint);
-	}
-
-	@Override
-	public void doSomethingCorrespondingToTheString(String action) {
-		if(action.equals("redraw")) {
-			invalidate();
-		}
-	}
-	
-	@Override
-	public void doSomethingCorrespondingToTheStringAndParam(String action,
-			Object param) {
-		if(action.equals("redraw") && param instanceof List<?>) {
-			drawables = (List<ShapeDrawable>) param;
-		}
-		if(action.equals("score") && param instanceof Integer) {
-			scoreLabel = "" + ((Integer)param).intValue();
-		}
-		invalidate();
-	}
-	
+		canvas.drawText(""+Constants.score, 50, 50, scorePaint);
+	}	
 }

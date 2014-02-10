@@ -1,5 +1,9 @@
 package com.example.keepthebeat.utils;
 
+import java.util.Collection;
+
+import com.example.keepthebeat.game.shape.GameShape;
+
 public class Constants {
 
 	/*
@@ -27,5 +31,12 @@ public class Constants {
 	 */
 	public enum Mode {CREATE, PLAY};
 	public static Mode mode;
+	
+	/*
+	 * Thread running and shared object
+	 */
+	public static boolean running;
+	public static Collection<GameShape> pattern;
+	public static int score;
 	
 }

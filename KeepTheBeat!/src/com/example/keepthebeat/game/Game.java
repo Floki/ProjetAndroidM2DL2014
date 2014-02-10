@@ -19,13 +19,14 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-public class Game extends Activity {
+public class Game extends Activity implements SurfaceHolder.Callback {
 
 	public static int screenHeight;
 	public static int screenWidth;
@@ -44,6 +45,8 @@ public class Game extends Activity {
 	private SoundEngine soundEngine;
 	// Moteur du jeu
 	private GameEngine gameEngine;
+	// Thread principal
+	private static GameThread gameThread;
 	
 	// Pattern file name
 	private String fileName;
@@ -71,13 +74,12 @@ public class Game extends Activity {
 		// On cr�e la vue
 		setContentView(R.layout.activity_game);
 		gameView = (GameView)findViewById(R.id.gameView);
+		gameView.getHolder().addCallback(this);
 
 		// On cr�� le moteur de son
 		soundEngine = new SoundEngine(Game.this);
 		// On cr�e le moteur du jeu
 		gameEngine = new GameEngine();
-		soundEngine.addToTheListnersTheListener(gameEngine);
-		gameEngine.addToTheListnersTheListener(gameView);
 		if(FileAccess.fileExist("test.vlf") && Constants.mode == Constants.Mode.PLAY) {
 			//gameEngine.setPatternFromString(FileAccess.readFileAsString(fileName));
 			gameEngine.loadPattern(fileName);
@@ -108,8 +110,7 @@ public class Game extends Activity {
 				return true;
 			}
 		});
-		
-		soundEngine.PlayOrPause();
+		gameThread = new GameThread(gameView, gameEngine, soundEngine);
 	}
 
 	@Override
@@ -155,4 +156,21 @@ public class Game extends Activity {
 
 	    return super.onKeyDown(keyCode, event);
 	}
+	
+	public static void pauseThread(boolean pause) {
+		gameThread.setRunning(!pause);
+	}
+	@Override
+	public void surfaceChanged(SurfaceHolder holder, int format, int width,
+			int height) {
+	}
+	@Override
+	public void surfaceCreated(SurfaceHolder holder) {
+		gameThread.setRunning(true);
+		gameView.setWillNotDraw(false);
+	}
+	@Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+
+    }
 }
