@@ -73,7 +73,7 @@ public class GameEngine extends GameNotifier implements GameListener{
 		mainLoop = new Handler();
 		mainLoop.postDelayed(whatMainLoopDo, 10);
 		actionners = new ArrayList<GameShape>();
-		whatMainLoopDo = new Runnable() {
+		whatMainLoopDo = new Thread() {
 			@Override 
 			public void run() {
 				whatMainLoopDo();
@@ -160,24 +160,16 @@ public class GameEngine extends GameNotifier implements GameListener{
 		else if(Constants.mode == Constants.Mode.CREATE) {
 			whatCreationLoopDo();
 		}
-		mainLoop.postDelayed(whatMainLoopDo, 1);
+		mainLoop.postDelayed(whatMainLoopDo, 5);
 	}
 	
 	/**
 	 * Explain what the game engine regulary do
 	 */
 	private void whatGameLoopDo() {
-		computeNextActionnerPosition();
-		List<GameShape> actionnersToRemove = new ArrayList<GameShape>();
-		long currentMusicTime = SoundEngine.getCurrentMusicTime() - (int)Constants.showTimer/10;
-		SortedMap<Long,Pair<Integer,Integer>> subMap = pattern.subMap(Math.min(lastComputedTime,currentMusicTime), currentMusicTime);
-		if(subMap.size() > 0) {
-			addGameShapes(subMap.values());
-		}
-		for(GameShape actionner : actionners) {
-			if(!actionner.stillUse()) {
-				actionnersToRemove.add(actionner);
-			}
+		//computeNextActionnerPosition();
+		List<GameShape> actionnersTmp = new ArrayList<GameShape>(actionners);
+		for(GameShape actionner : actionnersTmp) {
 			actionner.hideMore();
 			if(userIsTouching && !actionner.isExploding()) {
 				int distance = (int) Math.sqrt((actionner.getX() - userTouchX) * (actionner.getX() - userTouchX) 
@@ -199,33 +191,39 @@ public class GameEngine extends GameNotifier implements GameListener{
 					actionner.hideAndExplode();
 				}
 			}
-		}
-		for(GameShape actionnerToRemove : actionnersToRemove) {
-			actionners.remove(actionnerToRemove);
-			//loose points if miss
-			if( !actionnerToRemove.isExploding() ) {
-				if( !actionnerToRemove.isBonus()) //a bonus is definitively not a malus because we are nice developers !
-					score = score - actionnerToRemove.getScore() * Constants.missPercent/100;
+			if(!actionner.stillUse()) {
+				actionners.remove(actionner);
+				if( !actionner.isExploding() ) {
+					if( !actionner.isBonus()) //a bonus is definitively not a malus because we are nice developers !
+						score = score - actionner.getScore() * Constants.missPercent/100;
+				}
+				actionner = null;
 			}
-			actionnerToRemove = null;
 		}
+
 		sendToTheListenersTheStringAndTheParam("redraw", actionners);
 		sendToTheListenersTheStringAndTheParam("score", new Integer(score));
+		
+		long currentMusicTime = SoundEngine.getCurrentMusicTime() + (int)Constants.showTimer/10;
+		SortedMap<Long,Pair<Integer,Integer>> subMap = pattern.subMap(Math.min(lastComputedTime,currentMusicTime), currentMusicTime);
+		if(subMap.size() > 0) {
+			Tools.log(this, "SE Time : " + SoundEngine.getCurrentMusicTime() + " A Time : " + subMap.keySet().toArray()[0].toString());
+			addGameShapes(subMap.values());
+		}
 		lastComputedTime = currentMusicTime;
 		pattern = new TreeMap<Long, Pair<Integer, Integer>>(pattern.tailMap(currentMusicTime));
 	}
 	
 	private void whatCreationLoopDo() {
-		List<GameShape> actionnersToRemove = new ArrayList<GameShape>();
-		for(GameShape actionner : actionners) {
+		List<GameShape> actionnersTmp = new ArrayList<GameShape>(actionners);
+		for(GameShape actionner : actionnersTmp) {
 			if(!actionner.stillUse()) {
-				actionnersToRemove.add(actionner);
+				actionners.remove(actionner);
+				actionner = null;
 			}
-			actionner.hideMore();
-		}
-		for(GameShape actionnerToRemove : actionnersToRemove) {
-			actionners.remove(actionnerToRemove);
-			actionnerToRemove = null;
+			else {
+				actionner.hideMore();
+			}
 		}
 		sendToTheListenersTheStringAndTheParam("redraw", actionners);
 		lastComputedTime = SoundEngine.getCurrentMusicTime();
@@ -241,16 +239,6 @@ public class GameEngine extends GameNotifier implements GameListener{
 		userTouchX = x;
 		userTouchY = y;
 	}
-
-	public void setPatternFromString(String stringPattern) {
-		String[] patternLines = stringPattern.split("\n");
-		for(String line: patternLines) {
-			String[] information = line.split(" ");
-			//Game.log(this, "Put pattern " + ""+new Integer(information[2]).intValue() + " " + new Integer(information[1]).intValue()+" "+new Integer(information[2]).intValue());
-			//pattern.put(""+new Float(information[2]).intValue(), Game.virtualXToScreenX(new Float(information[0]).intValue())+" "+Game.virtualYToScreenY(new Float(information[1]).intValue()));
-			
-		}
-	}
 	
 	public void isTouching(boolean touch) {
 		userIsTouching = touch;
@@ -258,7 +246,7 @@ public class GameEngine extends GameNotifier implements GameListener{
 
 	public void saveShape(float time, float x, float y) {
 		if(SoundEngine.getCurrentMusicTime() > lastComputedTime + 100 ||
-		Game.virtualXToScreenX(50) < Tools.distanceBetweenPosition(new Float(oldActionnerX).intValue(), 
+		Game.virtualXToScreenX(75) < Tools.distanceBetweenPosition(new Float(oldActionnerX).intValue(), 
 										 new Float(oldActionnerY).intValue(), 
 										 new Float(x).intValue(), 
 										 new Float(y).intValue())) {

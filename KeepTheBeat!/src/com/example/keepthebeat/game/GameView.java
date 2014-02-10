@@ -33,11 +33,14 @@ public class GameView extends View implements GameListener{
 	
 	public GameView(Context context) {
 		super(context);
-		drawables = new ArrayList<ShapeDrawable>();
-		setBackgroundColor(Color.BLUE);
+		init();
 	}
 	public GameView(Context context, AttributeSet attr) {
 		super(context, attr);
+		init();
+	}
+	
+	private void init() {
 		drawables = new ArrayList<ShapeDrawable>();
 		setBackgroundColor(Color.BLUE);
 	}
@@ -56,7 +59,9 @@ public class GameView extends View implements GameListener{
 
 	@Override
 	public void doSomethingCorrespondingToTheString(String action) {
-		
+		if(action.equals("redraw")) {
+			invalidate();
+		}
 	}
 	
 	@Override
@@ -64,12 +69,11 @@ public class GameView extends View implements GameListener{
 			Object param) {
 		if(action.equals("redraw") && param instanceof List<?>) {
 			drawables = (List<ShapeDrawable>) param;
-			invalidate();
 		}
 		if(action.equals("score") && param instanceof Integer) {
 			scoreLabel = "" + ((Integer)param).intValue();
-			invalidate();
 		}
+		invalidate();
 	}
 	
 }

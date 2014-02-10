@@ -103,7 +103,6 @@ public class Game extends Activity {
 					break;
 				case MotionEvent.ACTION_CANCEL:
 					gameEngine.isTouching(false);
-					Toast.makeText(Game.this, "TEST", 1000);
 					break;
 				}
 				return true;
