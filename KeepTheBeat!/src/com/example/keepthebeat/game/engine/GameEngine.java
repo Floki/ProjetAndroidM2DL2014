@@ -69,8 +69,10 @@ public class GameEngine extends GameNotifier implements GameListener{
 	}
 	
 	public void addGameShape( float x, float y) {
-		GameShape beatShape = new GameShape(Constants.showTimer,Constants.hideTimer);
+		long showTimer = (Constants.mode == Constants.Mode.CREATE ? 1 : Constants.showTimer);
+		GameShape beatShape = new GameShape(showTimer,Constants.hideTimer);
 		beatShape.setPosition((int)x, (int)y);
+		
 		actionners.add(beatShape);
 	}
 	
