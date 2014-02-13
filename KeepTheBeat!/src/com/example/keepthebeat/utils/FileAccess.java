@@ -13,11 +13,14 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Serializable;
 
+import javax.net.ssl.ManagerFactoryParameters;
+
 import com.example.keepthebeat.game.Game;
 
 import android.app.Application;
 import android.content.Context;
 import android.graphics.AvoidXfermode.Mode;
+import android.os.Parcelable.Creator;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -83,10 +86,16 @@ public class FileAccess {
 	
 	public static void serialize(Object serializable, String fileName) {
 		try{
+			File patternFolder = new File(patternPath());
+	    	if(!patternFolder.exists()) {
+	    		patternFolder.mkdirs();
+	    	}
 			FileOutputStream fileOut = new FileOutputStream(filePatternPath(fileName));
 			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
 			objectOut.writeObject(serializable);
+			objectOut.close();
 		}catch(IOException ioe){
+			System.err.println("ICI");
 			System.err.print(ioe);
 		}
 	}
@@ -96,6 +105,7 @@ public class FileAccess {
 			FileInputStream fileIn = new FileInputStream(filePatternPath(fileName));
 			ObjectInputStream objectIn = new ObjectInputStream(fileIn);
 			Object object = objectIn.readObject();
+			objectIn.close();
 			return object;
 		}
 		catch(ClassNotFoundException e) {
