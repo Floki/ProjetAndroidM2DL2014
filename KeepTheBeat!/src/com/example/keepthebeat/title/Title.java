@@ -44,7 +44,8 @@ public class Title extends Activity {
 
 		exit.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View v) {				
+			public void onClick(View v) {
+				finish();
 			}
 		});
 	}
