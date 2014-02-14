@@ -3,8 +3,6 @@ package com.example.keepthebeat.game;
 import java.io.File;
 
 import com.example.keepthebeat.R;
-import com.example.keepthebeat.R.id;
-import com.example.keepthebeat.R.layout;
 import com.example.keepthebeat.game.engine.GameEngine;
 import com.example.keepthebeat.game.engine.SoundEngine;
 import com.example.keepthebeat.utils.Constants;
@@ -14,7 +12,6 @@ import com.example.keepthebeat.utils.Tools;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
