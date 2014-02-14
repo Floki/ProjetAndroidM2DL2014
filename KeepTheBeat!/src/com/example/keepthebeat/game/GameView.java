@@ -3,6 +3,7 @@ package com.example.keepthebeat.game;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.keepthebeat.game.engine.GameEngine;
 import com.example.keepthebeat.game.shape.GameShape;
 import com.example.keepthebeat.utils.Constants;
 import android.annotation.SuppressLint;
@@ -46,10 +47,10 @@ public class GameView extends SurfaceView {
 			}	
 		}
 		
-		if( Constants.score != 0 ) {
+		if( GameEngine.score != null ) {
 			Paint scorePaint = new Paint();
 			scorePaint.setColor(Color.WHITE);
-			canvas.drawText(""+Constants.score, 50, 50, scorePaint);
+			canvas.drawText(""+GameEngine.score.getScore(), 50, 50, scorePaint);
 		}
 	}	
 }

@@ -12,6 +12,7 @@ import java.util.TreeMap;
 import com.example.keepthebeat.game.Game;
 import com.example.keepthebeat.game.GameListener;
 import com.example.keepthebeat.game.GameNotifier;
+import com.example.keepthebeat.game.Score;
 import com.example.keepthebeat.game.shape.BeatShape;
 import com.example.keepthebeat.game.shape.GameShape;
 import com.example.keepthebeat.utils.Constants;
@@ -51,8 +52,13 @@ public class GameEngine extends GameNotifier implements GameListener{
 	private SortedMap<Long, Pair<Integer, Integer>> pattern;
 	private long lastComputedTime = 0;
 	
+	public static Score score;
+	
 	
 	public GameEngine() {
+		
+		score = new Score();
+		
 		Constants.score = 0;
 		userIsTouching = false;
 		lastAmplitude = 0;
@@ -162,28 +168,13 @@ public class GameEngine extends GameNotifier implements GameListener{
 				int distance = (int) Math.sqrt((actionner.getX() - userTouchX) * (actionner.getX() - userTouchX) 
 											 + (actionner.getY() - userTouchY) * (actionner.getY() - userTouchY));
 				if(distance < actionner.getHeight() / 2 && distance < actionner.getWidth()) {
-					if( actionner.isGoodMoment() || actionner.isBonus() ) { //a bonus is always a bonus because we are nice developers :)
-						Constants.score += actionner.getScore();
-						if( actionner.isBonus() ) {
-							actionner.setExplodingText( "BONUS + " + actionner.getScore() );
-						}
-						else {
-							actionner.setExplodingText( "+ " + actionner.getScore() );
-						}
-					}
-					else {
-						Constants.score -= actionner.getScore() * Constants.TOO_LATE_PERCENT/100;
-						actionner.setExplodingText( "- " + actionner.getScore() * Constants.TOO_LATE_PERCENT/100 );
-					}
+					score.computeScoreFromShape( actionner );
 					actionner.hideAndExplode();
 				}
 			}
 			if(!actionner.stillUse()) {
 				actionners.remove(actionner);
-				if( !actionner.isExploding() ) {
-					if( !actionner.isBonus()) //a bonus is definitively not a malus because we are nice developers !
-						Constants.score -= actionner.getScore() * Constants.MISS_PERCENT/100;
-				}
+				score.computeScoreFromShape( actionner );
 				actionner = null;
 			}
 		}

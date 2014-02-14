@@ -8,7 +8,7 @@ public class Constants {
 	// SCARY variables :D Feel free to use :)
 	// See : http://stackoverflow.com/questions/11774099/legal-identifiers-in-java
 	public static int ௹, _, $, ¢, £, ¤, ¥, ؋, ৲, ৳, ૱, ฿, ៛,   ₠, ₡, ₢, ₣, ₤, ₥, ₦, ₧, ₨, ₩, ₪,
-	₫, €, ₭, ₮, ₯, ₰, ₱, ₲, ₳, ₴;
+	₫,d, €, ₭,K, ₮,T, ₯, ₰, ₱, P, ₲, G,₳,A, ₴;
 	
 	
 	/*
