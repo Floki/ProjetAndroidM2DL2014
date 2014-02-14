@@ -73,7 +73,7 @@ public class Game extends Activity implements SurfaceHolder.Callback {
 		// On cr�� le moteur de son
 		soundEngine = new SoundEngine(Game.this);
 		// On cr�e le moteur du jeu
-		gameEngine = new GameEngine();
+		gameEngine = new GameEngine( soundEngine );
 		if(FileAccess.fileExist("test.vlf") && Constants.mode == Constants.Mode.PLAY) {
 			//gameEngine.setPatternFromString(FileAccess.readFileAsString(fileName));
 			gameEngine.loadPattern(fileName);
@@ -104,12 +104,12 @@ public class Game extends Activity implements SurfaceHolder.Callback {
 				return true;
 			}
 		});
-		gameThread = new GameThread(gameView, gameEngine, soundEngine);
+		gameThread = new GameThread(gameView, gameEngine);
 	}
 
 	@Override
 	public void onDestroy() {
-		soundEngine.onDestroy();
+		//soundEngine.onDestroy();//sound engine destroyed by gameThread.setRunning(false);
 		gameThread.setRunning(false);
 		gameThread.interrupt();
 		gameThread = null;

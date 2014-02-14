@@ -15,10 +15,10 @@ public class GameThread extends Thread {
 	private SoundEngine soundEngine;
 	private boolean running = false;
 
-	public GameThread(GameView view, GameEngine gameEngine, SoundEngine soundEngine) {
+	public GameThread(GameView view, GameEngine gameEngine) {
 		this.view = view;
 		this.gameEngine = gameEngine;
-		this.soundEngine = soundEngine;
+		this.soundEngine = gameEngine.getSoundEngine();
 	}
 
 	public void setRunning(boolean run) {
@@ -28,6 +28,7 @@ public class GameThread extends Thread {
 			start();
 		}
 		else {
+			soundEngine.onDestroy();
 			interrupt();
 		}
 	}

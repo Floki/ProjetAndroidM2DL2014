@@ -54,9 +54,10 @@ public class GameEngine extends GameNotifier implements GameListener{
 	
 	public static Score score;
 	
+	private SoundEngine soundEngine;
 	
-	public GameEngine() {
-		
+	public GameEngine( SoundEngine soundEngine ) {
+		this.soundEngine = soundEngine;
 		score = new Score();
 		
 		Constants.score = 0;
@@ -181,10 +182,10 @@ public class GameEngine extends GameNotifier implements GameListener{
 
 		Constants.pattern = actionners;
 		
-		long currentMusicTime = SoundEngine.getCurrentMusicTime() + (int) Constants.SHOW_TIMER / 10;
+		long currentMusicTime = soundEngine.getCurrentMusicTime() + (int) Constants.SHOW_TIMER / 10;
 		SortedMap<Long,Pair<Integer,Integer>> subMap = pattern.subMap(Math.min(lastComputedTime,currentMusicTime), currentMusicTime);
 		if(subMap.size() > 0) {
-			Tools.log(this, "SE Time : " + SoundEngine.getCurrentMusicTime() + " A Time : " + subMap.keySet().toArray()[0].toString());
+			Tools.log(this, "SE Time : " + soundEngine.getCurrentMusicTime() + " A Time : " + subMap.keySet().toArray()[0].toString());
 			addGameShapes(subMap.values());
 		}
 		lastComputedTime = currentMusicTime;
@@ -204,7 +205,7 @@ public class GameEngine extends GameNotifier implements GameListener{
 		}
 		Constants.pattern = actionners;
 
-		lastComputedTime = SoundEngine.getCurrentMusicTime();
+		lastComputedTime = soundEngine.getCurrentMusicTime();
 	}
 
 	private void addGameShapes(Collection<Pair<Integer, Integer>> values) {
@@ -223,7 +224,7 @@ public class GameEngine extends GameNotifier implements GameListener{
 	}
 
 	public void saveShape(float time, float x, float y) {
-		if(SoundEngine.getCurrentMusicTime() > lastComputedTime + 100 ||
+		if(soundEngine.getCurrentMusicTime() > lastComputedTime + 100 ||
 		Game.virtualXToScreenX(75) < Tools.distanceBetweenPosition(new Float(oldActionnerX).intValue(), 
 										 new Float(oldActionnerY).intValue(), 
 										 new Float(x).intValue(), 
@@ -243,5 +244,10 @@ public class GameEngine extends GameNotifier implements GameListener{
 	
 	public void loadPattern(String fileName) {
 		pattern = (SortedMap<Long,Pair<Integer, Integer>>)FileAccess.deserialize(fileName);
+	}
+
+	public SoundEngine getSoundEngine() {
+		// TODO Auto-generated method stub
+		return this.soundEngine;
 	}
 }
