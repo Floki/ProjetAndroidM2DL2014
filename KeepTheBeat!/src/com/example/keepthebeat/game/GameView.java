@@ -49,12 +49,16 @@ public class GameView extends SurfaceView {
 	}
 
 	protected void onDraw(Canvas canvas) {
+		if(canvas == null) {
+			return;
+		}
 		canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
 		if(Constants.pattern != null) {
 			List<GameShape> drawables = new ArrayList<GameShape>(Constants.pattern);
 			for(GameShape drawable : drawables) {
-				Tools.log(this, "Draw somethings here " + drawable.getPaint().getAlpha() + " " + drawable.getX() + " " + drawable.getY() );
-				drawable.draw(canvas);
+				if(drawable != null) {
+					drawable.draw(canvas);
+				}
 			}	
 		}
 		Paint scorePaint = new Paint();

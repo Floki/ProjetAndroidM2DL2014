@@ -27,7 +27,7 @@ public class GameThread extends Thread {
 			start();
 		}
 		else {
-			stop();
+			interrupt();
 		}
 	}
 

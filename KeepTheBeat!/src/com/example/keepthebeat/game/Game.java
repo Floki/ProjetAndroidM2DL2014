@@ -123,7 +123,11 @@ public class Game extends Activity implements SurfaceHolder.Callback {
 	@Override
 	public void onDestroy() {
 		soundEngine.onDestroy();
-		soundEngine = null;
+		gameThread.setRunning(false);
+		gameThread.interrupt();
+		gameThread = null;
+		gameEngine = null;
+		gameView = null;
 		super.onDestroy();
 	}
 	
