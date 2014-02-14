@@ -61,8 +61,11 @@ public class GameView extends SurfaceView {
 				}
 			}	
 		}
-		Paint scorePaint = new Paint();
-		scorePaint.setColor(Color.WHITE);
-		canvas.drawText(""+Constants.score, 50, 50, scorePaint);
+		
+		if( Constants.score != 0 ) {
+			Paint scorePaint = new Paint();
+			scorePaint.setColor(Color.WHITE);
+			canvas.drawText(""+Constants.score, 50, 50, scorePaint);
+		}
 	}	
 }
