@@ -5,7 +5,12 @@ import java.util.Collection;
 import com.example.keepthebeat.game.shape.GameShape;
 
 public class Constants {
-
+	// SCARY variables :D Feel free to use :)
+	// See : http://stackoverflow.com/questions/11774099/legal-identifiers-in-java
+	public static int ௹, _, $, ¢, £, ¤, ¥, ؋, ৲, ৳, ૱, ฿, ៛,   ₠, ₡, ₢, ₣, ₤, ₥, ₦, ₧, ₨, ₩, ₪,
+	₫, €, ₭, ₮, ₯, ₰, ₱, ₲, ₳, ₴;
+	
+	
 	/*
 	 * Show and hide timers for GameShapes
 	 */
