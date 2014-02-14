@@ -69,8 +69,8 @@ public class GameEngine extends GameNotifier implements GameListener{
 	}
 	
 	public void addGameShape( float x, float y) {
-		long showTimer = (Constants.mode == Constants.Mode.CREATE ? 1 : Constants.showTimer);
-		GameShape beatShape = new GameShape(showTimer,Constants.hideTimer);
+		long showTimer = (Constants.mode == Constants.Mode.CREATE ? 1 : Constants.SHOW_TIMER);
+		GameShape beatShape = new GameShape(showTimer,Constants.HIDE_TIMER);
 		beatShape.setPosition((int)x, (int)y);
 		
 		actionners.add(beatShape);
@@ -172,8 +172,8 @@ public class GameEngine extends GameNotifier implements GameListener{
 						}
 					}
 					else {
-						Constants.score -= actionner.getScore() * Constants.tooLatePercent/100;
-						actionner.setExplodingText( "- " + actionner.getScore() * Constants.tooLatePercent/100 );
+						Constants.score -= actionner.getScore() * Constants.TOO_LATE_PERCENT/100;
+						actionner.setExplodingText( "- " + actionner.getScore() * Constants.TOO_LATE_PERCENT/100 );
 					}
 					actionner.hideAndExplode();
 				}
@@ -182,7 +182,7 @@ public class GameEngine extends GameNotifier implements GameListener{
 				actionners.remove(actionner);
 				if( !actionner.isExploding() ) {
 					if( !actionner.isBonus()) //a bonus is definitively not a malus because we are nice developers !
-						Constants.score -= actionner.getScore() * Constants.missPercent/100;
+						Constants.score -= actionner.getScore() * Constants.MISS_PERCENT/100;
 				}
 				actionner = null;
 			}
@@ -190,7 +190,7 @@ public class GameEngine extends GameNotifier implements GameListener{
 
 		Constants.pattern = actionners;
 		
-		long currentMusicTime = SoundEngine.getCurrentMusicTime() + (int)Constants.showTimer/10;
+		long currentMusicTime = SoundEngine.getCurrentMusicTime() + (int) Constants.SHOW_TIMER / 10;
 		SortedMap<Long,Pair<Integer,Integer>> subMap = pattern.subMap(Math.min(lastComputedTime,currentMusicTime), currentMusicTime);
 		if(subMap.size() > 0) {
 			Tools.log(this, "SE Time : " + SoundEngine.getCurrentMusicTime() + " A Time : " + subMap.keySet().toArray()[0].toString());
