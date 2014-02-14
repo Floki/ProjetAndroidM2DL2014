@@ -2,13 +2,14 @@ package com.example.keepthebeat.game;
 
 import com.example.keepthebeat.game.engine.GameEngine;
 import com.example.keepthebeat.game.engine.SoundEngine;
+import com.example.keepthebeat.utils.Constants;
 import com.example.keepthebeat.utils.Tools;
 
 import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 
 public class GameThread extends Thread {
-	static final long FPS = 60;
+	
 	private GameView view;
 	private GameEngine gameEngine;
 	private SoundEngine soundEngine;
@@ -34,7 +35,7 @@ public class GameThread extends Thread {
 	@SuppressLint("WrongCall")
 	@Override
 	public void run() {
-		long ticksPS = 1000 / FPS;
+		long ticksPS = 1000 / Constants.FPS;
 		long startTime;
 		long sleepTime;
 		while (running) {

@@ -30,7 +30,7 @@ public class GameShape extends ShapeDrawable{
 	
 	public GameShape(long showTimer, long hideTimer) {
 		super(new OvalShape());
-		height = (Game.screenHeight * Constants.shapeSizePercent/100);
+		height = (Game.screenHeight * Constants.SHAPE_SIZE_PERCENT / 100);
 		width = height;
 		this.getPaint().setColor(Color.rgb(1,1,1));
 		this.setAlpha(0);
@@ -45,12 +45,12 @@ public class GameShape extends ShapeDrawable{
 		 * compute Shape's score
 		 */
 		//is this Shape a bonus ?
-		int chance = (int)((Math.random() * Constants.bonusChance) + 1);
-		if( chance == (int)((Math.random() * Constants.bonusChance) + 1) ) {
-			score = Constants.baseScore + Constants.baseScore * chance / Constants.bonusChance;
+		int chance = (int)((Math.random() * Constants.BONUS_CHANCE) + 1);
+		if( chance == (int)((Math.random() * Constants.BONUS_CHANCE) + 1) ) {
+			score = Constants.BASE_SCORE + Constants.BASE_SCORE * chance / Constants.BONUS_CHANCE *2;
 		}
 		else {
-			score = Constants.baseScore;
+			score = Constants.BASE_SCORE;
 		}
 
 	}
@@ -107,7 +107,7 @@ public class GameShape extends ShapeDrawable{
 					setPosition(getX(), getY());
 				}
 				else {
-					if( System.currentTimeMillis() < ( getTimeToFullDisplay() + ( ((int)hideTimer) * Constants.timerGoodPercent/100) ) ) {
+					if( System.currentTimeMillis() < ( getTimeToFullDisplay() + ( ((int)hideTimer) * Constants.TIME_GOOD_PERCENT/100) ) ) {
 						//is is good moment
 						if( !isBonus() ) {
 							this.getPaint().setColor(Color.rgb(0, 255, 0));
@@ -142,7 +142,7 @@ public class GameShape extends ShapeDrawable{
 				computeColor = 255 - absTimeDifference / timeForOneColorChange;
 				computeColor = Math.max(Math.min(computeColor, 255), 0);
 				
-				if( absTimeDifference < ( ((int)showTimer) * Constants.timerGoodPercent/100) ) {
+				if( absTimeDifference < ( ((int)showTimer) * Constants.TIME_GOOD_PERCENT/100) ) {
 					if( !isBonus() ) {
 						this.getPaint().setColor(Color.rgb(0, 255, 0));
 					}
@@ -201,7 +201,7 @@ public class GameShape extends ShapeDrawable{
 			paint.setColor( Color.rgb(255,215,0) );
 		}
 		paint.setAlpha( this.getPaint().getAlpha() );
-		int baseHeight = (Game.screenHeight * Constants.shapeSizePercent/100);
+		int baseHeight = (Game.screenHeight * Constants.SHAPE_SIZE_PERCENT / 100);
 		paint.setTextSize( baseHeight / 3 );
 		if( isExploding() ) {
 			canvas.drawText( explodeString, getX(), getY()-(int)(height/2), paint);
@@ -241,6 +241,6 @@ public class GameShape extends ShapeDrawable{
 	}
 	
 	public boolean isBonus() {
-		return getScore() > Constants.baseScore;
+		return getScore() > Constants.BASE_SCORE;
 	}
 }

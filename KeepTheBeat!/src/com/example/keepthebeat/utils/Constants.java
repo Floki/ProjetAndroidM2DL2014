@@ -5,26 +5,31 @@ import java.util.Collection;
 import com.example.keepthebeat.game.shape.GameShape;
 
 public class Constants {
-
+	// SCARY variables :D Feel free to use :)
+	// See : http://stackoverflow.com/questions/11774099/legal-identifiers-in-java
+	public static int ௹, _, $, ¢, £, ¤, ¥, ؋, ৲, ৳, ૱, ฿, ៛,   ₠, ₡, ₢, ₣, ₤, ₥, ₦, ₧, ₨, ₩, ₪,
+	₫,d, €, ₭,K, ₮,T, ₯, ₰, ₱, P, ₲, G,₳,A, ₴;
+	
+	
 	/*
 	 * Show and hide timers for GameShapes
 	 */
-	public static long showTimer = 1100;
-	public static long hideTimer = 1500;
+	public static final long SHOW_TIMER = 1100;
+	public static final long HIDE_TIMER = 1500;
 	
 	/*
 	 * Percents for GameShapes : shape size and timer percent while its the good moment to touch the shape
 	 */
-	public static int shapeSizePercent = 15;
-	public static int timerGoodPercent = 20;
+	public static final int SHAPE_SIZE_PERCENT = 15;
+	public static final int TIME_GOOD_PERCENT = 20;
 	
 	/*
 	 * Scoring constants
 	 */
-	public static int baseScore = 1000;
-	public static int bonusChance = 50; //bonusChance = X ; there is 1 chance on X that the Shape is a bonus !
-	public static int tooLatePercent = 10;
-	public static int missPercent = 50;
+	public static final int BASE_SCORE = 1000;
+	public static final int BONUS_CHANCE = 50; //bonusChance = X ; there is 1 chance on X that the Shape is a bonus !
+	public static final int TOO_LATE_PERCENT = 10; //pourcentage de perte sur le score du gameShape si on ne le touche pas dans le good moment
+	public static final int MISS_PERCENT = 50; //pourcentage de perte sur le score du gameShape si on ne le touche pas du tout ; aka il a disparu :o
 	
 	/**
 	 * Mode
@@ -38,5 +43,6 @@ public class Constants {
 	public static boolean running;
 	public static Collection<GameShape> pattern;
 	public static int score;
+	public static long FPS = 60;
 	
 }

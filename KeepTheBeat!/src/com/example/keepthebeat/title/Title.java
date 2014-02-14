@@ -20,9 +20,11 @@ public class Title extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.title);
-		Button start = (Button)findViewById(R.id.Start);
-		Button create = (Button)findViewById(R.id.Create);
-		Button exit = (Button)findViewById(R.id.exit);
+		Button start = (Button) findViewById(R.id.Start);
+		Button create = (Button) findViewById(R.id.Create);
+		Button scores = (Button) findViewById(R.id.Scores);
+		Button options = (Button) findViewById(R.id.Options);
+		Button exit = (Button) findViewById(R.id.exit);
 
 		start.setOnClickListener(new OnClickListener() {
 			@Override
@@ -41,10 +43,25 @@ public class Title extends Activity {
 				startActivityForResult(myIntent, 0);
 			}
 		});
+		
+		scores.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {	
+				// TODO : create score screen
+			}
+		});
+		
+		options.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {	
+				// TODO : create params screen
+			}
+		});
 
 		exit.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View v) {				
+			public void onClick(View v) {
+				finish();
 			}
 		});
 	}
