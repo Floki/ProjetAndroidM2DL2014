@@ -47,7 +47,7 @@ public class GameView extends SurfaceView {
 			}	
 		}
 		
-		if( GameEngine.score != null ) {
+		if( GameEngine.score != null && GameEngine.score.getScore() != 0 ) {
 			Paint scorePaint = new Paint();
 			scorePaint.setColor(Color.WHITE);
 			canvas.drawText(""+GameEngine.score.getScore(), 50, 50, scorePaint);
