@@ -47,7 +47,7 @@ public class GameShape extends ShapeDrawable{
 		//is this Shape a bonus ?
 		int chance = (int)((Math.random() * Constants.bonusChance) + 1);
 		if( chance == (int)((Math.random() * Constants.bonusChance) + 1) ) {
-			score = Constants.baseScore + Constants.baseScore * chance / Constants.bonusChance;
+			score = Constants.baseScore + Constants.baseScore * chance / Constants.bonusChance *2;
 		}
 		else {
 			score = Constants.baseScore;
