@@ -13,15 +13,12 @@ import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 public class Game extends Activity implements SurfaceHolder.Callback {
 
@@ -111,13 +108,6 @@ public class Game extends Activity implements SurfaceHolder.Callback {
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.layout.menu, menu);
-		return true;
-	}
-
-	@Override
 	public void onDestroy() {
 		soundEngine.onDestroy();
 		gameThread.setRunning(false);
@@ -127,25 +117,6 @@ public class Game extends Activity implements SurfaceHolder.Callback {
 		gameView = null;
 		super.onDestroy();
 	}
-	
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Doc menus : http://developer.android.com/guide/topics/ui/menus.html
-        switch (item.getItemId()) {
-          case R.id.option:
-              Toast.makeText(Game.this, "Option", Toast.LENGTH_SHORT).show();
-              return true;
-          case R.id.returnToTitle:
-              // TODO : return to main menu
-              return true; 
-          case R.id.stats:
-              // TODO : stats view
-              return true; 
-          case R.id.quit:
-              finish();
-              return true;
-        }
-        return false;
-    }
 	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
