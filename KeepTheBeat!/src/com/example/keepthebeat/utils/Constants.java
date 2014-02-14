@@ -23,8 +23,8 @@ public class Constants {
 	 */
 	public static int baseScore = 1000;
 	public static int bonusChance = 50; //bonusChance = X ; there is 1 chance on X that the Shape is a bonus !
-	public static int tooLatePercent = 10;
-	public static int missPercent = 50;
+	public static int tooLatePercent = 10; //pourcentage de perte sur le score du gameShape si on ne le touche pas dans le good moment
+	public static int missPercent = 50; //pourcentage de perte sur le score du gameShape si on ne le touche pas du tout ; aka il a disparu :o
 	
 	/**
 	 * Mode
@@ -38,5 +38,6 @@ public class Constants {
 	public static boolean running;
 	public static Collection<GameShape> pattern;
 	public static int score;
+	public static long FPS = 60;
 	
 }
