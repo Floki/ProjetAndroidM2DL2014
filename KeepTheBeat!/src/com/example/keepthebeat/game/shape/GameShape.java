@@ -27,11 +27,15 @@ public class GameShape extends ShapeDrawable{
 	
 	private boolean goodMoment = false;
 	private boolean exploding = false;
+	private int maxExplodeTic;
 	
 	public GameShape(long showTimer, long hideTimer) {
 		super(new OvalShape());
 		height = (Game.screenHeight * Constants.SHAPE_SIZE_PERCENT / 100);
 		width = height;
+		
+		maxExplodeTic = (Game.screenHeight/2 - height) * (Game.screenHeight/2 - height);
+		
 		this.getPaint().setColor(Color.rgb(1,1,1));
 		this.setAlpha(0);
 		setPosition(0,0);
@@ -102,7 +106,9 @@ public class GameShape extends ShapeDrawable{
 							this.getPaint().setColor(Color.rgb(255,215,0));
 						}
 					}
-					height = (Game.screenHeight * (255-computeColor)/600);
+					//height = (Game.screenHeight * Constants.SHAPE_SIZE_PERCENT / 100) + (Game.screenHeight * (255-computeColor)/600);
+					//height += height/3.5;
+					height = (int) ((Game.screenHeight * Constants.SHAPE_SIZE_PERCENT / 100) + Math.sqrt( ( ( 255 - computeColor ) * maxExplodeTic ) / 255 ));
 					width = height;
 					setPosition(getX(), getY());
 				}
@@ -130,7 +136,7 @@ public class GameShape extends ShapeDrawable{
 					}
 				}
 				this.setAlpha(computeColor);
-				if( computeColor == 0 ) {
+				if( System.currentTimeMillis() > getTimeToFullHide() ) {
 					this.getPaint().setAlpha(0);
 					stillUse = false;
 				}
