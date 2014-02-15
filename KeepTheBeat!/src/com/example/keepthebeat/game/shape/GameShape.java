@@ -34,7 +34,7 @@ public class GameShape extends ShapeDrawable{
 		height = (Game.screenHeight * Constants.SHAPE_SIZE_PERCENT / 100);
 		width = height;
 		
-		maxExplodeTic = (Game.screenHeight/2 - height) * (Game.screenHeight/2 - height);
+		maxExplodeTic = (int) ((Game.screenHeight/1.8) * (Game.screenHeight/1.8));
 		
 		this.getPaint().setColor(Color.rgb(1,1,1));
 		this.setAlpha(0);
@@ -108,9 +108,10 @@ public class GameShape extends ShapeDrawable{
 					}
 					//height = (Game.screenHeight * Constants.SHAPE_SIZE_PERCENT / 100) + (Game.screenHeight * (255-computeColor)/600);
 					//height += height/3.5;
-					height = (int) ((Game.screenHeight * Constants.SHAPE_SIZE_PERCENT / 100) + Math.sqrt( ( ( 255 - computeColor ) * maxExplodeTic ) / 255 ));
+					height = (int) ((Game.screenHeight * Constants.SHAPE_SIZE_PERCENT / 100)/4 + Math.sqrt( ( ( (255 - computeColor + 10 ) ) * maxExplodeTic ) / 255 ));
 					width = height;
 					setPosition(getX(), getY());
+					computeColor = computeColor / 2; //on explode, shape will be more rapidely transparent
 				}
 				else {
 					if( System.currentTimeMillis() < ( getTimeToFullDisplay() + ( ((int)hideTimer) * Constants.TIME_GOOD_PERCENT/100) ) ) {
@@ -176,7 +177,7 @@ public class GameShape extends ShapeDrawable{
 	
 	public void hideAndExplode() {
 		showTimer = 1;
-		hideTimer = 250;
+		hideTimer = 400;
 		currentTimeAtAdd = System.currentTimeMillis();
 		exploding  = true;
 	}
