@@ -27,6 +27,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.example.keepthebeat.game.Game"></activity>
+        <activity android:name="com.example.keepthebeat.music.MusicSelection"></activity>
     </application>
 
 </manifest>

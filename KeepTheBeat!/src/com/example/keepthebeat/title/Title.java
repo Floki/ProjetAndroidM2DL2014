@@ -2,6 +2,7 @@ package com.example.keepthebeat.title;
 
 import com.example.keepthebeat.R;
 import com.example.keepthebeat.game.Game;
+import com.example.keepthebeat.music.MusicSelection;
 import com.example.keepthebeat.utils.Constants;
 
 import android.app.Activity;
@@ -30,7 +31,7 @@ public class Title extends Activity {
 			@Override
 			public void onClick(View v) {	
 				Constants.mode = Constants.Mode.PLAY;
-				Intent myIntent = new Intent(Title.this, Game.class);
+				Intent myIntent = new Intent(Title.this, MusicSelection.class);
 				startActivityForResult(myIntent, 0);
 			}
 		});
@@ -39,7 +40,7 @@ public class Title extends Activity {
 			@Override
 			public void onClick(View v) {	
 				Constants.mode = Constants.Mode.CREATE;
-				Intent myIntent = new Intent(Title.this, Game.class);
+				Intent myIntent = new Intent(Title.this, MusicSelection.class);
 				startActivityForResult(myIntent, 0);
 			}
 		});

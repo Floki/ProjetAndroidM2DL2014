@@ -49,7 +49,15 @@ public class Game extends Activity implements SurfaceHolder.Callback {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		fileName = "test.vlf";
+		//Retrieve parameters
+		Bundle extras = getIntent().getExtras();
+		String[] fileInformation;
+		String filePath = null;
+		if (extras != null) {
+		    fileInformation = extras.getStringArray("SELECTED_MUSIC");
+		    fileName = fileInformation[0] + ".vlf";
+		    filePath = fileInformation[1];
+		}
 		File storage = getApplication().getExternalFilesDir(null);
 		FileAccess.keepTheBeatFolder = storage.getPath();
 		Tools.log("", "File : " + FileAccess.keepTheBeatFolder );
@@ -71,7 +79,12 @@ public class Game extends Activity implements SurfaceHolder.Callback {
 		gameView.getHolder().addCallback(this);
 
 		// On cr�� le moteur de son
-		soundEngine = new SoundEngine(Game.this);
+		if(filePath == null) {
+			soundEngine = new SoundEngine(Game.this);
+		}
+		else {
+			soundEngine = new SoundEngine(Game.this, filePath);
+		}
 		// On cr�e le moteur du jeu
 		gameEngine = new GameEngine( soundEngine );
 		if(FileAccess.fileExist("test.vlf") && Constants.mode == Constants.Mode.PLAY) {

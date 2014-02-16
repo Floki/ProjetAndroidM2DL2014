@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import com.example.keepthebeat.R;
 import com.example.keepthebeat.game.Game;
+import com.example.keepthebeat.title.Title;
 import com.example.keepthebeat.utils.Constants;
 import com.example.keepthebeat.utils.Tools;
 
@@ -55,6 +56,10 @@ public class MusicSelection extends Activity {
 	    	  public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 	    		  MusicFile file = (MusicFile) list.getItemAtPosition(position);
 	    		  Tools.log(file, file);
+	    		  Intent intent = new Intent(MusicSelection.this, Game.class);
+	    		  String[] fileInformation = {file.getTitle(),file.getPath()};
+	    		  intent.putExtra("SELECTED_MUSIC", fileInformation);
+	    		  startActivityForResult(intent, 0);
 	    	  }
 	    	});
 	}
