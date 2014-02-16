@@ -3,6 +3,7 @@ package com.example.keepthebeat.music;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.example.keepthebeat.CustomActivity;
 import com.example.keepthebeat.R;
 import com.example.keepthebeat.game.Game;
 import com.example.keepthebeat.title.Title;
@@ -16,6 +17,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,7 +29,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 
-public class MusicSelection extends Activity {
+public class MusicSelection extends CustomActivity {
 
 	private MusicFile fileSelected = null;
 
@@ -109,5 +111,14 @@ public class MusicSelection extends Activity {
 		});
 
 		alert.show();
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	    if (keyCode == KeyEvent.KEYCODE_BACK) {
+	        backToTitle();
+	    }
+
+	    return super.onKeyDown(keyCode, event);
 	}
 }

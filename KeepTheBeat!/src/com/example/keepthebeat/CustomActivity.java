@@ -10,24 +10,32 @@ import android.content.Intent;
 import android.widget.EditText;
 
 public class CustomActivity extends Activity {
-    public void backToTitle() {
-    	Intent myIntent = new Intent(CustomActivity.this, Title.class);
-    	startActivityForResult(myIntent, 0);
-    	onDestroy();
-    }
-    
-    public void backToTitle(String message) {
-    	AlertDialog.Builder alert = new AlertDialog.Builder(this);
+	public void backToTitle() {
+		Intent myIntent = new Intent(CustomActivity.this, Title.class);
+		startActivityForResult(myIntent, 0);
+		onDestroy();
+	}
 
-		alert.setTitle("Impossible de lancer le jeu");
-		alert.setMessage(message);
+	public void backToTitle(final String message) {
+		backToTitle("Retour a l'accueil", message);
+	}
+	
+	public void backToTitle(final String titre, final String message) {
+		this.runOnUiThread(new Runnable() {
+			public void run() {
+				AlertDialog.Builder alert = new AlertDialog.Builder(CustomActivity.this);
 
-		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) {
-				backToTitle();
+				alert.setTitle(titre);
+				alert.setMessage(message);
+
+				alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						backToTitle();
+					}
+				});
+
+				alert.show();
 			}
 		});
-
-		alert.show();
-    }
+	}
 }

@@ -1,5 +1,6 @@
 package com.example.keepthebeat.game;
 
+import com.example.keepthebeat.CustomActivity;
 import com.example.keepthebeat.game.engine.GameEngine;
 import com.example.keepthebeat.game.engine.SoundEngine;
 import com.example.keepthebeat.utils.Constants;
@@ -12,13 +13,15 @@ public class GameThread extends Thread {
 	
 	private GameView view;
 	private GameEngine gameEngine;
+	private CustomActivity gameActivity;
 	private SoundEngine soundEngine;
 	private boolean running = false;
 
-	public GameThread(GameView view, GameEngine gameEngine) {
+	public GameThread(CustomActivity activity, GameView view, GameEngine gameEngine) {
 		this.view = view;
 		this.gameEngine = gameEngine;
 		this.soundEngine = gameEngine.getSoundEngine();
+		this.gameActivity = activity;
 	}
 
 	public void setRunning(boolean run) {
@@ -40,6 +43,10 @@ public class GameThread extends Thread {
 		long startTime;
 		long sleepTime;
 		while (running) {
+			if(gameEngine.isEnded()) {
+				running = false;
+				gameActivity.backToTitle("Fin de partie" , "Score : " + gameEngine.getScore());
+			}
 			Canvas c = null;
 			gameEngine.engineLoop();
 			startTime = System.currentTimeMillis();

@@ -2,6 +2,7 @@ package com.example.keepthebeat.title;
 
 import java.io.File;
 
+import com.example.keepthebeat.CustomActivity;
 import com.example.keepthebeat.R;
 import com.example.keepthebeat.game.PatternSelection;
 import com.example.keepthebeat.music.MusicSelection;
@@ -19,7 +20,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 
-public class Title extends Activity {
+public class Title extends CustomActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
