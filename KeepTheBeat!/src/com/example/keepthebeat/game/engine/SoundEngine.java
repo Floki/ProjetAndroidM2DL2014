@@ -1,27 +1,19 @@
 package com.example.keepthebeat.game.engine;
 
 import java.io.IOException;
-
 import com.example.keepthebeat.R;
-import com.example.keepthebeat.R.raw;
-import com.example.keepthebeat.game.GameNotifier;
 import com.example.keepthebeat.utils.Tools;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
-//import android.media.audiofx.Equalizer;
-//import android.media.audiofx.Visualizer;
-//import android.media.audiofx.Visualizer.OnDataCaptureListener;
-import android.widget.TextView;
 
 /**
  * Contient tout le code pour la lecture et analyse de sons
  * @author Florian
  *
  */
-public class SoundEngine extends GameNotifier{
+public class SoundEngine {
 
 	// Lit la musique
 	private MediaPlayer mRealPlayer; 

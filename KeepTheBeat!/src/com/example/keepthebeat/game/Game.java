@@ -1,21 +1,7 @@
 package com.example.keepthebeat.game;
 
-import java.io.File;
-
-import com.example.keepthebeat.CustomActivity;
-import com.example.keepthebeat.R;
-import com.example.keepthebeat.game.engine.GameEngine;
-import com.example.keepthebeat.game.engine.SoundEngine;
-import com.example.keepthebeat.music.MusicSelection;
-import com.example.keepthebeat.title.Title;
-import com.example.keepthebeat.utils.Constants;
-import com.example.keepthebeat.utils.FileAccess;
-import com.example.keepthebeat.utils.Tools;
-
-import android.os.Bundle;
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Intent;
+import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -23,6 +9,14 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager;
+
+import com.example.keepthebeat.CustomActivity;
+import com.example.keepthebeat.R;
+import com.example.keepthebeat.game.engine.GameEngine;
+import com.example.keepthebeat.game.engine.SoundEngine;
+import com.example.keepthebeat.utils.Constants;
+import com.example.keepthebeat.utils.FileAccess;
+import com.example.keepthebeat.utils.Tools;
 
 public class Game extends CustomActivity implements SurfaceHolder.Callback {
 
@@ -61,6 +55,7 @@ public class Game extends CustomActivity implements SurfaceHolder.Callback {
 		String patternName = null;
 		if (extras != null) {
 			Tools.log(this, "In extra if");
+			// In creation mode, retrive music information
 			if(extras.getStringArray("SELECTED_MUSIC") != null && Constants.mode == Constants.Mode.CREATE) {
 				patternInformation = extras.getStringArray("SELECTED_MUSIC");
 				// Music name for folder
@@ -74,6 +69,7 @@ public class Game extends CustomActivity implements SurfaceHolder.Callback {
 				patternFilePath = FileAccess.computeFullFilePathFromPathAndName(Pattern.patternPath(), patternFolder);
 				patternFilePath = FileAccess.computeFullFilePathFromPathAndName(patternFilePath, patternName);
 			}
+			// In play mode, retrieve pattern information
 			else if(extras.getString("SELECTED_PATTERN") != null && Constants.mode == Constants.Mode.PLAY) {
 				Tools.log(this, "In SELECTED_PATTERN");
 				// Music name for folder
@@ -122,10 +118,7 @@ public class Game extends CustomActivity implements SurfaceHolder.Callback {
 			gameEngine.loadPattern(patternFilePath);
 		}
 		else if(Constants.mode == Constants.Mode.CREATE) {
-			gameEngine.writeInPattern(patternFilePath);
-		}
-		else {
-			backToTitle("Impossible de récupérer la piste");
+			backToTitle("Impossible de récupérer le mp3.");
 		}
 		
 		// On envoie la position touché par l'utilisateur
@@ -141,7 +134,6 @@ public class Game extends CustomActivity implements SurfaceHolder.Callback {
 					gameEngine.setUserTouchPosition(event.getX(), event.getY());
 					if(Constants.mode == Constants.Mode.CREATE) {
 						gameEngine.saveShape(soundEngine.getCurrentMusicTime() , event.getX(), event.getY());
-//						FileAccess.writeToFile(fileName, virtualX + " " + virtualY + " " + soundEngine.getCurrentMusicTime() + "\n");
 					}
 					break;
 				case MotionEvent.ACTION_UP:
@@ -159,7 +151,6 @@ public class Game extends CustomActivity implements SurfaceHolder.Callback {
 
 	@Override
 	public void onDestroy() {
-		//soundEngine.onDestroy();//sound engine destroyed by gameThread.setRunning(false);
 		gameThread.setRunning(false);
 		gameThread.interrupt();
 		gameThread = null;
