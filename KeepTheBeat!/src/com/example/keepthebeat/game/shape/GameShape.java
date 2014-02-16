@@ -6,6 +6,7 @@ import com.example.keepthebeat.utils.Constants;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Paint.Align;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.graphics.drawable.shapes.Shape;
@@ -210,6 +211,7 @@ public class GameShape extends ShapeDrawable{
 		paint.setAlpha( this.getPaint().getAlpha() );
 		int baseHeight = (Game.screenHeight * Constants.SHAPE_SIZE_PERCENT / 100);
 		paint.setTextSize( baseHeight / 3 );
+		paint.setTextAlign( Align.CENTER );
 		if( isExploding() ) {
 			canvas.drawText( explodeString, getX(), getY()-(int)(height/2), paint);
 		}
