@@ -49,8 +49,9 @@ public class GameView extends SurfaceView {
 		
 		if( GameEngine.score != null && GameEngine.score.getScore() != 0 ) {
 			Paint scorePaint = new Paint();
+			scorePaint.setTextSize(Game.virtualXToScreenX(50));
 			scorePaint.setColor(Color.WHITE);
-			canvas.drawText(""+GameEngine.score.getScore(), 50, 50, scorePaint);
+			canvas.drawText(""+GameEngine.score.getScore(), Game.virtualXToScreenX(50), Game.virtualYToScreenY(50), scorePaint);
 		}
 	}	
 }
