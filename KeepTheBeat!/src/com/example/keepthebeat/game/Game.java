@@ -70,7 +70,7 @@ public class Game extends CustomActivity implements SurfaceHolder.Callback {
 			    musicFilePath = patternInformation[1];
 			    // Pattern file name
 			    patternName = patternInformation[2] + ".vlf";
-			    Tools.log(this, patternFilePath);
+			    Tools.log(this, musicFilePath);
 				// On retrouve le chemin du fichier pattern, la méthode utilisée permet de se foutre si il y a un / en fin de chemin
 				patternFilePath = FileAccess.computeFullFilePathFromPathAndName(Pattern.patternPath(), patternFolder);
 				patternFilePath = FileAccess.computeFullFilePathFromPathAndName(patternFilePath, patternName);
@@ -131,13 +131,14 @@ public class Game extends CustomActivity implements SurfaceHolder.Callback {
 		// On crée le moteur du jeu
 		gameEngine = new GameEngine( soundEngine );
 		Tools.log(this, patternFilePath);
-		if(FileAccess.fileExist(patternFilePath) && Constants.mode == Constants.Mode.PLAY) {
+		if(Constants.mode == Constants.Mode.PLAY && FileAccess.fileExist(patternFilePath)) {
 			Tools.log(this, "File Exist");
 			gameEngine.loadPattern(patternFilePath);
 		}
 		else if(patternFilePath.equals("default")) {
 			gameEngine.loadPattern("default");
 		}
+
 		
 		// On envoie la position touché par l'utilisateur
 		gameView.setOnTouchListener(new OnTouchListener() {

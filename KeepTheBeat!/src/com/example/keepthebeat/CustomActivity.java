@@ -19,7 +19,7 @@ public class CustomActivity extends Activity {
     public void backToTitle(String message) {
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-		alert.setTitle("Impossible de lancé le jeu");
+		alert.setTitle("Impossible de lancer le jeu");
 		alert.setMessage(message);
 
 		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
