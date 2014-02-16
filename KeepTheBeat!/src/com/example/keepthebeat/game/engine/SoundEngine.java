@@ -24,12 +24,17 @@ public class SoundEngine {
 	// Lecture en cour
 	private boolean isPlaying;
 	
+	// Volume
+	private float volume;
+	
 	@SuppressLint("NewApi")
 	public SoundEngine(Context context) {
 		// Initialisation des lecteur 
 		int mediaToOpen = 0;
 		mediaToOpen = R.raw.defaultsound;
 		mRealPlayer = MediaPlayer.create(context, mediaToOpen);
+		volume = 1;
+		mRealPlayer.setVolume(volume, volume);
 	}
 	
 	@SuppressLint("NewApi")
@@ -38,6 +43,8 @@ public class SoundEngine {
 		Uri mediaToOpen = Uri.parse(filePath);
 		mRealPlayer = MediaPlayer.create(context, mediaToOpen);
 		mediaPath = filePath;
+		volume = 1;
+		mRealPlayer.setVolume(volume, volume);
 	}
 	
 	/**
@@ -81,6 +88,8 @@ public class SoundEngine {
 			mRealPlayer.setDataSource(mediaPath);
 			this.mediaPath = mediaPath;
 			mRealPlayer.prepare();
+			volume = 1;
+			mRealPlayer.setVolume(volume, volume);
 		} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -103,5 +112,14 @@ public class SoundEngine {
 	
 	public String getMediaFolder() {
 		return mediaPath.substring(0, mediaPath.lastIndexOf("/"));
+	}
+
+	public void setVolume(float volume) {
+		this.volume = Math.max(Math.min(1, volume),0);
+		mRealPlayer.setVolume(volume, volume);
+	}
+	
+	public float getVolume() {
+		return this.volume;
 	}
 }

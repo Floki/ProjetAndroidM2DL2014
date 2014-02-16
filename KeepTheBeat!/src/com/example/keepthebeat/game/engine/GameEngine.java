@@ -7,7 +7,9 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import android.R;
+import android.app.Activity;
 
+import com.example.keepthebeat.CustomActivity;
 import com.example.keepthebeat.game.Game;
 import com.example.keepthebeat.game.Pattern;
 import com.example.keepthebeat.game.Score;
@@ -40,6 +42,11 @@ public class GameEngine {
 	public static Score score;
 	// Moteur de lecture de musique
 	private SoundEngine soundEngine;
+	// If the game is going to end
+	private boolean endLoop;
+	private boolean reallyEnd;
+	// Game activity
+	private CustomActivity gameActivity;
 	
 	/**
 	 * Constructeur
@@ -53,6 +60,7 @@ public class GameEngine {
 		gameWidth = Game.screenWidth;
 		gameHeight = Game.screenHeight;
 		actionners = new ArrayList<GameShape>();
+		endLoop = false;
 	}
 	
 	/**
@@ -68,11 +76,19 @@ public class GameEngine {
 	}
 	
 	public void engineLoop() {
-		if(Constants.mode == Constants.Mode.PLAY) {
-			playLoop();
+		if(endLoop) {
+			soundEngine.setVolume((float) (soundEngine.getVolume() - 0.01));
+			if(soundEngine.getVolume() <= 0.01) {
+				reallyEnd = true;
+			}
 		}
-		else if(Constants.mode == Constants.Mode.CREATE) {
-			createLoop();
+		else {
+			if(Constants.mode == Constants.Mode.PLAY) {
+				playLoop();
+			}
+			else if(Constants.mode == Constants.Mode.CREATE) {
+				createLoop();
+			}
 		}
 	}
 	
@@ -109,6 +125,9 @@ public class GameEngine {
 		}
 		lastComputedTime = currentMusicTime;
 		patternMap = new TreeMap<Long, Pair<Integer, Integer>>(patternMap.tailMap(currentMusicTime));
+		if(patternMap.size() == 0 && actionners.size() == 0) {
+			endLoop = true;
+		}
 	}
 	
 	/**
@@ -223,5 +242,13 @@ public class GameEngine {
 
 	public SoundEngine getSoundEngine() {
 		return this.soundEngine;
+	}
+	
+	public boolean isEnded() {
+		return reallyEnd;
+	}
+
+	public int getScore() {
+		return score.getScore();
 	}
 }

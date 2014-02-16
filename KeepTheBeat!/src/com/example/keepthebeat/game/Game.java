@@ -165,7 +165,7 @@ public class Game extends CustomActivity implements SurfaceHolder.Callback {
 				return true;
 			}
 		});
-		gameThread = new GameThread(gameView, gameEngine);
+		gameThread = new GameThread(this, gameView, gameEngine);
 	}
 
 	@Override
