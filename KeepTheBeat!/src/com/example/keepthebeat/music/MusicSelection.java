@@ -57,37 +57,6 @@ public class MusicSelection extends Activity {
 	    		  Tools.log(file, file);
 	    	  }
 	    	});
-
-	  //  ListView list = (ListView)findViewById(R.id.musicList);
-//		list.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,songs));
-
-//		Button start = (Button)findViewById(R.id.Start);
-//		Button create = (Button)findViewById(R.id.Create);
-//		Button exit = (Button)findViewById(R.id.exit);
-//
-//		start.setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View v) {	
-//				Constants.mode = Constants.Mode.PLAY;
-//				Intent myIntent = new Intent(Title.this, Game.class);
-//				startActivityForResult(myIntent, 0);
-//			}
-//		});
-//
-//		create.setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View v) {	
-//				Constants.mode = Constants.Mode.CREATE;
-//				Intent myIntent = new Intent(Title.this, Game.class);
-//				startActivityForResult(myIntent, 0);
-//			}
-//		});
-//
-//		exit.setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View v) {				
-//			}
-//		});
 	}
 
 	@Override
