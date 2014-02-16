@@ -5,6 +5,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
+
+import android.R;
+
 import com.example.keepthebeat.game.Game;
 import com.example.keepthebeat.game.Pattern;
 import com.example.keepthebeat.game.Score;
@@ -114,12 +117,14 @@ public class GameEngine {
 	private void createLoop() {
 		List<GameShape> actionnersTmp = new ArrayList<GameShape>(actionners);
 		for(GameShape actionner : actionnersTmp) {
-			if(!actionner.stillUse()) {
-				actionners.remove(actionner);
-				actionner = null;
-			}
-			else {
-				actionner.hideMore();
+			if(actionner != null) {
+				if(!actionner.stillUse()) {
+					actionners.remove(actionner);
+					actionner = null;
+				}
+				else {
+					actionner.hideMore();
+				}
 			}
 		}
 		Constants.pattern = actionners;
@@ -199,13 +204,21 @@ public class GameEngine {
 	 */
 	public void loadPattern(String fileName) {
 		// Retrieve information
-		pattern = (Pattern)FileAccess.deserialize(fileName);
+		if(!fileName.equals("default")) {
+			pattern = (Pattern)FileAccess.deserialize(fileName);
+		}
+		else {
+			Tools.log(this,  "Load default pattern");
+			pattern = Constants.defaultPattern;
+		}
 		Tools.log(pattern,pattern);
 		// Retrieve pattern map
 		patternMap = pattern.getPattern();
 		// Reload music
-		soundEngine.changeMediaPlayed(pattern.getMusicFile().getPath());
-		soundEngine.playIfNeedToPlay(true);
+		if(!fileName.equals("default")) {
+			soundEngine.changeMediaPlayed(pattern.getMusicFile().getPath());
+			soundEngine.playIfNeedToPlay(true);
+		}
 	}
 
 	public SoundEngine getSoundEngine() {

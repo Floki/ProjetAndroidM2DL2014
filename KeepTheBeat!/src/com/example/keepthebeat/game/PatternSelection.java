@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.example.keepthebeat.CustomActivity;
 import com.example.keepthebeat.R;
 import com.example.keepthebeat.game.Game;
 import com.example.keepthebeat.title.Title;
@@ -29,7 +30,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 
-public class PatternSelection extends Activity {
+public class PatternSelection extends CustomActivity {
 
 	private enum SELECTION {FOLDER, PATTERN};
 	private SELECTION state;
@@ -51,6 +52,9 @@ public class PatternSelection extends Activity {
 		ArrayList<String> listOfFileAndPath = new ArrayList<String>();
 		File dir = new File(pathToExplore);
 		File file[] = dir.listFiles();  
+		if (state == SELECTION.FOLDER) {
+			listOfFileAndPath.add("I Wonder If God Was Sleeping");
+		}
 		for (File f : file)
 		{
 			if (f.isDirectory() && state == SELECTION.FOLDER) {
@@ -70,6 +74,14 @@ public class PatternSelection extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 				if(state == SELECTION.FOLDER) {
+					// Play the default pattern of the application
+					if(position == 0) {
+						Intent intent = new Intent(PatternSelection.this, Game.class);
+						Tools.log(this, "Play default pattern");
+						intent.putExtra("SELECTED_PATTERN", "default");
+						startActivityForResult(intent, 0);
+						return;
+					}
 					String folderName = (String) list.getItemAtPosition(position);
 					pathToExplore = FileAccess.computeFullFilePathFromPathAndName(pathToExplore, folderName + "/");
 					state = SELECTION.PATTERN;
@@ -94,14 +106,12 @@ public class PatternSelection extends Activity {
 	    	if(state == SELECTION.PATTERN) {
 	    		state = SELECTION.FOLDER;
 	    		refreshList();
+	    		return true;
 	        }
 	    	else {
-	    		Intent myIntent = new Intent(PatternSelection.this, Title.class);
-	    		startActivityForResult(myIntent, 0);
-	    		onDestroy();
+	    		backToTitle();
 	    	}
 	    }
-
 	    return super.onKeyDown(keyCode, event);
 	}
 	

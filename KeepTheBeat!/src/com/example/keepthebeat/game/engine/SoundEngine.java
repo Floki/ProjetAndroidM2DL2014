@@ -28,7 +28,7 @@ public class SoundEngine {
 	public SoundEngine(Context context) {
 		// Initialisation des lecteur 
 		int mediaToOpen = 0;
-		mediaToOpen = R.raw.testsound1;
+		mediaToOpen = R.raw.defaultsound;
 		mRealPlayer = MediaPlayer.create(context, mediaToOpen);
 	}
 	

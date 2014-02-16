@@ -1,6 +1,12 @@
 package com.example.keepthebeat.game;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.StreamCorruptedException;
+
 import android.annotation.SuppressLint;
+import android.content.res.Resources.NotFoundException;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -83,9 +89,21 @@ public class Game extends CustomActivity implements SurfaceHolder.Callback {
 			backToTitle("Erreur lors du lancement de la partie.");
 		}
 		Tools.log(this, Constants.mode + " " + patternFilePath);
-		if(Constants.mode == Constants.Mode.CREATE) {
+		if(Constants.mode == Constants.Mode.CREATE && !patternFilePath.equals("default")) {
 			// Delete file pattern
 			FileAccess.deleteFile(patternFilePath);		
+		}
+		else if(patternFilePath.equals("default")) {
+			
+			try {
+				ObjectInputStream objectIn = null;
+				objectIn = new ObjectInputStream(Game.this.getResources().openRawResource(R.raw.defaultpattern));
+				Constants.defaultPattern = (Pattern) objectIn.readObject();
+	
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		// Full Screen
@@ -117,8 +135,8 @@ public class Game extends CustomActivity implements SurfaceHolder.Callback {
 			Tools.log(this, "File Exist");
 			gameEngine.loadPattern(patternFilePath);
 		}
-		else if(Constants.mode == Constants.Mode.CREATE) {
-			backToTitle("Impossible de récupérer le mp3.");
+		else if(patternFilePath.equals("default")) {
+			gameEngine.loadPattern("default");
 		}
 		
 		// On envoie la position touché par l'utilisateur
@@ -151,8 +169,10 @@ public class Game extends CustomActivity implements SurfaceHolder.Callback {
 
 	@Override
 	public void onDestroy() {
-		gameThread.setRunning(false);
-		gameThread.interrupt();
+		if(gameThread != null) {
+			gameThread.setRunning(false);
+			gameThread.interrupt();
+		}
 		gameThread = null;
 		gameEngine = null;
 		gameView = null;
