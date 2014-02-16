@@ -1,5 +1,6 @@
 package com.example.keepthebeat.parameters;
 
+import com.example.keepthebeat.CustomActivity;
 import com.example.keepthebeat.R;
 import com.example.keepthebeat.utils.Constants;
 import com.example.keepthebeat.utils.FileAccess;
@@ -7,6 +8,7 @@ import com.example.keepthebeat.utils.Tools;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
@@ -14,7 +16,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.RadioButton;
 
 
-public class Parameters extends Activity {
+public class Parameters extends CustomActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -87,5 +89,14 @@ public class Parameters extends Activity {
 
 	public boolean onOptionsItemSelected(MenuItem item) {
 		return false;
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	    if (keyCode == KeyEvent.KEYCODE_BACK) {
+	        backToTitle();
+	    }
+
+	    return super.onKeyDown(keyCode, event);
 	}
 }
