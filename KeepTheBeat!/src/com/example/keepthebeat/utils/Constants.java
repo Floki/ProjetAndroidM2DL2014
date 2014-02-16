@@ -30,6 +30,11 @@ public class Constants {
 	public static final int BONUS_CHANCE = 50; //bonusChance = X ; there is 1 chance on X that the Shape is a bonus !
 	public static final int TOO_LATE_PERCENT = 10; //pourcentage de perte sur le score du gameShape si on ne le touche pas dans le good moment
 	public static final int MISS_PERCENT = 50; //pourcentage de perte sur le score du gameShape si on ne le touche pas du tout ; aka il a disparu :o
+
+
+	public static final String EASY = "EASY";
+	public static final String NORMAL = "NORMAL";
+	public static final String HARD = "HARD";
 	
 	/**
 	 * Mode
@@ -49,5 +54,5 @@ public class Constants {
 	/*
 	 *  Game folder
 	 */
-	public static String keepTheBeatFolder = "/sdcard/KeepTheBeat";
+	public static String keepTheBeatFolder = "/sdcard/KeepTheBeat"; //should not be defined here, because of it's computed by Title.onCreate() - so it is hard to know real value of it... -_-' 
 }
