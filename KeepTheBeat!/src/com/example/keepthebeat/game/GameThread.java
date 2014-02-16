@@ -47,13 +47,13 @@ public class GameThread extends Thread {
 				c = view.getHolder().lockCanvas();
 				if(c != null) {
 					synchronized (view.getHolder()) {
-						Tools.log(this, "Draw");
+						//Tools.log(this, "Draw");
 						view.onDraw(c);
 					}
 				}
 			} finally {
 				if (c != null) {
-					Tools.log(this, "Free the canvas");
+					//Tools.log(this, "Free the canvas");
 					view.getHolder().unlockCanvasAndPost(c);
 				}
 			}

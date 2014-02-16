@@ -1,8 +1,11 @@
 package com.example.keepthebeat.game.engine;
 
+import java.io.IOException;
+
 import com.example.keepthebeat.R;
 import com.example.keepthebeat.R.raw;
 import com.example.keepthebeat.game.GameNotifier;
+import com.example.keepthebeat.utils.Tools;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -22,6 +25,9 @@ public class SoundEngine extends GameNotifier{
 
 	// Lit la musique
 	private MediaPlayer mRealPlayer; 
+	
+	// Chemin vers le media
+	private String mediaPath;
 
 	// Lecture en cour
 	private boolean isPlaying;
@@ -39,6 +45,7 @@ public class SoundEngine extends GameNotifier{
 		// Initialisation des lecteur 
 		Uri mediaToOpen = Uri.parse(filePath);
 		mRealPlayer = MediaPlayer.create(context, mediaToOpen);
+		mediaPath = filePath;
 	}
 	
 	/**
@@ -71,7 +78,38 @@ public class SoundEngine extends GameNotifier{
 	}
 
 	public int getCurrentMusicTime() {
-		System.err.println( mRealPlayer.getCurrentPosition() );
 		return mRealPlayer.getCurrentPosition()/10;
+	}
+	
+	public void changeMediaPlayed(String mediaPath) {
+		try {
+			Tools.log(this, "Want to play " + mediaPath);
+			mRealPlayer.stop();
+			mRealPlayer.reset();
+			mRealPlayer.setDataSource(mediaPath);
+			this.mediaPath = mediaPath;
+			mRealPlayer.prepare();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public String getMediaFileName() {
+		return mediaPath.substring(mediaPath.lastIndexOf("/") + 1);
+	}
+	
+	public String getMediaPath() {
+		return mediaPath;
+	}
+	
+	public String getMediaFolder() {
+		return mediaPath.substring(0, mediaPath.lastIndexOf("/"));
 	}
 }

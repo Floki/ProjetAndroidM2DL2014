@@ -1,11 +1,17 @@
 package com.example.keepthebeat.title;
 
+import java.io.File;
+
 import com.example.keepthebeat.R;
 import com.example.keepthebeat.game.Game;
+import com.example.keepthebeat.game.Pattern;
+import com.example.keepthebeat.game.PatternSelection;
 import com.example.keepthebeat.music.MusicSelection;
 import com.example.keepthebeat.utils.Constants;
+import com.example.keepthebeat.utils.Tools;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,10 +22,15 @@ import android.widget.Button;
 
 
 public class Title extends Activity {
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		// Compute game path
+		File storage = getApplication().getExternalFilesDir(null);
+		Constants.keepTheBeatFolder = storage.getPath();
+		Tools.log("", "File : " + Constants.keepTheBeatFolder );
+		
 		setContentView(R.layout.title);
 		Button start = (Button) findViewById(R.id.Start);
 		Button create = (Button) findViewById(R.id.Create);
@@ -31,7 +42,7 @@ public class Title extends Activity {
 			@Override
 			public void onClick(View v) {	
 				Constants.mode = Constants.Mode.PLAY;
-				Intent myIntent = new Intent(Title.this, MusicSelection.class);
+				Intent myIntent = new Intent(Title.this, PatternSelection.class);
 				startActivityForResult(myIntent, 0);
 			}
 		});

@@ -27,9 +27,13 @@ import android.widget.Toast;
 public class FileAccess {
 	
 	public static void writeToFile(String filePath, String fileName, String data) {
+	    writeToFile(computeFullFilePathFromPathAndName(filePath, fileName), data);
+	}
+	
+	public static void writeToFile(String filePath, String data) {
 	    try {
 	    	createPath(filePath);
-	    	File outFile = new File(computeFullFilePathFromPathAndName(filePath, fileName));
+	    	File outFile = new File(filePath);
 	    	outFile.createNewFile();
 	        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(outFile, true));
 	        outputStreamWriter.append(data);
@@ -41,8 +45,12 @@ public class FileAccess {
 	}
 
 	public static String readFileAsString(String filePath ,String fileName) {
+	    return readFileAsString(computeFullFilePathFromPathAndName(filePath, fileName));
+	}
+	
+	public static String readFileAsString(String filePath) {
 	    String result = "";
-	    File file = new File(computeFullFilePathFromPathAndName(filePath, fileName));
+	    File file = new File(filePath);
 	    if ( file.exists() ) {
 	        FileInputStream fis = null;
 	        Tools.log("", "File read : " + file.getAbsolutePath());
@@ -68,19 +76,34 @@ public class FileAccess {
 	}
 	
 	public static void deleteFile(String filePath, String fileName) {
-	    File file = new File(computeFullFilePathFromPathAndName(filePath, fileName));
+	    deleteFile(computeFullFilePathFromPathAndName(filePath, fileName));
+	}
+	
+	public static void deleteFile(String filePath) {
+	    File file = new File(filePath);
 	    file.delete();
 	}
 	
 	public static boolean fileExist(String filePath, String fileName) {
-	    File file = new File(computeFullFilePathFromPathAndName(filePath, fileName));
+	    return fileExist(computeFullFilePathFromPathAndName(filePath, fileName));
+	}
+	
+	public static boolean fileExist(String filePath) {
+	    File file = new File(filePath);
+	    if(!file.exists()) {
+	    	Tools.log("", "File " + filePath + " doesn't exist!");
+	    }
 	    return file.exists();
 	}
 	
 	public static void serialize(Object serializable, String filePath, String fileName) {
+		serialize(serializable, computeFullFilePathFromPathAndName(filePath, fileName));
+	}
+	
+	public static void serialize(Object serializable, String filePath) {
 		try{
 			createPath(filePath);
-			FileOutputStream fileOut = new FileOutputStream(computeFullFilePathFromPathAndName(filePath, fileName));
+			FileOutputStream fileOut = new FileOutputStream(filePath);
 			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
 			objectOut.writeObject(serializable);
 			objectOut.close();
@@ -91,8 +114,12 @@ public class FileAccess {
 	}
 
 	public static Object deserialize(String filePath, String fileName) {
+		return deserialize(computeFullFilePathFromPathAndName(filePath, fileName));
+	}
+	
+	public static Object deserialize(String filePath) {
 		try{
-			FileInputStream fileIn = new FileInputStream(computeFullFilePathFromPathAndName(filePath, fileName));
+			FileInputStream fileIn = new FileInputStream(filePath);
 			ObjectInputStream objectIn = new ObjectInputStream(fileIn);
 			Object object = objectIn.readObject();
 			objectIn.close();
@@ -120,7 +147,7 @@ public class FileAccess {
 	}
 	
 	public static void createPath(String filePath) {
-		File patternFolder = new File(filePath);
+		File patternFolder = new File(filePath.substring(0, filePath.lastIndexOf("/")));
     	if(!patternFolder.exists()) {
     		patternFolder.mkdirs();
     	}

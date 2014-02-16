@@ -1,6 +1,11 @@
 package com.example.keepthebeat.music;
 
-public class MusicFile {
+import java.io.Serializable;
+
+public class MusicFile implements Serializable{
+
+	private static final long serialVersionUID = -4760518839313198571L;
+
 	public String getTitle() {
 		return title;
 	}

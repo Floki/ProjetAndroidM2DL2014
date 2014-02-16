@@ -45,4 +45,9 @@ public class Constants {
 	public static int score;
 	public static long FPS = 60;
 	
+	
+	/*
+	 *  Game folder
+	 */
+	public static String keepTheBeatFolder = "/sdcard/KeepTheBeat";
 }

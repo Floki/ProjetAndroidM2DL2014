@@ -12,9 +12,11 @@ import java.util.TreeMap;
 import com.example.keepthebeat.game.Game;
 import com.example.keepthebeat.game.GameListener;
 import com.example.keepthebeat.game.GameNotifier;
+import com.example.keepthebeat.game.Pattern;
 import com.example.keepthebeat.game.Score;
 import com.example.keepthebeat.game.shape.BeatShape;
 import com.example.keepthebeat.game.shape.GameShape;
+import com.example.keepthebeat.music.MusicFile;
 import com.example.keepthebeat.utils.Constants;
 import com.example.keepthebeat.utils.FileAccess;
 import com.example.keepthebeat.utils.Pair;
@@ -49,7 +51,8 @@ public class GameEngine extends GameNotifier implements GameListener{
 	// Liste des actionneurs � afficher
 	private List<GameShape> actionners;
 	// Pattern line
-	private SortedMap<Long, Pair<Integer, Integer>> pattern;
+	private SortedMap<Long, Pair<Integer, Integer>> patternMap;
+	private Pattern pattern;
 	private long lastComputedTime = 0;
 	
 	public static Score score;
@@ -64,7 +67,7 @@ public class GameEngine extends GameNotifier implements GameListener{
 		userIsTouching = false;
 		lastAmplitude = 0;
 		maxSongAmplitude = 0;
-		pattern = new TreeMap<Long,Pair<Integer, Integer>>();
+		patternMap = new TreeMap<Long,Pair<Integer, Integer>>();
 		gameWidth = Game.screenWidth;
 		gameHeight = Game.screenHeight;
 		actionnerX = gameWidth / 2;
@@ -183,13 +186,13 @@ public class GameEngine extends GameNotifier implements GameListener{
 		Constants.pattern = actionners;
 		
 		long currentMusicTime = soundEngine.getCurrentMusicTime() + (int) Constants.SHOW_TIMER / 10;
-		SortedMap<Long,Pair<Integer,Integer>> subMap = pattern.subMap(Math.min(lastComputedTime,currentMusicTime), currentMusicTime);
+		SortedMap<Long,Pair<Integer,Integer>> subMap = patternMap.subMap(Math.min(lastComputedTime,currentMusicTime), currentMusicTime);
 		if(subMap.size() > 0) {
 			Tools.log(this, "SE Time : " + soundEngine.getCurrentMusicTime() + " A Time : " + subMap.keySet().toArray()[0].toString());
 			addGameShapes(subMap.values());
 		}
 		lastComputedTime = currentMusicTime;
-		pattern = new TreeMap<Long, Pair<Integer, Integer>>(pattern.tailMap(currentMusicTime));
+		patternMap = new TreeMap<Long, Pair<Integer, Integer>>(patternMap.tailMap(currentMusicTime));
 	}
 	
 	private void createLoop() {
@@ -231,23 +234,38 @@ public class GameEngine extends GameNotifier implements GameListener{
 										 new Float(y).intValue())) {
 			int savedX = Game.screenXToVirtualX(new Float(x).intValue());
 			int savedY = Game.screenYToVirtualY(new Float(y).intValue());
-			pattern.put((long)time, new Pair<Integer, Integer>(savedX,savedY));	
+			patternMap.put((long)time, new Pair<Integer, Integer>(savedX,savedY));	
 			addGameShape(x, y);
 			oldActionnerX = x;
 			oldActionnerY = y;
 		}
 	}
 	
-	public void savePattern(String fileName) {
-		FileAccess.serialize(pattern, fileName);
+	public void savePattern(String filePath) {
+		Tools.log(this, "Save file in path" + filePath);
+		if(pattern == null) {
+			pattern = new Pattern();
+		}
+		pattern.setPattern(patternMap);
+		pattern.setMusicFile(new MusicFile(soundEngine.getMediaFileName(), soundEngine.getMediaPath()));
+		pattern.setPatternName(filePath.substring(filePath.lastIndexOf("/") + 1));
+		pattern.setPatternPath(filePath.substring(0, filePath.lastIndexOf("/") - 1));
+		FileAccess.serialize(pattern, filePath);
 	}
 	
 	public void loadPattern(String fileName) {
-		pattern = (SortedMap<Long,Pair<Integer, Integer>>)FileAccess.deserialize(fileName);
+		pattern = (Pattern)FileAccess.deserialize(fileName);
+		Tools.log(pattern,pattern);
+		patternMap = pattern.getPattern();
+		soundEngine.changeMediaPlayed(pattern.getMusicFile().getPath());
+		soundEngine.playIfNeedToPlay(true);
 	}
 
 	public SoundEngine getSoundEngine() {
-		// TODO Auto-generated method stub
 		return this.soundEngine;
+	}
+
+	public void writeInPattern(String patternFilePath) {
+		
 	}
 }
