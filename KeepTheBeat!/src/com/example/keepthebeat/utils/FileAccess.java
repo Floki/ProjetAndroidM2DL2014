@@ -25,18 +25,11 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class FileAccess {
-	public static String keepTheBeatFolder = "/sdcard/KeepTheBeat";
-	public static String patternFolder = "/pattern/";
-	private static String patternPath() {return keepTheBeatFolder + patternFolder;}
-	private static String filePatternPath(String file) {return patternPath() + file;}
 	
-	public static void writeToFile(String fileName, String data) {
+	public static void writeToFile(String filePath, String fileName, String data) {
 	    try {
-	    	File patternFolder = new File(patternPath());
-	    	if(!patternFolder.exists()) {
-	    		patternFolder.mkdirs();
-	    	}
-	    	File outFile = new File(filePatternPath(fileName));
+	    	createPath(filePath);
+	    	File outFile = new File(computeFullFilePathFromPathAndName(filePath, fileName));
 	    	outFile.createNewFile();
 	        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(outFile, true));
 	        outputStreamWriter.append(data);
@@ -47,9 +40,9 @@ public class FileAccess {
 	    } 
 	}
 
-	public static String readFileAsString(String fileName) {
+	public static String readFileAsString(String filePath ,String fileName) {
 	    String result = "";
-	    File file = new File(filePatternPath(fileName));
+	    File file = new File(computeFullFilePathFromPathAndName(filePath, fileName));
 	    if ( file.exists() ) {
 	        FileInputStream fis = null;
 	        Tools.log("", "File read : " + file.getAbsolutePath());
@@ -74,23 +67,20 @@ public class FileAccess {
 	    return result;
 	}
 	
-	public static void deleteFile(String fileName) {
-	    File file = new File(filePatternPath(fileName));
+	public static void deleteFile(String filePath, String fileName) {
+	    File file = new File(computeFullFilePathFromPathAndName(filePath, fileName));
 	    file.delete();
 	}
 	
-	public static boolean fileExist(String fileName) {
-	    File file = new File(filePatternPath(fileName));
+	public static boolean fileExist(String filePath, String fileName) {
+	    File file = new File(computeFullFilePathFromPathAndName(filePath, fileName));
 	    return file.exists();
 	}
 	
-	public static void serialize(Object serializable, String fileName) {
+	public static void serialize(Object serializable, String filePath, String fileName) {
 		try{
-			File patternFolder = new File(patternPath());
-	    	if(!patternFolder.exists()) {
-	    		patternFolder.mkdirs();
-	    	}
-			FileOutputStream fileOut = new FileOutputStream(filePatternPath(fileName));
+			createPath(filePath);
+			FileOutputStream fileOut = new FileOutputStream(computeFullFilePathFromPathAndName(filePath, fileName));
 			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
 			objectOut.writeObject(serializable);
 			objectOut.close();
@@ -100,9 +90,9 @@ public class FileAccess {
 		}
 	}
 
-	public static Object deserialize(String fileName) {
+	public static Object deserialize(String filePath, String fileName) {
 		try{
-			FileInputStream fileIn = new FileInputStream(filePatternPath(fileName));
+			FileInputStream fileIn = new FileInputStream(computeFullFilePathFromPathAndName(filePath, fileName));
 			ObjectInputStream objectIn = new ObjectInputStream(fileIn);
 			Object object = objectIn.readObject();
 			objectIn.close();
@@ -116,5 +106,23 @@ public class FileAccess {
 			System.err.print(ioe);
 			return null;
 		}
+	}
+	
+	public static String computeFullFilePathFromPathAndName(String filePath,String fileName) {
+		String fullPath;
+		if(filePath.substring(filePath.length() - 1).equals("/")) {
+			fullPath = filePath + fileName;
+		}
+		else {
+			fullPath = filePath + "/" + fileName;
+		}
+		return fullPath;
+	}
+	
+	public static void createPath(String filePath) {
+		File patternFolder = new File(filePath);
+    	if(!patternFolder.exists()) {
+    		patternFolder.mkdirs();
+    	}
 	}
 }
