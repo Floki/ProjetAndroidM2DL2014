@@ -32,7 +32,7 @@ public class GameShape extends ShapeDrawable{
 	
 	public GameShape(long showTimer, long hideTimer) {
 		super(new OvalShape());
-		height = (Game.screenHeight * Constants.SHAPE_SIZE_PERCENT / 100);
+		height = (Game.screenHeight * Game.level.getShapeSizePercent() / 100);
 		width = height;
 		
 		maxExplodeTic = (int) ((Game.screenHeight/1.8) * (Game.screenHeight/1.8));
@@ -50,12 +50,12 @@ public class GameShape extends ShapeDrawable{
 		 * compute Shape's score
 		 */
 		//is this Shape a bonus ?
-		int chance = (int)((Math.random() * Constants.BONUS_CHANCE) + 1);
-		if( chance == (int)((Math.random() * Constants.BONUS_CHANCE) + 1) ) {
-			score = Constants.BASE_SCORE + Constants.BASE_SCORE * chance / Constants.BONUS_CHANCE *2;
+		int chance = (int)((Math.random() * Game.level.getBonusChance()) + 1);
+		if( chance == (int)((Math.random() * Game.level.getBonusChance()) + 1) ) {
+			score = Game.level.getBaseScore() + Game.level.getBaseScore() * chance / Game.level.getBonusChance() *2;
 		}
 		else {
-			score = Constants.BASE_SCORE;
+			score = Game.level.getBaseScore();
 		}
 
 	}
@@ -109,13 +109,13 @@ public class GameShape extends ShapeDrawable{
 					}
 					//height = (Game.screenHeight * Constants.SHAPE_SIZE_PERCENT / 100) + (Game.screenHeight * (255-computeColor)/600);
 					//height += height/3.5;
-					height = (int) ((Game.screenHeight * Constants.SHAPE_SIZE_PERCENT / 100)/4 + Math.sqrt( ( ( (255 - computeColor + 10 ) ) * maxExplodeTic ) / 255 ));
+					height = (int) ((Game.screenHeight * Game.level.getShapeSizePercent()/ 100)/4 + Math.sqrt( ( ( (255 - computeColor + 10 ) ) * maxExplodeTic ) / 255 ));
 					width = height;
 					setPosition(getX(), getY());
 					computeColor = computeColor / 2; //on explode, shape will be more rapidely transparent
 				}
 				else {
-					if( System.currentTimeMillis() < ( getTimeToFullDisplay() + ( ((int)hideTimer) * Constants.TIME_GOOD_PERCENT/100) ) ) {
+					if( System.currentTimeMillis() < ( getTimeToFullDisplay() + ( ((int)hideTimer) * Game.level.getTimeGoodPercent()/100) ) ) {
 						//is is good moment
 						if( !isBonus() ) {
 							this.getPaint().setColor(Color.rgb(0, 255, 0));
@@ -150,7 +150,7 @@ public class GameShape extends ShapeDrawable{
 				computeColor = 255 - absTimeDifference / timeForOneColorChange;
 				computeColor = Math.max(Math.min(computeColor, 255), 0);
 				
-				if( absTimeDifference < ( ((int)showTimer) * Constants.TIME_GOOD_PERCENT/100) ) {
+				if( absTimeDifference < ( ((int)showTimer) * Game.level.getTimeGoodPercent()/100) ) {
 					if( !isBonus() ) {
 						this.getPaint().setColor(Color.rgb(0, 255, 0));
 					}
@@ -209,7 +209,7 @@ public class GameShape extends ShapeDrawable{
 			paint.setColor( Color.rgb(255,215,0) );
 		}
 		paint.setAlpha( this.getPaint().getAlpha() );
-		int baseHeight = (Game.screenHeight * Constants.SHAPE_SIZE_PERCENT / 100);
+		int baseHeight = (Game.screenHeight * Game.level.getShapeSizePercent() / 100);
 		paint.setTextSize( baseHeight / 3 );
 		paint.setTextAlign( Align.CENTER );
 		if( isExploding() ) {
@@ -250,6 +250,6 @@ public class GameShape extends ShapeDrawable{
 	}
 	
 	public boolean isBonus() {
-		return getScore() > Constants.BASE_SCORE;
+		return getScore() > Game.level.getBaseScore();
 	}
 }

@@ -1,12 +1,7 @@
 package com.example.keepthebeat.game;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.StreamCorruptedException;
-
 import android.annotation.SuppressLint;
-import android.content.res.Resources.NotFoundException;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -28,6 +23,8 @@ public class Game extends CustomActivity implements SurfaceHolder.Callback {
 
 	public static int screenHeight;
 	public static int screenWidth;
+	
+	public static Level level;
 	
 	// Taille virtuelle
 	public final static int virtualSize = 1000;
@@ -55,6 +52,7 @@ public class Game extends CustomActivity implements SurfaceHolder.Callback {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		//Retrieve parameters
+		level = new Level();
 		Bundle extras = getIntent().getExtras();
 		String[] patternInformation;
 		String musicFilePath = null;

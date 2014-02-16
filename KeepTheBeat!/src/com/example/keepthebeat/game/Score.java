@@ -23,14 +23,14 @@ public class Score {
 				}
 			}
 			else {
-				this.score -= shape.getScore() * Constants.TOO_LATE_PERCENT/100;
-				shape.setExplodingText( "- " + shape.getScore() * Constants.TOO_LATE_PERCENT/100 );
+				this.score -= shape.getScore() * Game.level.getTooLatePercent()/100;
+				shape.setExplodingText( "- " + shape.getScore() * Game.level.getTooLatePercent()/100 );
 			}
 		}
 		else {
 			if( !shape.isExploding() ) {
 				if( !shape.isBonus()) //a bonus is definitively not a malus because we are nice developers !
-					this.score -= shape.getScore() * Constants.MISS_PERCENT/100;
+					this.score -= shape.getScore() * Game.level.getMissPercent()/100;
 			}
 		}
 	}

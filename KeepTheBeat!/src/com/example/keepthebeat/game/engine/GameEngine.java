@@ -69,8 +69,8 @@ public class GameEngine {
 	 * @param y
 	 */
 	public void addGameShape( float x, float y) {
-		long showTimer = (Constants.mode == Constants.Mode.CREATE ? 1 : Constants.SHOW_TIMER);
-		GameShape beatShape = new GameShape(showTimer,Constants.HIDE_TIMER);
+		long showTimer = (Constants.mode == Constants.Mode.CREATE ? 1 : Game.level.getShowTimer() );
+		GameShape beatShape = new GameShape(showTimer,Game.level.getHideTimer());
 		beatShape.setPosition((int)x, (int)y);
 		actionners.add(beatShape);
 	}
@@ -117,7 +117,7 @@ public class GameEngine {
 		// Partage le pattern pour qu'il soit déssiné
 		Constants.pattern = actionners;
 		// Recupère les shape à afficher la prochaine fois
-		long currentMusicTime = soundEngine.getCurrentMusicTime() + (int) Constants.SHOW_TIMER / 10;
+		long currentMusicTime = soundEngine.getCurrentMusicTime() + (int) Game.level.getShowTimer() / 10;
 		SortedMap<Long,Pair<Integer,Integer>> subMap = patternMap.subMap(Math.min(lastComputedTime,currentMusicTime), currentMusicTime);
 		if(subMap.size() > 0) {
 			Tools.log(this, "SE Time : " + soundEngine.getCurrentMusicTime() + " A Time : " + subMap.keySet().toArray()[0].toString());
