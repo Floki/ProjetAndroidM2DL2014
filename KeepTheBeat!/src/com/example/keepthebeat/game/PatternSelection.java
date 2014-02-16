@@ -50,6 +50,7 @@ public class PatternSelection extends CustomActivity {
 		
 		Tools.log(this, state + " " + pathToExplore);
 		ArrayList<String> listOfFileAndPath = new ArrayList<String>();
+		FileAccess.createPathIfNonExists(pathToExplore);
 		File dir = new File(pathToExplore);
 		File file[] = dir.listFiles();  
 		if (state == SELECTION.FOLDER) {

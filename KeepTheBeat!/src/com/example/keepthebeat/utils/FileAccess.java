@@ -32,7 +32,7 @@ public class FileAccess {
 	
 	public static void writeToFile(String filePath, String data) {
 	    try {
-	    	createPath(filePath);
+	    	createPathIfNonExists(filePath);
 	    	File outFile = new File(filePath);
 	    	outFile.createNewFile();
 	        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(outFile, true));
@@ -102,7 +102,7 @@ public class FileAccess {
 	
 	public static void serialize(Object serializable, String filePath) {
 		try{
-			createPath(filePath);
+			createPathIfNonExists(filePath);
 			FileOutputStream fileOut = new FileOutputStream(filePath);
 			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
 			objectOut.writeObject(serializable);
@@ -146,7 +146,7 @@ public class FileAccess {
 		return fullPath;
 	}
 	
-	public static void createPath(String filePath) {
+	public static void createPathIfNonExists(String filePath) {
 		File patternFolder = new File(filePath.substring(0, filePath.lastIndexOf("/")));
     	if(!patternFolder.exists()) {
     		patternFolder.mkdirs();
