@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import com.example.keepthebeat.R;
-import com.example.keepthebeat.music.MusicFile;
 import com.example.keepthebeat.utils.Constants;
 import com.example.keepthebeat.utils.Tools;
 import android.annotation.SuppressLint;
@@ -17,6 +16,7 @@ import android.media.audiofx.Equalizer;
 import android.media.audiofx.Visualizer;
 import android.media.audiofx.Visualizer.OnDataCaptureListener;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 
 /**
@@ -64,6 +64,9 @@ public class SoundEngine {
 		mWitnessPlayer = MediaPlayer.create(context, mediaToOpen);
 		// Coupe le volume du lecteur témoin, sevira seulement à récupérer les infos
 		mWitnessPlayer.setVolume(0, 0);
+		if(Build.VERSION.RELEASE.contains("4.4")) {
+			mWitnessPlayer.setVolume(0.1f, 0.1f);
+		}
 		volume = 1;
 		mRealPlayer.setVolume(volume, volume);
 		linkVisualizerAndEqualizer();
@@ -164,16 +167,13 @@ public class SoundEngine {
 			this.mediaPath = mediaPath;
 			mWitnessPlayer.prepare();
 			mWitnessPlayer.setVolume(0, 0);
-		} catch (IllegalArgumentException e) {
+			if(Build.VERSION.RELEASE.contains("4.4")) {
+				mWitnessPlayer.setVolume(0.1f, 0.1f);
+			}		
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} 
 	}
 	
 	public void retrievePhoneMedias(Activity activity) {

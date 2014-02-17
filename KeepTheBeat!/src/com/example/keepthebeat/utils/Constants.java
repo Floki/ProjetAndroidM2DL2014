@@ -2,23 +2,16 @@ package com.example.keepthebeat.utils;
 
 import java.util.Collection;
 
-import com.example.keepthebeat.game.Pattern;
 import com.example.keepthebeat.game.shape.GameShape;
 
 public class Constants {
 
-	/**
+	/*
 	 * Levels
 	 */
 	public static final String EASY = "EASY";
 	public static final String NORMAL = "NORMAL";
 	public static final String HARD = "HARD";
-	
-	/**
-	 * Mode
-	 */
-	public enum Mode {CREATE, PLAY};
-	public static Mode mode;
 	
 	/*
 	 * Thread running and shared object
@@ -33,10 +26,5 @@ public class Constants {
 	 *  Game folder
 	 */
 	public static String keepTheBeatFolder = "/sdcard/KeepTheBeat"; //should not be defined here, because of it's computed by Title.onCreate() - so it is hard to know real value of it... -_-' 
-
-	/*
-	 * Default pattern
-	 */
-	public static Pattern defaultPattern;
 
 }

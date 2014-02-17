@@ -5,8 +5,7 @@ import java.io.File;
 import com.example.keepthebeat.CustomActivity;
 import com.example.keepthebeat.R;
 import com.example.keepthebeat.ScoreActivity;
-import com.example.keepthebeat.game.PatternSelection;
-import com.example.keepthebeat.music.MusicSelection;
+import com.example.keepthebeat.game.Game;
 import com.example.keepthebeat.utils.Constants;
 import com.example.keepthebeat.utils.Tools;
 
@@ -40,17 +39,7 @@ public class Title extends CustomActivity {
 		start.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {	
-				Constants.mode = Constants.Mode.PLAY;
-				Intent myIntent = new Intent(Title.this, PatternSelection.class);
-				startActivityForResult(myIntent, 0);
-			}
-		});
-
-		create.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {	
-				Constants.mode = Constants.Mode.CREATE;
-				Intent myIntent = new Intent(Title.this, MusicSelection.class);
+				Intent myIntent = new Intent(Title.this, Game.class);
 				startActivityForResult(myIntent, 0);
 			}
 		});

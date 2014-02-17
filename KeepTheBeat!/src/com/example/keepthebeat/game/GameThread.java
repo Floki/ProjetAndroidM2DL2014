@@ -49,8 +49,7 @@ public class GameThread extends Thread {
 		while (running) {
 			if(gameEngine.isEnded()) {
 				running = false;
-				Pattern p = gameEngine.getPattern();
-				saveScore( p.getMusicFile().getTitle(), p.getPatternName(), gameEngine.getScore() );
+				//saveScore( p.getMusicFile().getTitle(), p.getPatternName(), gameEngine.getScore() );
 				gameActivity.backToTitle("Fin de partie" , "Score : " + gameEngine.getScore());
 			}
 			Canvas c = null;

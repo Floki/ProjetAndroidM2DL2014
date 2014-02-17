@@ -13,10 +13,8 @@ import android.app.Activity;
 
 import com.example.keepthebeat.CustomActivity;
 import com.example.keepthebeat.game.Game;
-import com.example.keepthebeat.game.Pattern;
 import com.example.keepthebeat.game.Score;
 import com.example.keepthebeat.game.shape.GameShape;
-import com.example.keepthebeat.music.MusicFile;
 import com.example.keepthebeat.utils.Constants;
 import com.example.keepthebeat.utils.FileAccess;
 import com.example.keepthebeat.utils.Pair;
@@ -38,7 +36,6 @@ public class GameEngine {
 	private float oldActionnerY;
 	// Informations sur le pattern
 	private SortedMap<Long, Pair<Integer, Integer>> patternMap;
-	private Pattern pattern;
 	private long lastComputedTime = 0;
 	// Score
 	public static Score score;
@@ -98,7 +95,7 @@ public class GameEngine {
 												 new Float(oldActionnerY).intValue(), 
 												 new Float(x).intValue(), 
 												 new Float(y).intValue())) {
-			long showTimer = (Constants.mode == Constants.Mode.CREATE ? 1 : Game.level.getShowTimer() );
+			long showTimer = Game.level.getShowTimer();
 			GameShape beatShape = new GameShape(showTimer,Game.level.getHideTimer());
 			beatShape.setPosition((int)x, (int)y);
 			actionners.add(beatShape);
@@ -258,9 +255,5 @@ public class GameEngine {
 
 	public int getScore() {
 		return score.getScore();
-	}
-	
-	public Pattern getPattern() {
-		return pattern;
 	}
 }
