@@ -85,16 +85,6 @@ public class SoundEngine {
 		} 
 	}
 	
-	@SuppressLint("NewApi")
-	public SoundEngine(Context context, String filePath) {
-		// Initialisation des lecteur 
-		Uri mediaToOpen = Uri.parse(filePath);
-		mRealPlayer = MediaPlayer.create(context, mediaToOpen);
-		mediaPath = filePath;
-		volume = 1;
-		mRealPlayer.setVolume(volume, volume);
-	}
-	
 	/**
 	 * Demarre ou stoppe la musique suivant au choix
 	 * @param needToPlay T = Play, F = Pause
@@ -174,11 +164,6 @@ public class SoundEngine {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
-	}
-	
-	public void retrievePhoneMedias(Activity activity) {
-
-		
 	}
 	
 	public void playRandomMedia(Activity activity) {

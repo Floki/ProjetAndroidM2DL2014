@@ -79,6 +79,7 @@ public class GameEngine {
 		gameHeight = Game.screenHeight;
 		actionners = new ArrayList<GameShape>();
 		endLoop = false;
+		reallyEnd = false;
 		actionnerX = Game.screenWidth / 2;
 		actionnerY = Game.screenHeight / 2;
 		actionnerMoveMinSpeed = 7;
@@ -130,6 +131,7 @@ public class GameEngine {
 		soundEngine.setWitnessPlayerInFuture((int) Game.level.getShowTimer());
 		computeNextActionnerPosition();
 		if(endLoop) {
+			Tools.log(this, "End of the game");
 			List<GameShape> actionnersTmp = new ArrayList<GameShape>(actionners);
 			for(GameShape actionner : actionnersTmp) {
 				actionner.hideMore();
