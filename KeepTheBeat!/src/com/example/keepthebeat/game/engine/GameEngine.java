@@ -57,7 +57,8 @@ public class GameEngine {
 	private float actionnerY;
 	private float actionnerMoveX;
 	private float actionnerMoveY;
-	private int timeBeforeChangeMusic;
+	public static final int durationOfASample = 500;
+	public static int timeBeforeChangeMusic = durationOfASample;
 	private double lastGettedAmplitude;
 	public static final int maxLife = 100;
 	public static int life = maxLife;
@@ -69,8 +70,9 @@ public class GameEngine {
 	public GameEngine( Activity activity, SoundEngine soundEngine ) {
 		this.soundEngine = soundEngine;
 		this.gameActivity = activity;
-		timeBeforeChangeMusic = 500;
 		lastGettedAmplitude = 0;
+		life = maxLife;
+		timeBeforeChangeMusic = durationOfASample;
 		score = new Score();
 		Constants.score = 0;
 		userIsTouching = false;
@@ -123,7 +125,7 @@ public class GameEngine {
 				Game.level.setShowTimer((long) (Game.level.getShowTimer() * 0.90));
 			}
 			
-			timeBeforeChangeMusic = 500;
+			timeBeforeChangeMusic = durationOfASample;
 			soundEngine.playRandomMedia(gameActivity);
 			soundEngine.seekToRandomPosition();
 		}
