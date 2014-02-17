@@ -35,7 +35,6 @@ public class GameEngine {
 	private float oldActionnerX;
 	private float oldActionnerY;
 	// Informations sur le pattern
-	private SortedMap<Long, Pair<Integer, Integer>> patternMap;
 	private long lastComputedTime = 0;
 	// Score
 	public static Score score;
@@ -46,16 +45,20 @@ public class GameEngine {
 	private boolean reallyEnd;
 	// Game activity
 	private Activity gameActivity;
+	// Amplitude information
 	private double maxSongAmplitude;
 	private double actionnerMoveMinSpeed;
 	private double lastAmplitude;
+	private double lastGettedAmplitude;
+	// All needed to compute gameshape postion
 	private float actionnerX;
 	private float actionnerY;
 	private float actionnerMoveX;
 	private float actionnerMoveY;
+	// Music duration before change
 	public static final int durationOfASample = 500;
 	public static int timeBeforeChangeMusic = durationOfASample;
-	private double lastGettedAmplitude;
+	// Life
 	public static final int maxLife = 100;
 	public static int life = maxLife;
 
@@ -72,7 +75,6 @@ public class GameEngine {
 		score = new Score();
 		Constants.score = 0;
 		userIsTouching = false;
-		patternMap = new TreeMap<Long,Pair<Integer, Integer>>();
 		gameWidth = Game.screenWidth;
 		gameHeight = Game.screenHeight;
 		actionners = new ArrayList<GameShape>();
