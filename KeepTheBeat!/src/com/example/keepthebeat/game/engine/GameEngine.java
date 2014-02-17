@@ -251,4 +251,8 @@ public class GameEngine {
 	public int getScore() {
 		return score.getScore();
 	}
+	
+	public Pattern getPattern() {
+		return pattern;
+	}
 }
