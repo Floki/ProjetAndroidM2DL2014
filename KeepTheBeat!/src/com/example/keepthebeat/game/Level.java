@@ -5,6 +5,7 @@ import com.example.keepthebeat.utils.FileAccess;
 
 public class Level {
 	
+	private String levelName;
 	/*
 	 * Easy and Hard multiplier
 	 */
@@ -57,6 +58,8 @@ public class Level {
 			missPercent += missPercent * hardPercent/100;
 			bonusChance += bonusChance * hardPercent/100;
 		}
+		
+		levelName = level.toLowerCase();
 	}
 
 
@@ -97,6 +100,10 @@ public class Level {
 
 	public int getMissPercent() {
 		return missPercent;
+	}
+	
+	public String getLevelName() {
+		return this.levelName;
 	}
 	
 }

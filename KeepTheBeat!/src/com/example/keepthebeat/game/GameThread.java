@@ -50,7 +50,7 @@ public class GameThread extends Thread {
 			if(gameEngine.isEnded()) {
 				running = false;
 				Pattern p = gameEngine.getPattern();
-				saveScore( p.getMusicFile().getTitle(), p.getPatternName(), gameEngine.getScore() );
+				saveScore( p.getMusicFile().getTitle(), p.getPatternName(), Game.level.getLevelName(), gameEngine.getScore() );
 				gameActivity.backToTitle("Fin de partie" , "Score : " + gameEngine.getScore());
 			}
 			Canvas c = null;
@@ -80,7 +80,7 @@ public class GameThread extends Thread {
 		}
 	}
 
-	private void saveScore(String musicTitle, String patternName, int score) {
+	private void saveScore(String musicTitle, String patternName, String level, int score) {
 		ScoreDbHelper scoreDbHelper = new ScoreDbHelper(gameActivity);
 		// Gets the data repository in write mode
 		SQLiteDatabase db = scoreDbHelper.getWritableDatabase();
@@ -89,12 +89,13 @@ public class GameThread extends Thread {
 		ContentValues values = new ContentValues();
 		values.put(ScoreEntry.COLUMN_NAME_TRACK, musicTitle);
 		values.put(ScoreEntry.COLUMN_NAME_PATTERN, patternName);
+		values.put(ScoreEntry.COLUMN_NAME_LEVEL, level);
 		values.put(ScoreEntry.COLUMN_NAME_SCORE, score);
 
 		// Insert the new row, returning the primary key value of the new row
 		long newRowId;
 		newRowId = db.insert(ScoreEntry.TABLE_NAME, null, values);
-		Tools.log(this, "Row inserted in DB : [ " + newRowId + " , " + musicTitle + " , " + patternName + " , " + score + " ]");
+		Tools.log(this, "Row inserted in DB : [ " + newRowId + " , " + musicTitle + " , " + patternName + " , " + level + " , " + score + " ]");
 		//normaly score is inserted in DB
 	}
 } 

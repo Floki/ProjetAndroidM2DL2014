@@ -16,6 +16,7 @@ public final class ScoreContract {
         public static final String TABLE_NAME = "score";
         public static final String COLUMN_NAME_TRACK = "track";
         public static final String COLUMN_NAME_PATTERN = "pattern";
+        public static final String COLUMN_NAME_LEVEL = "level";
         public static final String COLUMN_NAME_SCORE = "score";
     }
 

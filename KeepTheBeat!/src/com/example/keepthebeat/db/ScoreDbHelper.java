@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class ScoreDbHelper extends SQLiteOpenHelper {
 
 	// If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "Score.db";
     
     private static final String SQL_CREATE_ENTRIES =
@@ -17,6 +17,7 @@ public class ScoreDbHelper extends SQLiteOpenHelper {
     	    ScoreEntry._ID + " INTEGER PRIMARY KEY," +
     	    ScoreEntry.COLUMN_NAME_TRACK + " TEXT, " +
     	    ScoreEntry.COLUMN_NAME_PATTERN + " TEXT, " +
+    	    ScoreEntry.COLUMN_NAME_LEVEL + " TEXT, " +
     	    ScoreEntry.COLUMN_NAME_SCORE + " INTEGER" +
     	    " )";
 

@@ -49,12 +49,15 @@ public class ScoreActivity extends CustomActivity {
 			
 			String trackValue = c.getString( c.getColumnIndexOrThrow( ScoreEntry.COLUMN_NAME_TRACK ) );
 			String patternValue = c.getString( c.getColumnIndexOrThrow( ScoreEntry.COLUMN_NAME_PATTERN ) );
+			String levelValue = c.getString( c.getColumnIndexOrThrow( ScoreEntry.COLUMN_NAME_LEVEL ) );
 			int scoreValue = c.getInt( c.getColumnIndexOrThrow( ScoreEntry.COLUMN_NAME_SCORE ) );
 
 			TextView trackV = new TextView(this);
 			trackV.setText( trackValue );
 			TextView patternV = new TextView(this);
 			patternV.setText( patternValue );
+			TextView levelV = new TextView(this);
+			levelV.setText( levelValue );
 			TextView scoreV = new TextView(this);
 			scoreV.setText( scoreValue + "" );
 
@@ -62,6 +65,7 @@ public class ScoreActivity extends CustomActivity {
 
 			row.addView(trackV); // Line 39
 			row.addView(patternV);
+			row.addView(levelV);
 			row.addView(scoreV);
 
 			tableL.addView(row);
