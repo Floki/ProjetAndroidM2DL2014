@@ -94,6 +94,7 @@ public class GameThread extends Thread {
 		// Insert the new row, returning the primary key value of the new row
 		long newRowId;
 		newRowId = db.insert(ScoreEntry.TABLE_NAME, null, values);
+		Tools.log(this, "Row inserted in DB : [ " + newRowId + " , " + musicTitle + " , " + patternName + " , " + score + " ]");
 		//normaly score is inserted in DB
 	}
 } 
