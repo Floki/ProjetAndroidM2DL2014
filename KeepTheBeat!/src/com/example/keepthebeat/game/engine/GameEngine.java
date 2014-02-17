@@ -47,6 +47,13 @@ public class GameEngine {
 	private boolean reallyEnd;
 	// Game activity
 	private CustomActivity gameActivity;
+	private double maxSongAmplitude;
+	private double actionnerMoveMinSpeed;
+	private double lastAmplitude;
+	private float actionnerX;
+	private float actionnerY;
+	private float actionnerMoveX;
+	private float actionnerMoveY;
 	
 	/**
 	 * Constructeur
@@ -61,6 +68,11 @@ public class GameEngine {
 		gameHeight = Game.screenHeight;
 		actionners = new ArrayList<GameShape>();
 		endLoop = false;
+		actionnerX = Game.screenWidth / 2;
+		actionnerY = Game.screenHeight / 2;
+		actionnerMoveMinSpeed = 5;
+		actionnerMoveX = (float) ((Math.random() - 0.5) * actionnerMoveMinSpeed * 10);
+		actionnerMoveY = (float) ((Math.random() - 0.5) * actionnerMoveMinSpeed * 10);
 	}
 	
 	/**
@@ -75,7 +87,12 @@ public class GameEngine {
 		actionners.add(beatShape);
 	}
 	
+	/**
+	 * Game engine Loop
+	 */
 	public void engineLoop() {
+		soundEngine.setWitnessPlayerInFuture((int) Game.level.getShowTimer());
+		computeNextActionnerPosition();
 		if(endLoop) {
 			soundEngine.setVolume((float) (soundEngine.getVolume() - 0.01));
 			if(soundEngine.getVolume() <= 0.01) {
@@ -83,72 +100,31 @@ public class GameEngine {
 			}
 		}
 		else {
-			if(Constants.mode == Constants.Mode.PLAY) {
-				playLoop();
-			}
-			else if(Constants.mode == Constants.Mode.CREATE) {
-				createLoop();
-			}
-		}
-	}
-	
-	/**
-	 * Ce que le jeux fait régulierement en mode jeux
-	 */
-	private void playLoop() {
-		List<GameShape> actionnersTmp = new ArrayList<GameShape>(actionners);
-		// Calcule l'animation des gameshapes
-		for(GameShape actionner : actionnersTmp) {
-			actionner.hideMore();
-			if(userIsTouching && !actionner.isExploding()) {
-				int distance = (int) Math.sqrt((actionner.getX() - userTouchX) * (actionner.getX() - userTouchX) 
-											 + (actionner.getY() - userTouchY) * (actionner.getY() - userTouchY));
-				if(distance < actionner.getHeight() / 2 && distance < actionner.getWidth()) {
-					score.computeScoreFromShape( actionner );
-					actionner.hideAndExplode();
+			computePlayerActionFromTheAmplitude(soundEngine.getAmplitude());
+			List<GameShape> actionnersTmp = new ArrayList<GameShape>(actionners);
+			// Calcule l'animation des gameshapes
+			for(GameShape actionner : actionnersTmp) {
+				actionner.hideMore();
+				if(userIsTouching && !actionner.isExploding()) {
+					int distance = (int) Math.sqrt((actionner.getX() - userTouchX) * (actionner.getX() - userTouchX) 
+												 + (actionner.getY() - userTouchY) * (actionner.getY() - userTouchY));
+					if(distance < actionner.getHeight() / 2 && distance < actionner.getWidth()) {
+						score.computeScoreFromShape( actionner );
+						actionner.hideAndExplode();
+					}
 				}
-			}
-			if(!actionner.stillUse()) {
-				actionners.remove(actionner);
-				score.computeScoreFromShape( actionner );
-				actionner = null;
-			}
-		}
-		// Partage le pattern pour qu'il soit déssiné
-		Constants.pattern = actionners;
-		// Recupère les shape à afficher la prochaine fois
-		long currentMusicTime = soundEngine.getCurrentMusicTime() + (int) Game.level.getShowTimer() / 10;
-		SortedMap<Long,Pair<Integer,Integer>> subMap = patternMap.subMap(Math.min(lastComputedTime,currentMusicTime), currentMusicTime);
-		if(subMap.size() > 0) {
-			Tools.log(this, "SE Time : " + soundEngine.getCurrentMusicTime() + " A Time : " + subMap.keySet().toArray()[0].toString());
-			addGameShapes(subMap.values());
-		}
-		lastComputedTime = currentMusicTime;
-		patternMap = new TreeMap<Long, Pair<Integer, Integer>>(patternMap.tailMap(currentMusicTime));
-		if(patternMap.size() == 0 && actionners.size() == 0) {
-			endLoop = true;
-		}
-	}
-	
-	/**
-	 * Ce que le jeux fait régulierement en mode création
-	 */
-	private void createLoop() {
-		List<GameShape> actionnersTmp = new ArrayList<GameShape>(actionners);
-		for(GameShape actionner : actionnersTmp) {
-			if(actionner != null) {
 				if(!actionner.stillUse()) {
 					actionners.remove(actionner);
+					score.computeScoreFromShape( actionner );
 					actionner = null;
 				}
-				else {
-					actionner.hideMore();
-				}
+			}
+			// Partage le pattern pour qu'il soit déssiné
+			Constants.pattern = actionners;
+			if(false) {
+				endLoop = true;
 			}
 		}
-		Constants.pattern = actionners;
-
-		lastComputedTime = soundEngine.getCurrentMusicTime();
 	}
 
 	/**
@@ -199,47 +175,57 @@ public class GameEngine {
 	}
 	
 	/**
-	 * Save the pattern in file
-	 * @param filePath
+	 * Permet de savoir si le son joué nécessite une action du joueur
+	 * @param amplitude Amplitude du son joué
 	 */
-	public void savePattern(String filePath) {
-		Tools.log(this, "Save file in path" + filePath);
-		if(pattern == null) {
-			pattern = new Pattern();
+	public void computePlayerActionFromTheAmplitude(double amplitude) {
+		Tools.log(this, amplitude);
+		// On récupère l'amplitude maximale du son joué
+		maxSongAmplitude = Math.max(maxSongAmplitude, amplitude);
+		// Si le son est un son fort 
+		// OU si l'on est sur un pente ascendant
+		// Une action du joueur est requise
+		if(amplitude > 0.9 * maxSongAmplitude || (amplitude > 1300 && lastAmplitude > 1300 && amplitude > lastAmplitude * ((13000 - Math.min(amplitude/2, 3001))/10000))) {
+			// On dessine une image
+			addGameShape(actionnerX, actionnerY);
 		}
-		// Save pattern map
-		pattern.setPattern(patternMap);
-		// Save the msic file information
-		pattern.setMusicFile(new MusicFile(soundEngine.getMediaFileName(), soundEngine.getMediaPath()));
-		// Save the pattern name and pattern file path
-		pattern.setPatternName(filePath.substring(filePath.lastIndexOf("/") + 1));
-		pattern.setPatternPath(filePath.substring(0, filePath.lastIndexOf("/") - 1));
-		FileAccess.serialize(pattern, filePath);
+		else if(amplitude > 0.95 * maxSongAmplitude) {
+			actionnerMoveMinSpeed = Math.min(actionnerMoveMinSpeed + 0.1,3);
+		}
+		// Si le son se calme un instant, on déclenche un évènement
+		else if(amplitude < maxSongAmplitude * 0.2) {
+			actionnerX = (float) (Math.random() * gameWidth);
+			actionnerY = (float) (Math.random() * gameHeight);
+			actionnerMoveMinSpeed = Math.max(actionnerMoveMinSpeed - 1,2);
+		}
+		else {
+			actionnerMoveMinSpeed = Math.max(actionnerMoveMinSpeed - 1,2);
+		}
+		// Mémorise l'ancienne amplitude
+		lastAmplitude = amplitude;
 	}
 	
 	/**
-	 * Retrieve pattern information
-	 * @param fileName
+	 * Compute the next position of an actionner
 	 */
-	public void loadPattern(String fileName) {
-		// Retrieve information
-		if(!fileName.equals("default")) {
-			pattern = (Pattern)FileAccess.deserialize(fileName);
+	public void computeNextActionnerPosition() {
+		actionnerX += this.actionnerMoveX;
+		actionnerY += this.actionnerMoveY;
+		Tools.log(this, "Actionner Pos : " + actionnerX + " " + actionnerY);
+		if(this.actionnerX < 0) {
+			actionnerMoveX = (float) (actionnerMoveMinSpeed + (Math.random() + 0.1) * actionnerMoveMinSpeed * 10);
 		}
-		else {
-			Tools.log(this,  "Load default pattern");
-			pattern = Constants.defaultPattern;
+		else if(this.actionnerX > gameWidth) {
+			actionnerMoveX = (float) (-actionnerMoveMinSpeed + (Math.random() - 1.01) * actionnerMoveMinSpeed * 10);
 		}
-		Tools.log(pattern,pattern);
-		// Retrieve pattern map
-		patternMap = pattern.getPattern();
-		// Reload music
-		if(!fileName.equals("default")) {
-			soundEngine.changeMediaPlayed(pattern.getMusicFile().getPath());
-			soundEngine.playIfNeedToPlay(true);
+		if(this.actionnerY < 0) {
+			actionnerMoveY = (float) (actionnerMoveMinSpeed + (Math.random() + 0.1) * actionnerMoveMinSpeed * 10);
+		}
+		else if(this.actionnerY > gameHeight) {
+			actionnerMoveY = (float) (-actionnerMoveMinSpeed + (Math.random() - 1.01) * actionnerMoveMinSpeed * 10);
 		}
 	}
-
+	
 	public SoundEngine getSoundEngine() {
 		return this.soundEngine;
 	}
