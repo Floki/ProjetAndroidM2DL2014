@@ -93,7 +93,7 @@ public class GameEngine {
 	 * @param y
 	 */
 	public void addGameShape( float x, float y) {
-		if(soundEngine.getCurrentMusicTime() > lastComputedTime + 100 ||
+		if(System.currentTimeMillis() > lastComputedTime + 100 ||
 				Game.virtualXToScreenX(75) < Tools.distanceBetweenPosition(new Float(oldActionnerX).intValue(), 
 												 new Float(oldActionnerY).intValue(), 
 												 new Float(x).intValue(), 
@@ -105,7 +105,7 @@ public class GameEngine {
 			oldActionnerX = x;
 			oldActionnerY = y;
 		}
-		lastComputedTime = soundEngine.getCurrentMusicTime();
+		lastComputedTime = System.currentTimeMillis();
 	}
 	
 	/**
