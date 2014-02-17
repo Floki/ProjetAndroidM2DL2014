@@ -9,7 +9,6 @@ import java.util.Queue;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import android.R;
 import android.app.Activity;
 
 import com.example.keepthebeat.CustomActivity;
@@ -192,27 +191,6 @@ public class GameEngine {
 	public void isTouching(boolean touch) {
 		userIsTouching = touch;
 	}
-
-	/**
-	 * Save game shpae int he pattern in CREATION mode
-	 * @param time
-	 * @param x
-	 * @param y
-	 */
-	public void saveShape(float time, float x, float y) {
-		if(soundEngine.getCurrentMusicTime() > lastComputedTime + 100 ||
-		Game.virtualXToScreenX(75) < Tools.distanceBetweenPosition(new Float(oldActionnerX).intValue(), 
-										 new Float(oldActionnerY).intValue(), 
-										 new Float(x).intValue(), 
-										 new Float(y).intValue())) {
-			int savedX = Game.screenXToVirtualX(new Float(x).intValue());
-			int savedY = Game.screenYToVirtualY(new Float(y).intValue());
-			patternMap.put((long)time, new Pair<Integer, Integer>(savedX,savedY));	
-			addGameShape(x, y);
-			oldActionnerX = x;
-			oldActionnerY = y;
-		}
-	}
 	
 	/**
 	 * Permet de savoir si le son joué nécessite une action du joueur
@@ -280,5 +258,9 @@ public class GameEngine {
 
 	public int getScore() {
 		return score.getScore();
+	}
+	
+	public Pattern getPattern() {
+		return pattern;
 	}
 }

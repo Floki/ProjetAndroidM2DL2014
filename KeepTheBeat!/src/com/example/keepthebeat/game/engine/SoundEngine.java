@@ -202,7 +202,6 @@ public class SoundEngine {
 		mEqualizer.setEnabled(true); // need to enable equalizer
 		mVisualizer = new Visualizer(mWitnessPlayer.getAudioSessionId());
 		mVisualizer.setCaptureSize(Visualizer.getCaptureSizeRange()[1]);
-
 		// Lors de la lecture on récupère les informations
 		// sur le fichier lu
 		mVisualizer.setDataCaptureListener(new OnDataCaptureListener() {

@@ -1,28 +1,13 @@
 package com.example.keepthebeat.utils;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
-import java.io.Serializable;
-
-import javax.net.ssl.ManagerFactoryParameters;
-
-import com.example.keepthebeat.game.Game;
-
-import android.app.Application;
-import android.content.Context;
-import android.graphics.AvoidXfermode.Mode;
-import android.os.Parcelable.Creator;
 import android.util.Log;
-import android.widget.Toast;
 
 public class FileAccess {
 	

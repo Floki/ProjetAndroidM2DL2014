@@ -40,8 +40,12 @@
             android:noHistory="true"
             android:screenOrientation="portrait" android:name="com.example.keepthebeat.game.PatternSelection"></activity>
 		<activity 
-		    android:noHistory="true"
-		    android:screenOrientation="portrait" android:name="com.example.keepthebeat.parameters.Parameters"></activity>
+		    android:screenOrientation="portrait" 
+		    android:name="com.example.keepthebeat.parameters.Parameters"></activity>
+		<activity 
+		    android:screenOrientation="portrait" 
+		    android:name="com.example.keepthebeat.ScoreActivity"></activity>
+
     </application>
 
 </manifest>

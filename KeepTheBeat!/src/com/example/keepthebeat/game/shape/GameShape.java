@@ -1,8 +1,6 @@
 package com.example.keepthebeat.game.shape;
 
 import com.example.keepthebeat.game.Game;
-import com.example.keepthebeat.utils.Constants;
-
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
