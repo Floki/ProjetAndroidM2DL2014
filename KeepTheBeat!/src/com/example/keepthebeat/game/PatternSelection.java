@@ -2,31 +2,20 @@ package com.example.keepthebeat.game;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
-
 import com.example.keepthebeat.CustomActivity;
 import com.example.keepthebeat.R;
 import com.example.keepthebeat.game.Game;
-import com.example.keepthebeat.title.Title;
-import com.example.keepthebeat.utils.Constants;
 import com.example.keepthebeat.utils.FileAccess;
-import com.example.keepthebeat.utils.Pair;
 import com.example.keepthebeat.utils.Tools;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 
 

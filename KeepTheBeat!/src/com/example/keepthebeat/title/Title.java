@@ -9,7 +9,6 @@ import com.example.keepthebeat.music.MusicSelection;
 import com.example.keepthebeat.utils.Constants;
 import com.example.keepthebeat.utils.Tools;
 
-import android.app.Activity;
 import android.content.Intent;
 import com.example.keepthebeat.parameters.Parameters;
 import android.os.Bundle;

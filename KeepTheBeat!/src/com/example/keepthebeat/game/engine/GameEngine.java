@@ -6,9 +6,6 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import android.R;
-import android.app.Activity;
-
 import com.example.keepthebeat.CustomActivity;
 import com.example.keepthebeat.game.Game;
 import com.example.keepthebeat.game.Pattern;

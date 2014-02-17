@@ -6,7 +6,6 @@ import com.example.keepthebeat.utils.Constants;
 import com.example.keepthebeat.utils.FileAccess;
 import com.example.keepthebeat.utils.Tools;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;

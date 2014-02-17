@@ -1,7 +1,6 @@
 package com.example.keepthebeat.game;
 
 import com.example.keepthebeat.game.shape.GameShape;
-import com.example.keepthebeat.utils.Constants;
 
 public class Score {
 

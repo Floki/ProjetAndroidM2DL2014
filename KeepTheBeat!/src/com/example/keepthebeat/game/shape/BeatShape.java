@@ -1,14 +1,7 @@
 package com.example.keepthebeat.game.shape;
 
-import com.example.keepthebeat.game.Game;
-
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.OvalShape;
-import android.graphics.drawable.shapes.Shape;
-import android.os.Handler;
-import android.util.Log;
 
 public class BeatShape extends GameShape {
 
