@@ -58,7 +58,8 @@ public class GameEngine {
 	private float actionnerMoveX;
 	private float actionnerMoveY;
 	private int timeBeforeChangeMusic;
-	private LinkedList<Double> lastAmplitudes;
+	double lastGettedAmplitude;
+
 	
 	/**
 	 * Constructeur
@@ -67,6 +68,7 @@ public class GameEngine {
 		this.soundEngine = soundEngine;
 		this.gameActivity = activity;
 		timeBeforeChangeMusic = 500;
+		lastGettedAmplitude = 0;
 		score = new Score();
 		Constants.score = 0;
 		userIsTouching = false;
@@ -80,7 +82,6 @@ public class GameEngine {
 		actionnerMoveMinSpeed = 7;
 		actionnerMoveX = (float) ((Math.random() - 0.5) * actionnerMoveMinSpeed * 10);
 		actionnerMoveY = (float) ((Math.random() - 0.5) * actionnerMoveMinSpeed * 10);
-		lastAmplitudes = new LinkedList<Double>();
 	}
 	
 	/**
@@ -192,32 +193,23 @@ public class GameEngine {
 	 * @param amplitude Amplitude du son joué
 	 */
 	public void computePlayerActionFromTheAmplitude(double amplitude) {
-		lastAmplitudes.addLast(amplitude);
-		if(lastAmplitudes.size() > 20) {
-			lastAmplitudes.removeFirst();
-		}
-		double lastAverageSongAmplitude = 0;
-		for(double amplitudeTmp : lastAmplitudes) {
-			lastAverageSongAmplitude += amplitudeTmp;
-		}
-		lastAverageSongAmplitude /= lastAmplitudes.size();
 		// On récupère l'amplitude maximale du son joué
 		maxSongAmplitude = Math.max(maxSongAmplitude, amplitude);
 		// Si le son est un son fort 
 		// OU si l'on est sur un pente ascendant
 		// Une action du joueur est requise
-		if(amplitude > lastAverageSongAmplitude * 1.2) {
+		if(amplitude > lastGettedAmplitude * 1.01) {
 			// On dessine une image
 			addGameShape(actionnerX, actionnerY);
 		}
 		// Si le son se calme un instant, on déclenche un évènement
-		else if(amplitude < lastAverageSongAmplitude * 0.2) {
+		else if(amplitude < lastGettedAmplitude * 0.2) {
 			actionnerX = (float) (Math.random() * gameWidth);
 			actionnerY = (float) (Math.random() * gameHeight);
 		}
-		actionnerMoveMinSpeed = Math.max(lastAverageSongAmplitude / amplitude, 1) * 3;
+		actionnerMoveMinSpeed = Math.max(lastGettedAmplitude / amplitude, 1) * 3;
 		// Mémorise l'ancienne amplitude
-		lastAmplitude = amplitude;
+		lastGettedAmplitude = amplitude;
 	}
 	
 	/**

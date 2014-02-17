@@ -66,7 +66,7 @@ public class Game extends CustomActivity implements SurfaceHolder.Callback {
 		gameView = (GameView)findViewById(R.id.gameView);
 		gameView.getHolder().addCallback(this);
 
-		soundEngine = new SoundEngine(Game.this);
+		soundEngine = new SoundEngine(this, Game.this);
 		
 		// On crée le moteur du jeu
 		gameEngine = new GameEngine( this, soundEngine );

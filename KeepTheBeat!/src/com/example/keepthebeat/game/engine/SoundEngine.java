@@ -2,6 +2,7 @@ package com.example.keepthebeat.game.engine;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import com.example.keepthebeat.R;
 import com.example.keepthebeat.music.MusicFile;
@@ -47,11 +48,17 @@ public class SoundEngine {
 	private Visualizer mVisualizer;
 	private Equalizer mEqualizer;
 	
+	private LinkedList<Double> lastAmplitudes;
+	
+	ArrayList<String> phoneMediasPath = new ArrayList<String>();  
+
+	
 	@SuppressLint("NewApi")
-	public SoundEngine(Context context) {
+	public SoundEngine(Activity activity, Context context) {
 		// Initialisation des lecteur 
 		int mediaToOpen = 0;
 		witnessAdvance = 0;
+		lastAmplitudes = new LinkedList<Double>();
 		mediaToOpen = R.raw.defaultsound;
 		mRealPlayer = MediaPlayer.create(context, mediaToOpen);
 		mWitnessPlayer = MediaPlayer.create(context, mediaToOpen);
@@ -60,6 +67,19 @@ public class SoundEngine {
 		volume = 1;
 		mRealPlayer.setVolume(volume, volume);
 		linkVisualizerAndEqualizer();
+		String[] proj = { MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.DURATION };  
+		Cursor musicCursor = activity.managedQuery(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,proj, null, null, null);  
+
+		if(musicCursor.moveToFirst()) {  
+			do {  
+				if(musicCursor.getString(1) != null) {
+					if(Integer.parseInt(musicCursor.getString(1)) > 60 * 1000) {
+						phoneMediasPath.add(musicCursor.getString(0));
+					}
+				}
+			}  
+			while(musicCursor.moveToNext());  
+		} 
 	}
 	
 	@SuppressLint("NewApi")
@@ -156,23 +176,13 @@ public class SoundEngine {
 		}
 	}
 	
+	public void retrievePhoneMedias(Activity activity) {
+
+		
+	}
+	
 	public void playRandomMedia(Activity activity) {
-		ArrayList<String> songs = new ArrayList<String>();  
-
-		String[] proj = { MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.DURATION };  
-		Cursor musicCursor = activity.managedQuery(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,proj, null, null, null);  
-
-		if(musicCursor.moveToFirst()) {  
-			do {  
-				if(musicCursor.getString(1) != null) {
-					if(Integer.parseInt(musicCursor.getString(1)) > 60 * 1000) {
-						songs.add(musicCursor.getString(0));
-					}
-				}
-			}  
-			while(musicCursor.moveToNext());  
-		} 
-		changeMediaPlayed(songs.get((int) (songs.size() * Math.random())));
+		changeMediaPlayed(phoneMediasPath.get((int) (phoneMediasPath.size() * Math.random())));
 		playIfNeedToPlay(true);
 	}
 	
@@ -215,9 +225,15 @@ public class SoundEngine {
 						amplitudeTmp += dbValue;
 					}
 				}
-				// Et on la transfère au moteur du jeux
-				Tools.log(this, "Amplitude calculée : " + amplitudeTmp);
 				amplitude = amplitudeTmp;
+				// Et on la transfère au moteur du jeux
+				LinkedList<Double> lastAmplitudesTmp = new LinkedList<Double>(lastAmplitudes);
+
+				lastAmplitudesTmp.addLast(amplitude);
+				if(lastAmplitudesTmp.size() > 20) {
+					lastAmplitudesTmp.removeFirst();
+				}
+				lastAmplitudes = lastAmplitudesTmp;
 			}
 
 		}, Visualizer.getMaxCaptureRate(), true, true);
@@ -246,6 +262,13 @@ public class SoundEngine {
 	}
 	
 	public double getAmplitude() {
-		return amplitude;
+		LinkedList<Double> lastAmplitudesTmp = new LinkedList<Double>(lastAmplitudes);
+		double lastAverageSongAmplitude = 0;
+		for(double amplitudeTmp : lastAmplitudesTmp) {
+			lastAverageSongAmplitude += amplitudeTmp;
+		}
+		lastAverageSongAmplitude /= lastAmplitudesTmp.size();
+		Tools.log(this, "Getted amplitude : " + lastAverageSongAmplitude);
+		return lastAverageSongAmplitude;
 	}
 }
