@@ -4,6 +4,7 @@ import java.io.File;
 
 import com.example.keepthebeat.CustomActivity;
 import com.example.keepthebeat.R;
+import com.example.keepthebeat.ScoreActivity;
 import com.example.keepthebeat.game.PatternSelection;
 import com.example.keepthebeat.music.MusicSelection;
 import com.example.keepthebeat.utils.Constants;
@@ -58,7 +59,8 @@ public class Title extends CustomActivity {
 		scores.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {	
-				// TODO : create score screen
+				Intent myIntent = new Intent(Title.this, ScoreActivity.class);
+				startActivityForResult(myIntent, 0);
 			}
 		});
 		
