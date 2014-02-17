@@ -252,4 +252,8 @@ public class GameShape extends ShapeDrawable{
 	public boolean isBonus() {
 		return getScore() > Game.level.getBaseScore();
 	}
+	
+	public boolean notGoodMomentAfterDisplay() {
+		return System.currentTimeMillis() > currentTimeAtAdd + showTimer && !goodMoment;
+	}
 }

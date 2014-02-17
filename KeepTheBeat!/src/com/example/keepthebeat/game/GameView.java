@@ -52,6 +52,12 @@ public class GameView extends SurfaceView {
 			scorePaint.setTextSize(Game.virtualXToScreenX(50));
 			scorePaint.setColor(Color.WHITE);
 			canvas.drawText(""+GameEngine.score.getScore(), Game.virtualXToScreenX(50), Game.virtualYToScreenY(50), scorePaint);
+			Paint lifePaint = new Paint();
+			lifePaint.setColor(Color.BLUE);
+			canvas.drawRect(Game.virtualXToScreenX(50), 
+							Game.virtualYToScreenY(50), 
+							(Game.virtualXToScreenX(Game.virtualSize-50) * GameEngine.life) / GameEngine.maxLife, Game.virtualYToScreenY(75), lifePaint);
 		}
+		
 	}	
 }

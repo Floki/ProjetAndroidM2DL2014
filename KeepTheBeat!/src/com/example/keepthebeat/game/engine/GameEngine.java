@@ -58,7 +58,9 @@ public class GameEngine {
 	private float actionnerMoveX;
 	private float actionnerMoveY;
 	private int timeBeforeChangeMusic;
-	double lastGettedAmplitude;
+	private double lastGettedAmplitude;
+	public static final int maxLife = 100;
+	public static int life = maxLife;
 
 	
 	/**
@@ -111,6 +113,16 @@ public class GameEngine {
 	public void engineLoop() {
 		timeBeforeChangeMusic--;
 		if(timeBeforeChangeMusic <= 0) {
+			if(Game.level.getDifficulty() == Constants.EASY) {
+				Game.level.setShowTimer((long) (Game.level.getShowTimer() * 0.95));
+			}
+			else if(Game.level.getDifficulty() == Constants.NORMAL) {
+				Game.level.setShowTimer((long) (Game.level.getShowTimer() * 0.93));
+			}
+			if(Game.level.getDifficulty() == Constants.HARD) {
+				Game.level.setShowTimer((long) (Game.level.getShowTimer() * 0.90));
+			}
+			
 			timeBeforeChangeMusic = 500;
 			soundEngine.playRandomMedia(gameActivity);
 			soundEngine.seekToRandomPosition();
@@ -118,6 +130,10 @@ public class GameEngine {
 		soundEngine.setWitnessPlayerInFuture((int) Game.level.getShowTimer());
 		computeNextActionnerPosition();
 		if(endLoop) {
+			List<GameShape> actionnersTmp = new ArrayList<GameShape>(actionners);
+			for(GameShape actionner : actionnersTmp) {
+				actionner.hideMore();
+			}
 			soundEngine.setVolume((float) (soundEngine.getVolume() - 0.01));
 			if(soundEngine.getVolume() <= 0.01) {
 				reallyEnd = true;
@@ -133,6 +149,9 @@ public class GameEngine {
 					int distance = (int) Math.sqrt((actionner.getX() - userTouchX) * (actionner.getX() - userTouchX) 
 												 + (actionner.getY() - userTouchY) * (actionner.getY() - userTouchY));
 					if(distance < actionner.getHeight() / 2 && distance < actionner.getWidth()) {
+						if(actionner.notGoodMomentAfterDisplay()) {
+							life--;
+						}
 						score.computeScoreFromShape( actionner );
 						actionner.hideAndExplode();
 					}
@@ -140,13 +159,18 @@ public class GameEngine {
 				if(!actionner.stillUse()) {
 					actionners.remove(actionner);
 					score.computeScoreFromShape( actionner );
+					if(!actionner.isExploding()) { 
+						life--;
+					}
 					actionner = null;
 				}
 			}
+
 			// Partage le pattern pour qu'il soit déssiné
 			Constants.pattern = actionners;
-			if(false) {
+			if(life <= 0) {
 				endLoop = true;
+				life = 0;
 			}
 		}
 	}

@@ -23,6 +23,10 @@ public class Level {
 	private int shapeSizePercent = 15;
 	private int timeGoodPercent = 20;
 	
+	/**
+	 * 
+	 */
+	private String difficulty;
 	/*
 	 * Scoring constants
 	 */
@@ -33,13 +37,13 @@ public class Level {
 
 	
 	public Level() {
-		String level = FileAccess.readFileAsString(Constants.keepTheBeatFolder, "level");
-		if( level.equals("") ) {
-			level = Constants.NORMAL;
+		difficulty = FileAccess.readFileAsString(Constants.keepTheBeatFolder, "level");
+		if( difficulty.equals("") ) {
+			difficulty = Constants.NORMAL;
 		}
 		
 		//default is Normal, so modify just for Easy and Hard
-		if( level.equals( Constants.EASY ) ) {
+		if( difficulty.equals( Constants.EASY ) ) {
 			showTimer += showTimer * easyPercent/100;
 			hideTimer += hideTimer * easyPercent/100;
 			timeGoodPercent += timeGoodPercent * easyPercent/100;
@@ -48,7 +52,7 @@ public class Level {
 			missPercent -= missPercent * easyPercent/100;
 			bonusChance -= bonusChance * easyPercent/100;
 		}
-		else if ( level.equals( Constants.HARD ) ) {
+		else if ( difficulty.equals( Constants.HARD ) ) {
 			showTimer -= showTimer * hardPercent/100;
 			hideTimer -= hideTimer * hardPercent/100;
 			timeGoodPercent -= timeGoodPercent * hardPercent/100;
@@ -59,9 +63,17 @@ public class Level {
 		}
 	}
 
+	public String getDifficulty() {
+		return difficulty;
+	}
 
 	public long getShowTimer() {
 		return showTimer;
+	}
+
+
+	public void setShowTimer(long d) {
+		this.showTimer = d;
 	}
 
 
