@@ -6,9 +6,6 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import android.R;
-import android.app.Activity;
-
 import com.example.keepthebeat.CustomActivity;
 import com.example.keepthebeat.game.Game;
 import com.example.keepthebeat.game.Pattern;
@@ -185,12 +182,12 @@ public class GameEngine {
 	 */
 	public void saveShape(float time, float x, float y) {
 		if(soundEngine.getCurrentMusicTime() > lastComputedTime + 100 ||
-		Game.virtualXToScreenX(75) < Tools.distanceBetweenPosition(new Float(oldActionnerX).intValue(), 
-										 new Float(oldActionnerY).intValue(), 
-										 new Float(x).intValue(), 
-										 new Float(y).intValue())) {
-			int savedX = Game.screenXToVirtualX(new Float(x).intValue());
-			int savedY = Game.screenYToVirtualY(new Float(y).intValue());
+		Game.virtualXToScreenX(75) < Tools.distanceBetweenPosition(Float.valueOf(oldActionnerX).intValue(), 
+										 Float.valueOf(oldActionnerY).intValue(), 
+										 Float.valueOf(x).intValue(), 
+										 Float.valueOf(y).intValue())) {
+			int savedX = Game.screenXToVirtualX(Float.valueOf(x).intValue());
+			int savedY = Game.screenYToVirtualY(Float.valueOf(y).intValue());
 			patternMap.put((long)time, new Pair<Integer, Integer>(savedX,savedY));	
 			addGameShape(x, y);
 			oldActionnerX = x;

@@ -1,13 +1,11 @@
 package com.example.keepthebeat;
 
-import com.example.keepthebeat.game.Game;
 import com.example.keepthebeat.title.Title;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.widget.EditText;
 
 public class CustomActivity extends Activity {
 	public void backToTitle() {
