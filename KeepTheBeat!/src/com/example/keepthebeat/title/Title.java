@@ -31,7 +31,6 @@ public class Title extends CustomActivity {
 		
 		setContentView(R.layout.title);
 		Button start = (Button) findViewById(R.id.Start);
-		Button create = (Button) findViewById(R.id.Create);
 		Button scores = (Button) findViewById(R.id.Scores);
 		Button options = (Button) findViewById(R.id.Options);
 		Button exit = (Button) findViewById(R.id.exit);

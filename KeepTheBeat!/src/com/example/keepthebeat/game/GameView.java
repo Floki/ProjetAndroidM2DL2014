@@ -52,18 +52,25 @@ public class GameView extends SurfaceView {
 			scorePaint.setTextSize(Game.virtualXToScreenX(50));
 			scorePaint.setColor(Color.WHITE);
 			canvas.drawText(""+GameEngine.score.getScore(), Game.virtualXToScreenX(50), Game.virtualYToScreenY(50), scorePaint);
+			
 			Paint lifePaint = new Paint();
 			lifePaint.setColor(Color.BLUE);
-			canvas.drawRect(Game.virtualXToScreenX(50), 
-							Game.virtualYToScreenY(50), 
-						   (Game.virtualXToScreenX(Game.virtualSize-50) * GameEngine.life) / GameEngine.maxLife, 
-							Game.virtualYToScreenY(75), lifePaint);
+			int xLeft, xRight, yTop, yBottom;
+			xLeft = Game.virtualXToScreenX(50);
+			xRight = xLeft + (Game.virtualXToScreenX(Game.virtualSize - 100) * GameEngine.life) / GameEngine.maxLife;
+			xRight = Math.max(xLeft, xRight);
+			yTop = Game.virtualYToScreenY(50);
+			yBottom = Game.virtualYToScreenY(75);
+			canvas.drawRect(xLeft, yTop, xRight, yBottom, lifePaint);
+			
 			Paint durationPaint = new Paint();
 			durationPaint.setColor(Color.YELLOW);
-			canvas.drawRect(Game.virtualXToScreenX(50), 
-							Game.virtualYToScreenY(Game.virtualSize - 75), 
-						   (Game.virtualXToScreenX(Game.virtualSize - 50) * GameEngine.timeBeforeChangeMusic) / GameEngine.durationOfASample, 
-						    Game.virtualYToScreenY(Game.virtualSize - 50), durationPaint);
+			xLeft = Game.virtualXToScreenX(50);
+			xRight = xLeft + (Game.virtualXToScreenX(Game.virtualSize - 100) * GameEngine.timeBeforeChangeMusic) / GameEngine.durationOfASample;
+			xRight = Math.max(xLeft, xRight);
+			yTop = Game.virtualYToScreenY(Game.virtualSize - 50);
+			yBottom = Game.virtualYToScreenY(Game.virtualSize - 75);
+			canvas.drawRect(xLeft, yTop, xRight, yBottom, durationPaint);
 		}
 		
 	}	
