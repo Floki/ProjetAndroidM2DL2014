@@ -1,16 +1,22 @@
 package com.example.keepthebeat.game.engine;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
 import com.example.keepthebeat.R;
+import com.example.keepthebeat.music.MusicFile;
 import com.example.keepthebeat.utils.Constants;
 import com.example.keepthebeat.utils.Tools;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.media.audiofx.Equalizer;
 import android.media.audiofx.Visualizer;
 import android.media.audiofx.Visualizer.OnDataCaptureListener;
 import android.net.Uri;
+import android.provider.MediaStore;
 
 /**
  * Contient tout le code pour la lecture et analyse de sons
@@ -53,6 +59,133 @@ public class SoundEngine {
 		mWitnessPlayer.setVolume(0, 0);
 		volume = 1;
 		mRealPlayer.setVolume(volume, volume);
+		linkVisualizerAndEqualizer();
+	}
+	
+	@SuppressLint("NewApi")
+	public SoundEngine(Context context, String filePath) {
+		// Initialisation des lecteur 
+		Uri mediaToOpen = Uri.parse(filePath);
+		mRealPlayer = MediaPlayer.create(context, mediaToOpen);
+		mediaPath = filePath;
+		volume = 1;
+		mRealPlayer.setVolume(volume, volume);
+	}
+	
+	/**
+	 * Demarre ou stoppe la musique suivant au choix
+	 * @param needToPlay T = Play, F = Pause
+	 */
+	public void playIfNeedToPlay(boolean needToPlay) {
+		if(needToPlay) {
+			mRealPlayer.start();
+			setWitnessPlayerInFuture(witnessAdvance);
+			if(!mWitnessPlayer.isPlaying() && mRealPlayer.isPlaying()) {
+				mWitnessPlayer.start();
+			}
+		}
+		else {
+			mRealPlayer.pause();
+		}
+		isPlaying = needToPlay;
+	}
+	
+	/**
+	 * Place le lecteur temoin avec x milliseconde d'avance et le lance
+	 */
+	public void setWitnessPlayerInFuture(int timeInFuture) {
+		if(!mWitnessPlayer.isPlaying() && mRealPlayer.isPlaying()) {
+			mWitnessPlayer.start();
+		}
+		if(timeInFuture == witnessAdvance) {
+			return;
+		}
+		mWitnessPlayer.seekTo(mRealPlayer.getCurrentPosition() + timeInFuture);
+		witnessAdvance = timeInFuture;
+	}
+	
+	/**
+	 * Demarre ou stoppe la musique
+	 */
+	public void PlayOrPause() {
+		playIfNeedToPlay(!isPlaying);
+	}
+	
+	/**
+	 * Destructeur
+	 */
+	@SuppressLint("NewApi")
+	public void onDestroy() {
+		mRealPlayer.stop();
+		mRealPlayer.release();
+		mWitnessPlayer.stop();
+		mWitnessPlayer.release();
+		mVisualizer.release();
+		mEqualizer.release();
+	}
+
+	public int getCurrentMusicTime() {
+		return mRealPlayer.getCurrentPosition()/10;
+	}
+	
+	public void changeMediaPlayed(String mediaPath) {
+		try {
+			Tools.log(this, "Want to play " + mediaPath);
+			mRealPlayer.stop();
+			mRealPlayer.reset();
+			mRealPlayer.setDataSource(mediaPath);
+			this.mediaPath = mediaPath;
+			mRealPlayer.prepare();
+			volume = 1;
+			mRealPlayer.setVolume(volume, volume);
+			mWitnessPlayer.stop();
+			mWitnessPlayer.reset();
+			mWitnessPlayer.setDataSource(mediaPath);
+			this.mediaPath = mediaPath;
+			mWitnessPlayer.prepare();
+			mWitnessPlayer.setVolume(0, 0);
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void playRandomMedia(Activity activity) {
+		ArrayList<String> songs = new ArrayList<String>();  
+
+		String[] proj = { MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.DURATION };  
+		Cursor musicCursor = activity.managedQuery(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,proj, null, null, null);  
+
+		if(musicCursor.moveToFirst()) {  
+			do {  
+				if(musicCursor.getString(1) != null) {
+					if(Integer.parseInt(musicCursor.getString(1)) > 60 * 1000) {
+						songs.add(musicCursor.getString(0));
+					}
+				}
+			}  
+			while(musicCursor.moveToNext());  
+		} 
+		changeMediaPlayed(songs.get((int) (songs.size() * Math.random())));
+		playIfNeedToPlay(true);
+	}
+	
+	public void seekToRandomPosition() {
+		int minimunPosition = Math.min(mRealPlayer.getDuration(), 30000);
+		int maximunPosition = Math.max(mRealPlayer.getDuration() - 30000, 30000);
+		mRealPlayer.seekTo((int) (minimunPosition + (Math.random() * (maximunPosition - minimunPosition))));
+		setWitnessPlayerInFuture(witnessAdvance);
+		
+	}
+
+	@SuppressLint("NewApi")
+	public void linkVisualizerAndEqualizer() {
 		// On initialise le nécessaire pour récupérer les informations 
 		// sur le son joué
 		mEqualizer = new Equalizer(0, mWitnessPlayer.getAudioSessionId());
@@ -83,90 +216,14 @@ public class SoundEngine {
 					}
 				}
 				// Et on la transfère au moteur du jeux
-				Tools.log(this, amplitudeTmp);
+				Tools.log(this, "Amplitude calculée : " + amplitudeTmp);
 				amplitude = amplitudeTmp;
 			}
 
 		}, Visualizer.getMaxCaptureRate(), true, true);
 		mVisualizer.setEnabled(true);
 	}
-	
-	@SuppressLint("NewApi")
-	public SoundEngine(Context context, String filePath) {
-		// Initialisation des lecteur 
-		Uri mediaToOpen = Uri.parse(filePath);
-		mRealPlayer = MediaPlayer.create(context, mediaToOpen);
-		mediaPath = filePath;
-		volume = 1;
-		mRealPlayer.setVolume(volume, volume);
-	}
-	
-	/**
-	 * Demarre ou stoppe la musique suivant au choix
-	 * @param needToPlay T = Play, F = Pause
-	 */
-	public void playIfNeedToPlay(boolean needToPlay) {
-		if(needToPlay) {
-			mRealPlayer.start();
-			setWitnessPlayerInFuture(witnessAdvance);
-		}
-		else {
-			mRealPlayer.pause();
-		}
-		isPlaying = needToPlay;
-	}
-	
-	/**
-	 * Place le lecteur temoin avec x milliseconde d'avance et le lance
-	 */
-	public void setWitnessPlayerInFuture(int timeInFuture) {
-		if(!mWitnessPlayer.isPlaying() && mRealPlayer.isPlaying()) {
-			mWitnessPlayer.start();
-		}
-		mWitnessPlayer.seekTo(mRealPlayer.getCurrentPosition() + timeInFuture);
-	}
-	
-	/**
-	 * Demarre ou stoppe la musique
-	 */
-	public void PlayOrPause() {
-		playIfNeedToPlay(!isPlaying);
-	}
-	
-	/**
-	 * Destructeur
-	 */
-	public void onDestroy() {
-		mRealPlayer.stop();
-		mRealPlayer.release();
-	}
 
-	public int getCurrentMusicTime() {
-		return mRealPlayer.getCurrentPosition()/10;
-	}
-	
-	public void changeMediaPlayed(String mediaPath) {
-		try {
-			Tools.log(this, "Want to play " + mediaPath);
-			mRealPlayer.stop();
-			mRealPlayer.reset();
-			mRealPlayer.setDataSource(mediaPath);
-			this.mediaPath = mediaPath;
-			mRealPlayer.prepare();
-			volume = 1;
-			mRealPlayer.setVolume(volume, volume);
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
 	public String getMediaFileName() {
 		return mediaPath.substring(mediaPath.lastIndexOf("/") + 1);
 	}

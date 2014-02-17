@@ -1,8 +1,11 @@
 package com.example.keepthebeat.game.engine;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -46,7 +49,7 @@ public class GameEngine {
 	private boolean endLoop;
 	private boolean reallyEnd;
 	// Game activity
-	private CustomActivity gameActivity;
+	private Activity gameActivity;
 	private double maxSongAmplitude;
 	private double actionnerMoveMinSpeed;
 	private double lastAmplitude;
@@ -54,12 +57,16 @@ public class GameEngine {
 	private float actionnerY;
 	private float actionnerMoveX;
 	private float actionnerMoveY;
+	private int timeBeforeChangeMusic;
+	private LinkedList<Double> lastAmplitudes;
 	
 	/**
 	 * Constructeur
 	 */
-	public GameEngine( SoundEngine soundEngine ) {
+	public GameEngine( Activity activity, SoundEngine soundEngine ) {
 		this.soundEngine = soundEngine;
+		this.gameActivity = activity;
+		timeBeforeChangeMusic = 500;
 		score = new Score();
 		Constants.score = 0;
 		userIsTouching = false;
@@ -70,9 +77,10 @@ public class GameEngine {
 		endLoop = false;
 		actionnerX = Game.screenWidth / 2;
 		actionnerY = Game.screenHeight / 2;
-		actionnerMoveMinSpeed = 5;
+		actionnerMoveMinSpeed = 7;
 		actionnerMoveX = (float) ((Math.random() - 0.5) * actionnerMoveMinSpeed * 10);
 		actionnerMoveY = (float) ((Math.random() - 0.5) * actionnerMoveMinSpeed * 10);
+		lastAmplitudes = new LinkedList<Double>();
 	}
 	
 	/**
@@ -81,16 +89,31 @@ public class GameEngine {
 	 * @param y
 	 */
 	public void addGameShape( float x, float y) {
-		long showTimer = (Constants.mode == Constants.Mode.CREATE ? 1 : Game.level.getShowTimer() );
-		GameShape beatShape = new GameShape(showTimer,Game.level.getHideTimer());
-		beatShape.setPosition((int)x, (int)y);
-		actionners.add(beatShape);
+		if(soundEngine.getCurrentMusicTime() > lastComputedTime + 100 ||
+				Game.virtualXToScreenX(75) < Tools.distanceBetweenPosition(new Float(oldActionnerX).intValue(), 
+												 new Float(oldActionnerY).intValue(), 
+												 new Float(x).intValue(), 
+												 new Float(y).intValue())) {
+			long showTimer = (Constants.mode == Constants.Mode.CREATE ? 1 : Game.level.getShowTimer() );
+			GameShape beatShape = new GameShape(showTimer,Game.level.getHideTimer());
+			beatShape.setPosition((int)x, (int)y);
+			actionners.add(beatShape);
+			oldActionnerX = x;
+			oldActionnerY = y;
+		}
+		lastComputedTime = soundEngine.getCurrentMusicTime();
 	}
 	
 	/**
 	 * Game engine Loop
 	 */
 	public void engineLoop() {
+		timeBeforeChangeMusic--;
+		if(timeBeforeChangeMusic <= 0) {
+			timeBeforeChangeMusic = 500;
+			soundEngine.playRandomMedia(gameActivity);
+			soundEngine.seekToRandomPosition();
+		}
 		soundEngine.setWitnessPlayerInFuture((int) Game.level.getShowTimer());
 		computeNextActionnerPosition();
 		if(endLoop) {
@@ -124,16 +147,6 @@ public class GameEngine {
 			if(false) {
 				endLoop = true;
 			}
-		}
-	}
-
-	/**
-	 * Permet d'ajouter plusieurs shape
-	 * @param values
-	 */
-	private void addGameShapes(Collection<Pair<Integer, Integer>> values) {
-		for(Pair<Integer, Integer> position: values) {
-			addGameShape(Game.virtualXToScreenX(position.getFirst()), Game.virtualYToScreenY(position.getSecond()));
 		}
 	}
 
@@ -179,28 +192,30 @@ public class GameEngine {
 	 * @param amplitude Amplitude du son joué
 	 */
 	public void computePlayerActionFromTheAmplitude(double amplitude) {
-		Tools.log(this, amplitude);
+		lastAmplitudes.addLast(amplitude);
+		if(lastAmplitudes.size() > 20) {
+			lastAmplitudes.removeFirst();
+		}
+		double lastAverageSongAmplitude = 0;
+		for(double amplitudeTmp : lastAmplitudes) {
+			lastAverageSongAmplitude += amplitudeTmp;
+		}
+		lastAverageSongAmplitude /= lastAmplitudes.size();
 		// On récupère l'amplitude maximale du son joué
 		maxSongAmplitude = Math.max(maxSongAmplitude, amplitude);
 		// Si le son est un son fort 
 		// OU si l'on est sur un pente ascendant
 		// Une action du joueur est requise
-		if(amplitude > 0.9 * maxSongAmplitude || (amplitude > 1300 && lastAmplitude > 1300 && amplitude > lastAmplitude * ((13000 - Math.min(amplitude/2, 3001))/10000))) {
+		if(amplitude > lastAverageSongAmplitude * 1.2) {
 			// On dessine une image
 			addGameShape(actionnerX, actionnerY);
 		}
-		else if(amplitude > 0.95 * maxSongAmplitude) {
-			actionnerMoveMinSpeed = Math.min(actionnerMoveMinSpeed + 0.1,3);
-		}
 		// Si le son se calme un instant, on déclenche un évènement
-		else if(amplitude < maxSongAmplitude * 0.2) {
+		else if(amplitude < lastAverageSongAmplitude * 0.2) {
 			actionnerX = (float) (Math.random() * gameWidth);
 			actionnerY = (float) (Math.random() * gameHeight);
-			actionnerMoveMinSpeed = Math.max(actionnerMoveMinSpeed - 1,2);
 		}
-		else {
-			actionnerMoveMinSpeed = Math.max(actionnerMoveMinSpeed - 1,2);
-		}
+		actionnerMoveMinSpeed = Math.max(lastAverageSongAmplitude / amplitude, 1) * 3;
 		// Mémorise l'ancienne amplitude
 		lastAmplitude = amplitude;
 	}
@@ -211,18 +226,29 @@ public class GameEngine {
 	public void computeNextActionnerPosition() {
 		actionnerX += this.actionnerMoveX;
 		actionnerY += this.actionnerMoveY;
-		Tools.log(this, "Actionner Pos : " + actionnerX + " " + actionnerY);
 		if(this.actionnerX < 0) {
-			actionnerMoveX = (float) (actionnerMoveMinSpeed + (Math.random() + 0.1) * actionnerMoveMinSpeed * 10);
+			actionnerMoveX = (float) (actionnerMoveMinSpeed + (Math.random() + 0.1) * actionnerMoveMinSpeed * 6);
 		}
 		else if(this.actionnerX > gameWidth) {
-			actionnerMoveX = (float) (-actionnerMoveMinSpeed + (Math.random() - 1.01) * actionnerMoveMinSpeed * 10);
+			actionnerMoveX = (float) (-actionnerMoveMinSpeed + (Math.random() - 1.01) * actionnerMoveMinSpeed * 6);
 		}
 		if(this.actionnerY < 0) {
-			actionnerMoveY = (float) (actionnerMoveMinSpeed + (Math.random() + 0.1) * actionnerMoveMinSpeed * 10);
+			actionnerMoveY = (float) (actionnerMoveMinSpeed + (Math.random() + 0.1) * actionnerMoveMinSpeed * 6);
 		}
 		else if(this.actionnerY > gameHeight) {
-			actionnerMoveY = (float) (-actionnerMoveMinSpeed + (Math.random() - 1.01) * actionnerMoveMinSpeed * 10);
+			actionnerMoveY = (float) (-actionnerMoveMinSpeed + (Math.random() - 1.01) * actionnerMoveMinSpeed * 6);
+		}
+		if(actionnerMoveY < 1 && actionnerMoveY >= 0) {
+			actionnerMoveY = 1;
+		}
+		if(actionnerMoveY > -1 && actionnerMoveY <= 0) {
+			actionnerMoveY = -1;
+		}
+		if(actionnerMoveX < 1 && actionnerMoveX >= 0) {
+			actionnerMoveX = 1;
+		}
+		if(actionnerMoveX > -1 && actionnerMoveX <= 0) {
+			actionnerMoveX = -1;
 		}
 	}
 	

@@ -69,7 +69,7 @@ public class Game extends CustomActivity implements SurfaceHolder.Callback {
 		soundEngine = new SoundEngine(Game.this);
 		
 		// On crée le moteur du jeu
-		gameEngine = new GameEngine( soundEngine );
+		gameEngine = new GameEngine( this, soundEngine );
 		Tools.log(this, patternFilePath);
 		
 		// On envoie la position touché par l'utilisateur
