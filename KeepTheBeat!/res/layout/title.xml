@@ -18,14 +18,6 @@
             android:text="Exit" />
 
         <Button
-            android:id="@+id/Create"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/Start"
-            android:layout_centerHorizontal="true"
-            android:text="Create" />
-
-        <Button
             android:id="@+id/Start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -37,8 +29,8 @@
             android:id="@+id/Scores"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/Start"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/Create"
             android:text="Scores" />
         
         <Button

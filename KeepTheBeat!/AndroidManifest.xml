@@ -32,17 +32,14 @@
 
         <activity 
             android:noHistory="true"
-            android:screenOrientation="portrait" android:name="com.example.keepthebeat.game.Game"></activity>
-        <activity 
-            android:noHistory="true"
-            android:screenOrientation="portrait" android:name="com.example.keepthebeat.music.MusicSelection"></activity>
-        <activity 
-            android:noHistory="true"
-            android:screenOrientation="portrait" android:name="com.example.keepthebeat.game.PatternSelection"></activity>
+            android:screenOrientation="portrait" 
+            android:name="com.example.keepthebeat.game.Game"></activity>
 		<activity 
+		    android:noHistory="true"
 		    android:screenOrientation="portrait" 
 		    android:name="com.example.keepthebeat.parameters.Parameters"></activity>
 		<activity 
+		    android:noHistory="true"
 		    android:screenOrientation="portrait" 
 		    android:name="com.example.keepthebeat.ScoreActivity"></activity>
 
