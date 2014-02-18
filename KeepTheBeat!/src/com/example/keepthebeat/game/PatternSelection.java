@@ -56,7 +56,7 @@ public class PatternSelection extends CustomActivity {
 		}
 
 		final ListView list = (ListView)findViewById(R.id.list);
-		list.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,listOfFileAndPath));
+		list.setAdapter(new ArrayAdapter<String>(this, R.layout.custom_list_view_line,listOfFileAndPath));
 		list.invalidateViews();
 		list.setClickable(true);
 		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
