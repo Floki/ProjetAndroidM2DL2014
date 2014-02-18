@@ -167,6 +167,11 @@ public class GameShape extends ShapeDrawable{
 						this.getPaint().setColor(Color.rgb(255,165,0));
 					}
 					goodMoment = false;
+					
+					int timeForOneGrow = Math.max((int) ( (showTimer - ( ((int)showTimer) * Game.level.getTimeGoodPercent()/100)) / (Game.screenHeight * Game.level.getShapeSizePercent() / 100) ),1);
+					height = (int) ( (Game.screenHeight * Game.level.getShapeSizePercent() / 100) - ( absTimeDifference - ( ((int)showTimer) * Game.level.getTimeGoodPercent()/100) ) / timeForOneGrow );
+					width = height;
+					setPosition(getX(), getY());
 				}
 				
 				this.setAlpha(computeColor);
