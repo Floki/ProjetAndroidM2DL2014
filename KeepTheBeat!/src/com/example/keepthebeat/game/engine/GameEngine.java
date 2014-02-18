@@ -78,6 +78,7 @@ public class GameEngine {
 		gameWidth = Game.screenWidth;
 		gameHeight = Game.screenHeight;
 		actionners = new ArrayList<GameShape>();
+		Constants.pattern = actionners;
 		endLoop = false;
 		reallyEnd = false;
 		actionnerX = Game.screenWidth / 2;

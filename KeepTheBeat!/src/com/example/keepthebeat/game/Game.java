@@ -41,7 +41,7 @@ public class Game extends CustomActivity implements SurfaceHolder.Callback {
 	// Moteur du jeu
 	private GameEngine gameEngine;
 	// Thread principal
-	private static GameThread gameThread;
+	private GameThread gameThread;
 	
 	// Pattern file name
 	private String patternFolder;
@@ -50,6 +50,7 @@ public class Game extends CustomActivity implements SurfaceHolder.Callback {
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		Tools.log(this, "Start Game");
 		super.onCreate(savedInstanceState);
 		level = new Level();
 		// Full Screen
@@ -62,19 +63,20 @@ public class Game extends CustomActivity implements SurfaceHolder.Callback {
         screenWidth = getWindowManager().getDefaultDisplay().getWidth();
         
 		// On cree la vue
+        Tools.log(this, "Set View");
 		setContentView(R.layout.activity_game);
 		gameView = (GameView)findViewById(R.id.gameView);
 		gameView.getHolder().addCallback(this);
-
+		
+		Tools.log(this, "Set SoundEngine");
 		soundEngine = new SoundEngine(this, Game.this);
 		
 		// On crée le moteur du jeu
+		Tools.log(this, "Start GameEngine");
 		gameEngine = new GameEngine( this, soundEngine );
-		Tools.log(this, patternFilePath);
 		
 		// On envoie la position touché par l'utilisateur
 		gameView.setOnTouchListener(new OnTouchListener() {
-			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				final int action = event.getAction();
@@ -94,6 +96,7 @@ public class Game extends CustomActivity implements SurfaceHolder.Callback {
 				return true;
 			}
 		});
+		Tools.log(this, "Set GameThread");
 		gameThread = new GameThread(this, gameView, gameEngine);
 	}
 
@@ -103,24 +106,29 @@ public class Game extends CustomActivity implements SurfaceHolder.Callback {
 			gameThread.setRunning(false);
 			gameThread.interrupt();
 		}
+		if(soundEngine != null) {
+			soundEngine.onDestroy();
+		}
+		if(gameView != null) {
+			gameView.destroyDrawingCache();
+		}
 		gameThread = null;
 		gameEngine = null;
 		gameView = null;
+		soundEngine = null;
 		super.onDestroy();
 	}
 	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 	    if (keyCode == KeyEvent.KEYCODE_BACK) {
+	    	onDestroy();
 	        backToTitle();
 	    }
 
 	    return super.onKeyDown(keyCode, event);
 	}
 	
-	public static void pauseThread(boolean pause) {
-		gameThread.setRunning(!pause);
-	}
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {

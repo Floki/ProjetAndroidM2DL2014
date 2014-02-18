@@ -29,13 +29,13 @@ public class GameThread extends Thread {
 	}
 
 	public void setRunning(boolean run) {
+		Tools.log(this, "Set Running Thread " + run);
 		running = run;
 		soundEngine.playIfNeedToPlay(run);
 		if(run) {
 			start();
 		}
 		else {
-			soundEngine.onDestroy();
 			interrupt();
 		}
 	}
@@ -69,7 +69,7 @@ public class GameThread extends Thread {
 					view.getHolder().unlockCanvasAndPost(c);
 				}
 			}
-			sleepTime = ticksPS-(System.currentTimeMillis() - startTime);
+			sleepTime = ticksPS - (System.currentTimeMillis() - startTime);
 			try {
 				if (sleepTime > 0)
 					sleep(sleepTime);
