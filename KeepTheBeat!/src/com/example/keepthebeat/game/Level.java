@@ -111,4 +111,8 @@ public class Level {
 		return missPercent;
 	}
 	
+	public void setTimeGoodPercent(int newPercent) {
+		timeGoodPercent = Math.min(newPercent,5);
+	}
+	
 }

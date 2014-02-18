@@ -61,6 +61,8 @@ public class GameEngine {
 	// Life
 	public static final int maxLife = 100;
 	public static int life = maxLife;
+	// Debut partie
+	public long beginTime;
 
 	
 	/**
@@ -86,6 +88,7 @@ public class GameEngine {
 		actionnerMoveMinSpeed = 7;
 		actionnerMoveX = (float) ((Math.random() - 0.5) * actionnerMoveMinSpeed * 10);
 		actionnerMoveY = (float) ((Math.random() - 0.5) * actionnerMoveMinSpeed * 10);
+		beginTime = System.currentTimeMillis();
 	}
 	
 	/**
@@ -127,12 +130,16 @@ public class GameEngine {
 		if(timeBeforeChangeMusic <= 0) {
 			if(Game.level.getDifficulty() == Constants.EASY) {
 				Game.level.setShowTimer((long) (Game.level.getShowTimer() * 0.95));
+				Game.level.setShowTimer(Game.level.getShowTimer() - (System.currentTimeMillis() - beginTime)/50000);
 			}
 			else if(Game.level.getDifficulty() == Constants.NORMAL) {
 				Game.level.setShowTimer((long) (Game.level.getShowTimer() * 0.93));
+				Game.level.setShowTimer(Game.level.getShowTimer() - (System.currentTimeMillis() - beginTime)/10000);
 			}
 			if(Game.level.getDifficulty() == Constants.HARD) {
 				Game.level.setShowTimer((long) (Game.level.getShowTimer() * 0.90));
+				Game.level.setShowTimer(Game.level.getShowTimer() - (System.currentTimeMillis() - beginTime)/7500);
+
 			}
 			
 			timeBeforeChangeMusic = durationOfASample;
