@@ -1,6 +1,7 @@
 package com.example.keepthebeat.db;
 
 import com.example.keepthebeat.db.ScoreContract.ScoreEntry;
+import com.example.keepthebeat.utils.Tools;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,8 +10,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class ScoreDbHelper extends SQLiteOpenHelper {
 
 	// If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 2;
-    public static final String DATABASE_NAME = "Score.db";
+    public static final int DATABASE_VERSION = 1;
+    public static final String DATABASE_NAME = "Scores.db";
     
     private static final String SQL_CREATE_ENTRIES =
     	    "CREATE TABLE " + ScoreEntry.TABLE_NAME + " (" +
@@ -31,6 +32,8 @@ public class ScoreDbHelper extends SQLiteOpenHelper {
 	
 	@Override
 	public void onCreate(SQLiteDatabase db) {
+		Tools.log(this, "Create database version " + DATABASE_VERSION);
+		Tools.log(this, "SQL " + SQL_CREATE_ENTRIES);
 		db.execSQL(SQL_CREATE_ENTRIES);
 
 	}
@@ -39,6 +42,7 @@ public class ScoreDbHelper extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // This database is only a cache for online data, so its upgrade policy is
         // to simply to discard the data and start over
+		Tools.log(this, "Upgrading database from " + oldVersion +" to " + newVersion);
         db.execSQL(SQL_DELETE_ENTRIES);
         onCreate(db);
     }

@@ -28,8 +28,11 @@ public class ScoreActivity extends CustomActivity {
 
 		// Define a projection that specifies which columns from the database
 		// you will actually use after this query.
-		String[] projection = { ScoreEntry.COLUMN_NAME_TRACK,
-				ScoreEntry.COLUMN_NAME_PATTERN, ScoreEntry.COLUMN_NAME_SCORE };
+		String[] projection = { 
+				ScoreEntry.COLUMN_NAME_TRACK,
+				ScoreEntry.COLUMN_NAME_PATTERN,
+				ScoreEntry.COLUMN_NAME_LEVEL,
+				ScoreEntry.COLUMN_NAME_SCORE };
 
 		// How you want the results sorted in the resulting Cursor
 		String sortOrder = ScoreEntry.COLUMN_NAME_TRACK + " ASC";
