@@ -184,6 +184,7 @@ public class Game extends CustomActivity implements SurfaceHolder.Callback {
 	    		gameEngine.savePattern(patternFilePath);
 	        }
 	        backToTitle();
+	        return true;
 	    }
 
 	    return super.onKeyDown(keyCode, event);
