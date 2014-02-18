@@ -33,6 +33,10 @@ public class MusicSelection extends CustomActivity {
 
 		String[] proj = { MediaStore.Audio.Media.TITLE, MediaStore.Audio.Media.DURATION, MediaStore.Audio.Media.DATA };  
 		Cursor musicCursor = managedQuery(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,proj, null, null, null);  
+		if(musicCursor == null) {
+			backToTitle("Musique introuvables", "KtB n'arrive pas à récupèrer les musiques de votre téléphone.");
+			return;
+		}
 
 		if(musicCursor.moveToFirst()) {  
 			do {  
@@ -46,7 +50,7 @@ public class MusicSelection extends CustomActivity {
 			while(musicCursor.moveToNext());  
 		} 
 		final ListView list = (ListView)findViewById(R.id.list);
-		list.setAdapter(new ArrayAdapter<MusicFile>(this, android.R.layout.simple_list_item_1,songs));
+		list.setAdapter(new ArrayAdapter<MusicFile>(this, R.layout.custom_list_view_line, songs));
 		list.setClickable(true);
 		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
