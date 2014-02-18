@@ -114,6 +114,16 @@ public class GameEngine {
 	 */
 	public void engineLoop() {
 		timeBeforeChangeMusic--;
+		if(timeBeforeChangeMusic > durationOfASample - 30) {
+			Tools.log(this, "Augmente volume");
+			float transitionVolume = (float)Math.min(durationOfASample - timeBeforeChangeMusic, 30);
+			transitionVolume = transitionVolume / 30;
+			Tools.log(this, "Volume : " + transitionVolume);
+			soundEngine.setVolume((float)transitionVolume);
+		}
+		if(timeBeforeChangeMusic < 30) {
+			soundEngine.setVolume((float)timeBeforeChangeMusic / 30);
+		}
 		if(timeBeforeChangeMusic <= 0) {
 			if(Game.level.getDifficulty() == Constants.EASY) {
 				Game.level.setShowTimer((long) (Game.level.getShowTimer() * 0.95));
