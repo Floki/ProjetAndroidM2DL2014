@@ -3,15 +3,14 @@
     android:orientation="vertical" android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#000000">
-    
 
-   	<RelativeLayout
-   	    android:layout_width="match_parent"
-   	    android:layout_height="match_parent"
-   	    android:paddingBottom="@dimen/activity_horizontal_margin"
-   	    android:paddingLeft="@dimen/activity_horizontal_margin"
-   	    android:paddingRight="@dimen/activity_horizontal_margin"
-   	    android:paddingTop="@dimen/activity_horizontal_margin" >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_horizontal_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_horizontal_margin" >
 
         <ImageView
             android:id="@+id/logo"
@@ -65,6 +64,14 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:src="@drawable/play" />
+
+        <ImageView
+            android:id="@+id/settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/logo"
+            android:layout_alignTop="@+id/logo"
+            android:src="@drawable/settings" />
 
     </RelativeLayout>
 
