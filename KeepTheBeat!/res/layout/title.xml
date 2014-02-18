@@ -1,45 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:background="#000000">
+    
 
    	<RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+   	    android:layout_width="match_parent"
+   	    android:layout_height="match_parent"
+   	    android:paddingBottom="@dimen/activity_horizontal_margin"
+   	    android:paddingLeft="@dimen/activity_horizontal_margin"
+   	    android:paddingRight="@dimen/activity_horizontal_margin"
+   	    android:paddingTop="@dimen/activity_horizontal_margin" >
 
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:src="@drawable/logo" />
 
-        <Button
-            android:id="@+id/exit"
+        <ImageView
+            android:id="@+id/exitButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="37dp"
-            android:text="Exit" />
+            android:layout_alignParentRight="true"
+            android:src="@drawable/exit" />
 
-        <Button
-            android:id="@+id/Start"
+        <TextView
+            android:id="@+id/bestScoreLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/logo"
+            android:layout_below="@+id/logo"
+            android:text="Best Score :"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:typeface="monospace" />
+
+        <TextView
+            android:id="@+id/bestSongLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/bestScoreLabel"
+            android:layout_below="@+id/bestScoreLabel"
+            android:text="On Song :"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:typeface="monospace" />
+
+        <ImageView
+            android:id="@+id/scoreButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/bestSongLabel"
+            android:layout_alignTop="@+id/exitButton"
+            android:src="@drawable/score" />
+
+        <ImageView
+            android:id="@+id/playButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="Start" />
-        
-        <Button
-            android:id="@+id/Scores"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/Start"
-            android:layout_centerHorizontal="true"
-            android:text="Scores" />
-        
-        <Button
-            android:id="@+id/Options"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/Scores"
-            android:text="Options" />
+            android:src="@drawable/play" />
+
     </RelativeLayout>
 
 </LinearLayout>

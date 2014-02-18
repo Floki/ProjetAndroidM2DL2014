@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 
 
 public class Title extends CustomActivity {
@@ -26,14 +27,17 @@ public class Title extends CustomActivity {
 		super.onCreate(savedInstanceState);
 		// Compute game path
 		File storage = getApplication().getExternalFilesDir(null);
+		if(storage == null) {
+			storage = getApplication().getFilesDir();
+		}
 		Constants.keepTheBeatFolder = storage.getPath();
 		Tools.log("", "File : " + Constants.keepTheBeatFolder );
 		
 		setContentView(R.layout.title);
-		Button start = (Button) findViewById(R.id.Start);
-		Button scores = (Button) findViewById(R.id.Scores);
-		Button options = (Button) findViewById(R.id.Options);
-		Button exit = (Button) findViewById(R.id.exit);
+		ImageView start = (ImageView) findViewById(R.id.playButton);
+		ImageView scores = (ImageView) findViewById(R.id.scoreButton);
+		//ImageView options = (ImageView) findViewById(R.id.Options);
+		ImageView exit = (ImageView) findViewById(R.id.exitButton);
 
 		start.setOnClickListener(new OnClickListener() {
 			@Override
@@ -51,13 +55,13 @@ public class Title extends CustomActivity {
 			}
 		});
 		
-		options.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {	
-				Intent myIntent = new Intent(Title.this, Parameters.class);
-				startActivityForResult(myIntent, 0);
-			}
-		});
+//		options.setOnClickListener(new OnClickListener() {
+//			@Override
+//			public void onClick(View v) {	
+//				Intent myIntent = new Intent(Title.this, Parameters.class);
+//				startActivityForResult(myIntent, 0);
+//			}
+//		});
 
 		exit.setOnClickListener(new OnClickListener() {
 			@Override

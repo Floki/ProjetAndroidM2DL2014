@@ -72,7 +72,9 @@ public class SoundEngine {
 		linkVisualizerAndEqualizer();
 		String[] proj = { MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.DURATION };  
 		Cursor musicCursor = activity.managedQuery(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,proj, null, null, null);  
-
+		if(musicCursor == null) {
+			return;
+		}
 		if(musicCursor.moveToFirst()) {  
 			do {  
 				if(musicCursor.getString(1) != null) {
