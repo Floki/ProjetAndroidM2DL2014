@@ -21,14 +21,6 @@
             android:paddingBottom="@dimen/activity_vertical_margin"
             android:src="@drawable/logo" />
 
-        <ImageView
-            android:id="@+id/exitButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/exit" />
-
         <TextView
             android:id="@+id/bestScoreLabel"
             android:layout_width="match_parent"
@@ -37,6 +29,7 @@
             android:layout_below="@+id/logo"
             android:text="Best Score :"
             android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#FFFFFF"
             android:typeface="monospace" />
 
         <TextView
@@ -47,14 +40,15 @@
             android:layout_below="@+id/bestScoreLabel"
             android:text="On Song :"
             android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#FFFFFF"
             android:typeface="monospace" />
 
         <ImageView
             android:id="@+id/scoreButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/bestSongLabel"
-            android:layout_alignTop="@+id/exitButton"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
             android:src="@drawable/score" />
 
         <ImageView
@@ -64,6 +58,14 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:src="@drawable/play" />
+        
+        <ImageView
+            android:id="@+id/exitButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/exit" />
 
         <ImageView
             android:id="@+id/settings"
