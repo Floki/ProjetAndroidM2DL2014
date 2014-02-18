@@ -1,6 +1,8 @@
 package com.example.keepthebeat.game.shape;
 
 import com.example.keepthebeat.game.Game;
+import com.example.keepthebeat.utils.Constants;
+
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -27,6 +29,8 @@ public class GameShape extends ShapeDrawable{
 	private boolean goodMoment = false;
 	private boolean exploding = false;
 	private int maxExplodeTic;
+	
+	private int explodeColor = 0;
 	
 	public GameShape(long showTimer, long hideTimer) {
 		super(new OvalShape());
@@ -181,7 +185,7 @@ public class GameShape extends ShapeDrawable{
 	
 	public void hideAndExplode() {
 		showTimer = 1;
-		hideTimer = 400;
+		hideTimer = Constants.EXPLODE_TIME;
 		currentTimeAtAdd = System.currentTimeMillis();
 		exploding  = true;
 	}
@@ -211,6 +215,9 @@ public class GameShape extends ShapeDrawable{
 		if( isBonus() ) {
 			paint.setColor( Color.rgb(255,215,0) );
 		}
+		if( explodeColor != 0 ) {
+			paint.setColor( explodeColor );
+		}
 		paint.setAlpha( this.getPaint().getAlpha() );
 		int baseHeight = (Game.screenHeight * Game.level.getShapeSizePercent() / 100);
 		paint.setTextSize( baseHeight / 3 );
@@ -218,6 +225,10 @@ public class GameShape extends ShapeDrawable{
 		if( isExploding() ) {
 			canvas.drawText( explodeString, getX(), getY()-(int)(height/2), paint);
 		}
+	}
+	
+	public void setExplodeColor( int color ) {
+		this.explodeColor = color;
 	}
 	
 	public void setExplodingText( String text ) {

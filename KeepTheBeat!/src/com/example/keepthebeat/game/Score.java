@@ -1,5 +1,7 @@
 package com.example.keepthebeat.game;
 
+import android.graphics.Color;
+
 import com.example.keepthebeat.game.shape.GameShape;
 
 public class Score {
@@ -17,6 +19,8 @@ public class Score {
 	private int currentMissCombo = 0;
 	private int currentMissSpree = 0;
 	
+	private String nextExplodeText = "";
+	
 	public int getScore() {
 		return this.score;
 	}
@@ -33,7 +37,7 @@ public class Score {
 				this.score += shape.getScore();
 				if( shape.isBonus() ) {
 					//this is a bonus
-					shape.setExplodingText( "BONUS + " + shape.getScore() );
+					shape.setExplodingText( "BONUS\n+ " + shape.getScore() );
 				}
 				else {
 					//that was the good moment !
@@ -44,6 +48,11 @@ public class Score {
 				//that was before the good moment
 				this.score -= shape.getScore() * Game.level.getTooLatePercent()/100;
 				comboLate( shape );
+			}
+			if( !nextExplodeText.equals("") ) {
+				shape.setExplodingText( nextExplodeText );
+				shape.setExplodeColor( Color.rgb(255, 0, 0) );
+				nextExplodeText = "";
 			}
 		}
 		else {
@@ -68,9 +77,9 @@ public class Score {
 			currentGoodSpree++;
 			currentGoodCombo = 0;
 			
-			int bonus = 4 * Game.level.getTimeGoodPercent() * shape.getScore();
+			int bonus = ( 100 - Game.level.getTimeGoodPercent() ) / 10 * shape.getScore() / 4;
 			score += bonus * currentGoodSpree;
-			shape.setExplodingText( "COMBO ! +" + bonus + " x " + currentGoodSpree );
+			shape.setExplodingText( "COMBO !\r\n+" + bonus + " x " + currentGoodSpree );
 		}
 	}
 	
@@ -85,9 +94,9 @@ public class Score {
 			currentLateSpree++;
 			currentLateCombo = 0;
 			
-			int bonus = 2 * Game.level.getTooLatePercent() * shape.getScore();
+			int bonus = ( 100 - Game.level.getTooLatePercent() ) / 10 * shape.getScore() / 2;
 			score += bonus * currentLateSpree;
-			shape.setExplodingText( "COMBO ! +" + bonus + " x " + currentLateSpree );
+			shape.setExplodingText( "COMBO !\r\n+" + bonus + " x " + currentLateSpree );
 		}
 	}
 	
@@ -102,10 +111,9 @@ public class Score {
 			currentMissSpree++;
 			currentMissCombo = 0;
 			
-			int bonus = Game.level.getMissPercent() * shape.getScore();
+			int bonus = ( 100 - Game.level.getMissPercent() ) / 10 * shape.getScore() / 2;
 			score += bonus * currentMissSpree;
-			shape.setExplodingText( "COMBO ! +" + bonus + " x " + currentMissSpree );
-			shape.hideAndExplode();
+			nextExplodeText = "COMBO !\r\n+" + bonus + " x " + currentMissSpree;
 		}
 	}
 }

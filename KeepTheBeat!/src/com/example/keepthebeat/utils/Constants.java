@@ -13,6 +13,7 @@ public class Constants {
 	public static final String EASY = "EASY";
 	public static final String NORMAL = "NORMAL";
 	public static final String HARD = "HARD";
+	public static final long EXPLODE_TIME = 600;
 	
 	/**
 	 * Mode
