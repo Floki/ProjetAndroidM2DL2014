@@ -44,6 +44,9 @@ public class GameEngine {
 	private boolean reallyEnd;
 	// Game activity
 	private CustomActivity gameActivity;
+	// Current percentage
+	private int initialNumberOfShapes;
+	private static float currentPercent;
 	
 	/**
 	 * Constructeur
@@ -58,6 +61,7 @@ public class GameEngine {
 		gameHeight = Game.screenHeight;
 		actionners = new ArrayList<GameShape>();
 		endLoop = false;
+		initialNumberOfShapes = 0;
 	}
 	
 	/**
@@ -73,6 +77,8 @@ public class GameEngine {
 	}
 	
 	public void engineLoop() {
+		currentPercent = ((float)patternMap.size() / (float)initialNumberOfShapes) * 100;
+		Tools.log(this, "Percent : " + currentPercent);
 		if(endLoop) {
 			soundEngine.setVolume((float) (soundEngine.getVolume() - 0.01));
 			if(soundEngine.getVolume() <= 0.01) {
@@ -235,6 +241,7 @@ public class GameEngine {
 			soundEngine.changeMediaPlayed(pattern.getMusicFile().getPath());
 			soundEngine.playIfNeedToPlay(true);
 		}
+		initialNumberOfShapes = patternMap.size();
 	}
 
 	public SoundEngine getSoundEngine() {
@@ -251,5 +258,9 @@ public class GameEngine {
 	
 	public Pattern getPattern() {
 		return pattern;
+	}
+	
+	public static float getPatternPercent() {
+		return currentPercent;
 	}
 }
