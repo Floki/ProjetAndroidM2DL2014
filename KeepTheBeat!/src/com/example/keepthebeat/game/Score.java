@@ -37,7 +37,7 @@ public class Score {
 				this.score += shape.getScore();
 				if( shape.isBonus() ) {
 					//this is a bonus
-					shape.setExplodingText( "BONUS\n+ " + shape.getScore() );
+					shape.setExplodingText( "BONUS + " + shape.getScore() );
 				}
 				else {
 					//that was the good moment !
@@ -79,7 +79,7 @@ public class Score {
 			
 			int bonus = ( 100 - Game.level.getTimeGoodPercent() ) / 10 * shape.getScore() / 4;
 			score += bonus * currentGoodSpree;
-			shape.setExplodingText( "COMBO !\r\n+" + bonus + " x " + currentGoodSpree );
+			shape.setExplodingText( "COMBO ! +" + bonus + " x " + currentGoodSpree );
 		}
 	}
 	
@@ -96,7 +96,7 @@ public class Score {
 			
 			int bonus = ( 100 - Game.level.getTooLatePercent() ) / 10 * shape.getScore() / 2;
 			score += bonus * currentLateSpree;
-			shape.setExplodingText( "COMBO !\r\n+" + bonus + " x " + currentLateSpree );
+			shape.setExplodingText( "COMBO ! +" + bonus + " x " + currentLateSpree );
 		}
 	}
 	
@@ -113,7 +113,7 @@ public class Score {
 			
 			int bonus = ( 100 - Game.level.getMissPercent() ) / 10 * shape.getScore() / 2;
 			score += bonus * currentMissSpree;
-			nextExplodeText = "COMBO !\r\n+" + bonus + " x " + currentMissSpree;
+			nextExplodeText = "COMBO ! +" + bonus + " x " + currentMissSpree;
 		}
 	}
 }
