@@ -13,6 +13,7 @@ import com.example.keepthebeat.utils.Tools;
 import android.content.Intent;
 import com.example.keepthebeat.parameters.Parameters;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,7 +28,9 @@ public class Title extends CustomActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// Compute game path
-		File storage = getApplication().getExternalFilesDir(null);
+		String packageName = Title.this.getPackageName();
+		File externalPath = Environment.getExternalStorageDirectory();
+		File storage = new File(externalPath.getAbsolutePath() + "/Android/data/" + packageName + "/files");
 		if(storage == null) {
 			storage = getApplication().getFilesDir();
 		}

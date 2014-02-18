@@ -47,7 +47,6 @@ public class Game extends CustomActivity implements SurfaceHolder.Callback {
 	private String patternFolder;
 	private String patternFilePath;
 
-	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
