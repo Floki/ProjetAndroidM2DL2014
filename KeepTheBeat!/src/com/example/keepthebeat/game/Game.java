@@ -124,6 +124,7 @@ public class Game extends CustomActivity implements SurfaceHolder.Callback {
 	    if (keyCode == KeyEvent.KEYCODE_BACK) {
 	    	onDestroy();
 	        backToTitle();
+	        return true;
 	    }
 
 	    return super.onKeyDown(keyCode, event);

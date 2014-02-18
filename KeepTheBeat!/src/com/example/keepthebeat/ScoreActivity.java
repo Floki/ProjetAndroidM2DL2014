@@ -90,6 +90,7 @@ public class ScoreActivity extends CustomActivity {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			backToTitle();
+	        return true;
 		}
 
 		return super.onKeyDown(keyCode, event);
