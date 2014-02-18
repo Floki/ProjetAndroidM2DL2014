@@ -38,7 +38,7 @@ public class Title extends CustomActivity {
 		ImageView start = (ImageView) findViewById(R.id.playButton);
 		ImageView create = (ImageView) findViewById(R.id.createButton);
 		ImageView scores = (ImageView) findViewById(R.id.scoreButton);
-		//ImageView options = (ImageView) findViewById(R.id.Options);
+		ImageView options = (ImageView) findViewById(R.id.settings);
 		ImageView exit = (ImageView) findViewById(R.id.exitButton);
 
 		start.setOnClickListener(new OnClickListener() {
@@ -67,13 +67,13 @@ public class Title extends CustomActivity {
 			}
 		});
 		
-//		options.setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View v) {	
-//				Intent myIntent = new Intent(Title.this, Parameters.class);
-//				startActivityForResult(myIntent, 0);
-//			}
-//		});
+		options.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {	
+				Intent myIntent = new Intent(Title.this, Parameters.class);
+				startActivityForResult(myIntent, 0);
+			}
+		});
 
 		exit.setOnClickListener(new OnClickListener() {
 			@Override

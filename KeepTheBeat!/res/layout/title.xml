@@ -59,20 +59,28 @@
             android:typeface="monospace" />
 
         <ImageView
-            android:id="@+id/playButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/scoreButton"
-            android:layout_alignRight="@+id/scoreButton"
-            android:src="@drawable/play" />
-
-        <ImageView
             android:id="@+id/scoreButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/bestSongLabel"
             android:layout_alignTop="@+id/exitButton"
             android:src="@drawable/score" />
+        
+        <ImageView
+            android:id="@+id/settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/logo"
+            android:layout_alignTop="@+id/logo"
+            android:src="@drawable/settings" />
+
+        <ImageView
+            android:id="@+id/playButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/play" />
 
     </RelativeLayout>
 
