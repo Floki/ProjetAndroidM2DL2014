@@ -43,7 +43,7 @@ public class ScoreActivity extends CustomActivity {
 			TextView trackV = new TextView(this);
 			trackV.setText( trackValue );
 			TextView patternV = new TextView(this);
-			patternV.setText( patternValue );
+			patternV.setText( patternValue.substring(0, patternValue.lastIndexOf(".")) );
 			TextView levelV = new TextView(this);
 			levelV.setText( levelValue );
 			TextView scoreV = new TextView(this);
