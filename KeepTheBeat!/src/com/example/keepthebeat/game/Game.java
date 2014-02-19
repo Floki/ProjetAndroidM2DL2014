@@ -181,7 +181,7 @@ public class Game extends CustomActivity implements SurfaceHolder.Callback {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 	    if (keyCode == KeyEvent.KEYCODE_BACK) {
 	        if(Constants.mode == Constants.Mode.CREATE) {
-	    		gameEngine.savePattern(patternFilePath);
+	    		gameEngine.savePattern(patternFilePath, patternFolder);
 	        }
 	        backToTitle();
 	        return true;

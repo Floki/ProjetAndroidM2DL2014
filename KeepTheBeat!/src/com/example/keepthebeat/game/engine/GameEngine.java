@@ -205,7 +205,7 @@ public class GameEngine {
 	 * Save the pattern in file
 	 * @param filePath
 	 */
-	public void savePattern(String filePath) {
+	public void savePattern(String filePath, String musicName) {
 		Tools.log(this, "Save file in path" + filePath);
 		if(pattern == null) {
 			pattern = new Pattern();
@@ -213,7 +213,9 @@ public class GameEngine {
 		// Save pattern map
 		pattern.setPattern(patternMap);
 		// Save the msic file information
-		pattern.setMusicFile(new MusicFile(soundEngine.getMediaFileName(), soundEngine.getMediaPath()));
+		pattern.setMusicFile(new MusicFile(musicName, soundEngine.getMediaPath()));
+		System.out.println( musicName );
+		System.out.println( soundEngine.getMediaPath() );
 		// Save the pattern name and pattern file path
 		pattern.setPatternName(filePath.substring(filePath.lastIndexOf("/") + 1));
 		pattern.setPatternPath(filePath.substring(0, filePath.lastIndexOf("/") - 1));

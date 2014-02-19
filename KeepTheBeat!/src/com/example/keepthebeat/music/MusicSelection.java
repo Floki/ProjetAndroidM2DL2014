@@ -34,7 +34,7 @@ public class MusicSelection extends CustomActivity {
 		String[] proj = { MediaStore.Audio.Media.TITLE, MediaStore.Audio.Media.DURATION, MediaStore.Audio.Media.DATA };  
 		Cursor musicCursor = managedQuery(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,proj, null, null, null);  
 		if(musicCursor == null) {
-			backToTitle("Musique introuvables", "KtB n'arrive pas à récupèrer les musiques de votre téléphone.");
+			backToTitle("Musique introuvables", "KtB n'arrive pas ï¿½ rï¿½cupï¿½rer les musiques de votre tï¿½lï¿½phone.");
 			return;
 		}
 
@@ -42,7 +42,7 @@ public class MusicSelection extends CustomActivity {
 			do {  
 				if(musicCursor.getString(1) != null) {
 					if(Integer.parseInt(musicCursor.getString(1)) > 60 * 1000) {
-						MusicFile song = new MusicFile(musicCursor.getString(0), musicCursor.getString(2)); 
+						MusicFile song = new MusicFile(musicCursor.getString(0), musicCursor.getString(2));
 						songs.add(song);
 					}
 				}
