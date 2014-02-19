@@ -65,6 +65,9 @@ public class ScoreActivity extends CustomActivity {
 		}
 
 		db.close();
+		tableL.setShrinkAllColumns(true);
+	    tableL.setStretchAllColumns(true);
+	    tableL.setPadding(5, 5, 5, 5);
 	}
 
 	@Override
