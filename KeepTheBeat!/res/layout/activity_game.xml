@@ -6,7 +6,7 @@
     tools:context=".Game" 
     >
 
-    <com.example.keepthebeat.game.GameView
+    <com.nadt.keepthebeat.game.GameView
         android:id="@+id/gameView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
