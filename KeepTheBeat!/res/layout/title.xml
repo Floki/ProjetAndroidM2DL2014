@@ -35,9 +35,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
             android:layout_below="@+id/logo"
-            android:text="Best Score :"
+            android:text="Best Score : "
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#FFFFFF"
             android:typeface="monospace" />
@@ -47,9 +46,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
             android:layout_below="@+id/bestScoreLabel"
-            android:text="On Song :"
+            android:text="On "
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#FFFFFF"
             android:typeface="monospace" />
@@ -69,8 +67,8 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:src="@drawable/create" />
-       
-       <ImageView
+
+        <ImageView
             android:id="@+id/exitButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -82,9 +80,34 @@
             android:id="@+id/scoreButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
             android:src="@drawable/score" />
+
+        <TextView
+            android:id="@+id/bestScoreValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/bestSongLabel"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@+id/bestScoreLabel"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#FFFFFF"
+            android:typeface="monospace" />
+
+        <TextView
+            android:id="@+id/bestSongValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/bestSongLabel"
+            android:layout_alignBottom="@+id/bestSongLabel"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@+id/bestSongLabel"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#FFFFFF"
+            android:typeface="monospace" />
 
     </RelativeLayout>
 

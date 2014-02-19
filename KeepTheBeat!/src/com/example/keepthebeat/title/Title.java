@@ -5,13 +5,19 @@ import java.io.File;
 import com.example.keepthebeat.CustomActivity;
 import com.example.keepthebeat.R;
 import com.example.keepthebeat.ScoreActivity;
+import com.example.keepthebeat.db.ScoreDbHelper;
+import com.example.keepthebeat.db.ScoreContract.ScoreEntry;
 import com.example.keepthebeat.game.PatternSelection;
 import com.example.keepthebeat.music.MusicSelection;
 import com.example.keepthebeat.utils.Constants;
 import com.example.keepthebeat.utils.Tools;
 
 import android.content.Intent;
+import android.database.Cursor;
+
 import com.example.keepthebeat.parameters.Parameters;
+
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
@@ -20,6 +26,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 
 public class Title extends CustomActivity {
@@ -84,6 +91,31 @@ public class Title extends CustomActivity {
 				finish();
 			}
 		});
+		
+		
+		/*
+		 * Fill up best score & track
+		 */
+		ScoreDbHelper scoreDbHelper = new ScoreDbHelper(this);
+		Cursor c = scoreDbHelper.getBestScore();
+		
+		String bestScore = "";
+		String bestSong = "not yet played";
+		
+		if( c.moveToFirst() ) {
+			bestScore = c.getInt( c.getColumnIndex( ScoreEntry.COLUMN_NAME_SCORE) )+"";
+			bestSong = c.getString( c.getColumnIndex( ScoreEntry.COLUMN_NAME_TRACK) );
+			( (TextView) findViewById(R.id.bestSongLabel) ).setVisibility( TextView.VISIBLE );
+		}
+		else {
+			( (TextView) findViewById(R.id.bestSongLabel) ).setVisibility( TextView.INVISIBLE );
+		}
+		
+		c.close();
+		scoreDbHelper.closeDb();
+		
+		( (TextView) findViewById(R.id.bestScoreValue) ).setText( bestScore );
+		( (TextView) findViewById(R.id.bestSongValue) ).setText( bestSong );
 	}
 
 	@Override

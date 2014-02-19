@@ -24,27 +24,8 @@ public class ScoreActivity extends CustomActivity {
 
 		// fill the tableLayout with scores
 		ScoreDbHelper scoreDbHelper = new ScoreDbHelper(this);
-		SQLiteDatabase db = scoreDbHelper.getReadableDatabase();
-
-		// Define a projection that specifies which columns from the database
-		// you will actually use after this query.
-		String[] projection = { 
-				ScoreEntry.COLUMN_NAME_TRACK,
-				ScoreEntry.COLUMN_NAME_PATTERN,
-				ScoreEntry.COLUMN_NAME_LEVEL,
-				ScoreEntry.COLUMN_NAME_SCORE };
-
-		// How you want the results sorted in the resulting Cursor
-		String sortOrder = ScoreEntry.COLUMN_NAME_TRACK + " ASC";
-
-		Cursor c = db.query(ScoreEntry.TABLE_NAME, // The table to query
-				projection, // The columns to return
-				null, // The columns for the WHERE clause
-				null, // The values for the WHERE clause
-				null, // don't group the rows
-				null, // don't filter by row groups
-				sortOrder // The sort order
-				);
+		
+		Cursor c = scoreDbHelper.getAllScoresSortByTrack();
 		
 		c.moveToFirst();
 		boolean next = c.isFirst();
@@ -75,9 +56,9 @@ public class ScoreActivity extends CustomActivity {
 			
 			next = c.moveToNext();
 		}
-
-		db.close();
 		
+		c.close();
+		scoreDbHelper.closeDb();
 	}
 
 	@Override
