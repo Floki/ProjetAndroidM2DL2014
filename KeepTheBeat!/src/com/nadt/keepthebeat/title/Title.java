@@ -114,6 +114,10 @@ public class Title extends CustomActivity {
 		c.close();
 		scoreDbHelper.closeDb();
 		
+		if( bestSong.length() > 25 ) {
+			bestSong = bestSong.substring(0,25 ) + "...";
+		}
+		
 		( (TextView) findViewById(R.id.bestScoreValue) ).setText( bestScore );
 		( (TextView) findViewById(R.id.bestSongValue) ).setText( bestSong );
 	}

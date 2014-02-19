@@ -40,6 +40,10 @@ public class ScoreActivity extends CustomActivity {
 			String levelValue = c.getString( c.getColumnIndexOrThrow( ScoreEntry.COLUMN_NAME_LEVEL ) );
 			int scoreValue = c.getInt( c.getColumnIndexOrThrow( ScoreEntry.COLUMN_NAME_SCORE ) );
 
+			if( trackValue.length() > 25 ) {
+				trackValue = trackValue.substring(0,25 ) + "...";
+			}
+			
 			TextView trackV = new TextView(this);
 			trackV.setText( trackValue );
 			TextView patternV = new TextView(this);
