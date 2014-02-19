@@ -38,8 +38,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/logo"
             android:layout_alignParentRight="true"
-            android:layout_toRightOf="@+id/bestScoreLabel"
-            android:text=""
+            android:layout_alignParentLeft="true"
+            android:text="0"
+            android:gravity="right"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#FFFFFF"
             android:typeface="monospace" />
