@@ -40,14 +40,7 @@ public class GameView extends SurfaceView {
 			return;
 		}
 		canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-		if(Constants.pattern != null) {
-			List<GameShape> drawables = new ArrayList<GameShape>(Constants.pattern);
-			for(GameShape drawable : drawables) {
-				if(drawable != null) {
-					drawable.draw(canvas);
-				}
-			}	
-		}
+		
 		
 		if( GameEngine.score != null && GameEngine.score.getScore() != 0 ) {
 			Paint scorePaint = new Paint();
@@ -70,6 +63,15 @@ public class GameView extends SurfaceView {
 					dancingGuy.draw(canvas);
 				}
 			}
+		}
+		
+		if(Constants.pattern != null) {
+			List<GameShape> drawables = new ArrayList<GameShape>(Constants.pattern);
+			for(GameShape drawable : drawables) {
+				if(drawable != null) {
+					drawable.draw(canvas);
+				}
+			}	
 		}
 	}
 
