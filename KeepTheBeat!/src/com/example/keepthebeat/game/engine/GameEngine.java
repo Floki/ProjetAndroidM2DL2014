@@ -6,10 +6,13 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import android.graphics.Color;
+
 import com.example.keepthebeat.CustomActivity;
 import com.example.keepthebeat.game.Game;
 import com.example.keepthebeat.game.Pattern;
 import com.example.keepthebeat.game.Score;
+import com.example.keepthebeat.game.shape.DancingGuyShape;
 import com.example.keepthebeat.game.shape.GameShape;
 import com.example.keepthebeat.music.MusicFile;
 import com.example.keepthebeat.utils.Constants;
@@ -47,12 +50,16 @@ public class GameEngine {
 	// Current percentage
 	private int initialNumberOfShapes;
 	private static float currentPercent;
+	private ArrayList<DancingGuyShape> dancingGuysShapes;
+	// Animation time
+	private long lastAnimationTime;
 	
 	/**
 	 * Constructeur
 	 */
 	public GameEngine( SoundEngine soundEngine ) {
 		this.soundEngine = soundEngine;
+		lastAnimationTime = 0;
 		score = new Score();
 		Constants.score = 0;
 		userIsTouching = false;
@@ -62,6 +69,45 @@ public class GameEngine {
 		actionners = new ArrayList<GameShape>();
 		endLoop = false;
 		initialNumberOfShapes = 0;
+		dancingGuysShapes = new ArrayList<DancingGuyShape>();
+		// Background dancing guy
+		dancingGuysShapes.add(new DancingGuyShape(Game.virtualXToScreenX(100), 
+				Game.virtualYToScreenY(630), 
+				Game.virtualXToScreenX(25), 
+				Game.virtualYToScreenY(30), 
+				Color.DKGRAY, 
+				Color.RED, 
+				Color.BLACK));
+		dancingGuysShapes.add(new DancingGuyShape(Game.virtualXToScreenX(900), 
+				Game.virtualYToScreenY(630), 
+				Game.virtualXToScreenX(25), 
+				Game.virtualYToScreenY(30), 
+				Color.DKGRAY, 
+				Color.RED, 
+				Color.BLACK));
+		// Middleground dancing guy
+		dancingGuysShapes.add(new DancingGuyShape(Game.virtualXToScreenX(300), 
+				Game.virtualYToScreenY(650), 
+				Game.virtualXToScreenX(30), 
+				Game.virtualYToScreenY(40), 
+				Color.DKGRAY, 
+				Color.MAGENTA, 
+				Color.BLACK));
+		dancingGuysShapes.add(new DancingGuyShape(Game.virtualXToScreenX(700), 
+				Game.virtualYToScreenY(650), 
+				Game.virtualXToScreenX(30), 
+				Game.virtualYToScreenY(40), 
+				Color.DKGRAY, 
+				Color.MAGENTA, 
+				Color.BLACK));
+		// Center guy
+		dancingGuysShapes.add(new DancingGuyShape(Game.virtualXToScreenX(500), 
+				Game.virtualYToScreenY(666), 
+				Game.virtualXToScreenX(60), 
+				Game.virtualYToScreenY(50), 
+				Color.DKGRAY, 
+				Color.YELLOW, 
+				Color.BLACK));
 	}
 	
 	/**
@@ -84,6 +130,9 @@ public class GameEngine {
 			if(soundEngine.getVolume() <= 0.01) {
 				reallyEnd = true;
 			}
+			for(DancingGuyShape d: dancingGuysShapes) {
+				d.setAnimation(0, 0, 0, 0);
+			}
 		}
 		else {
 			if(Constants.mode == Constants.Mode.PLAY) {
@@ -99,7 +148,12 @@ public class GameEngine {
 	 * Ce que le jeux fait régulierement en mode jeux
 	 */
 	private void playLoop() {
+
 		List<GameShape> actionnersTmp = new ArrayList<GameShape>(actionners);
+		if(soundEngine.getCurrentMusicTime() - lastAnimationTime > 50) {
+			updateDancingGuyAnimation();
+			lastAnimationTime = soundEngine.getCurrentMusicTime();
+		}
 		// Calcule l'animation des gameshapes
 		for(GameShape actionner : actionnersTmp) {
 			actionner.hideMore();
@@ -264,5 +318,19 @@ public class GameEngine {
 	
 	public static float getPatternPercent() {
 		return currentPercent;
+	}
+	
+	public List<DancingGuyShape> getDancingGuy() {
+		return dancingGuysShapes;
+	}
+
+	public void updateDancingGuyAnimation() {
+		int brasG = (int) (Math.random() * 3);
+		int brasD = (int) (Math.random() * 3);
+		int jambeG = (int) (Math.random() * 2);
+		int jambeD = (int) (Math.random() * 2);
+		for(DancingGuyShape d: dancingGuysShapes) {
+			d.setAnimation(brasG, brasD, jambeG, jambeD);
+		}
 	}
 }

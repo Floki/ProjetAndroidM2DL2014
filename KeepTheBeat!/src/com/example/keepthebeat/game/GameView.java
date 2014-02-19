@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.keepthebeat.game.engine.GameEngine;
+import com.example.keepthebeat.game.shape.DancingGuyShape;
 import com.example.keepthebeat.game.shape.GameShape;
 import com.example.keepthebeat.utils.Constants;
 import android.annotation.SuppressLint;
@@ -18,6 +19,7 @@ import android.view.SurfaceView;
 
 public class GameView extends SurfaceView {
 	private SurfaceHolder holder;
+	private GameEngine gameEngine;
 	
 	public GameView(Context context) {
 		super(context);
@@ -62,7 +64,16 @@ public class GameView extends SurfaceView {
 			yTop = Game.virtualYToScreenY(Game.virtualSize - 50);
 			yBottom = Game.virtualYToScreenY(Game.virtualSize - 75);
 			canvas.drawRect(xLeft, yTop, xRight, yBottom, durationPaint);
+			
+			if(gameEngine != null) {
+				for(DancingGuyShape dancingGuy : gameEngine.getDancingGuy()) {
+					dancingGuy.draw(canvas);
+				}
+			}
 		}
-		
-	}	
+	}
+
+	public void setGameEngine(GameEngine gameEngine) {
+		this.gameEngine = gameEngine;
+  	}
 }
