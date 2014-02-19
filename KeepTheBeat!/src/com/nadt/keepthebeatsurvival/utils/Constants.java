@@ -1,8 +1,8 @@
-package com.example.keepthebeat.utils;
+package com.nadt.keepthebeatsurvival.utils;
 
 import java.util.Collection;
 
-import com.example.keepthebeat.game.shape.GameShape;
+import com.nadt.keepthebeatsurvival.game.shape.GameShape;
 
 public class Constants {
 

@@ -1,12 +1,12 @@
-package com.example.keepthebeat.game;
+package com.nadt.keepthebeatsurvival.game;
 
-import com.example.keepthebeat.CustomActivity;
-import com.example.keepthebeat.db.ScoreContract.ScoreEntry;
-import com.example.keepthebeat.db.ScoreDbHelper;
-import com.example.keepthebeat.game.engine.GameEngine;
-import com.example.keepthebeat.game.engine.SoundEngine;
-import com.example.keepthebeat.utils.Constants;
-import com.example.keepthebeat.utils.Tools;
+import com.nadt.keepthebeatsurvival.CustomActivity;
+import com.nadt.keepthebeatsurvival.db.ScoreDbHelper;
+import com.nadt.keepthebeatsurvival.db.ScoreContract.ScoreEntry;
+import com.nadt.keepthebeatsurvival.game.engine.GameEngine;
+import com.nadt.keepthebeatsurvival.game.engine.SoundEngine;
+import com.nadt.keepthebeatsurvival.utils.Constants;
+import com.nadt.keepthebeatsurvival.utils.Tools;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;

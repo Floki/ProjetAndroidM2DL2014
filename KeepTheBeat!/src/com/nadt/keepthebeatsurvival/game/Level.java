@@ -1,7 +1,7 @@
-package com.example.keepthebeat.game;
+package com.nadt.keepthebeatsurvival.game;
 
-import com.example.keepthebeat.utils.Constants;
-import com.example.keepthebeat.utils.FileAccess;
+import com.nadt.keepthebeatsurvival.utils.Constants;
+import com.nadt.keepthebeatsurvival.utils.FileAccess;
 
 public class Level {
 	

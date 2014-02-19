@@ -1,8 +1,8 @@
-package com.example.keepthebeat.game;
+package com.nadt.keepthebeatsurvival.game;
  
 import android.graphics.Color;
  
-import com.example.keepthebeat.game.shape.GameShape;
+import com.nadt.keepthebeatsurvival.game.shape.GameShape;
  
 public class Score {
  

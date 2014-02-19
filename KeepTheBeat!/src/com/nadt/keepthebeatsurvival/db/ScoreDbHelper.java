@@ -1,7 +1,7 @@
-package com.example.keepthebeat.db;
+package com.nadt.keepthebeatsurvival.db;
 
-import com.example.keepthebeat.db.ScoreContract.ScoreEntry;
-import com.example.keepthebeat.utils.Tools;
+import com.nadt.keepthebeatsurvival.db.ScoreContract.ScoreEntry;
+import com.nadt.keepthebeatsurvival.utils.Tools;
 
 import android.content.ContentValues;
 import android.content.Context;

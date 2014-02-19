@@ -1,4 +1,4 @@
-package com.example.keepthebeat.game.shape;
+package com.nadt.keepthebeatsurvival.game.shape;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;

@@ -1,4 +1,4 @@
-package com.example.keepthebeat.game.engine;
+package com.nadt.keepthebeatsurvival.game.engine;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -12,15 +12,15 @@ import java.util.TreeMap;
 import android.app.Activity;
 import android.graphics.Color;
 
-import com.example.keepthebeat.CustomActivity;
-import com.example.keepthebeat.game.Game;
-import com.example.keepthebeat.game.Score;
-import com.example.keepthebeat.game.shape.DancingGuyShape;
-import com.example.keepthebeat.game.shape.GameShape;
-import com.example.keepthebeat.utils.Constants;
-import com.example.keepthebeat.utils.FileAccess;
-import com.example.keepthebeat.utils.Pair;
-import com.example.keepthebeat.utils.Tools;
+import com.nadt.keepthebeatsurvival.CustomActivity;
+import com.nadt.keepthebeatsurvival.game.Game;
+import com.nadt.keepthebeatsurvival.game.Score;
+import com.nadt.keepthebeatsurvival.game.shape.DancingGuyShape;
+import com.nadt.keepthebeatsurvival.game.shape.GameShape;
+import com.nadt.keepthebeatsurvival.utils.Constants;
+import com.nadt.keepthebeatsurvival.utils.FileAccess;
+import com.nadt.keepthebeatsurvival.utils.Pair;
+import com.nadt.keepthebeatsurvival.utils.Tools;
 
 public class GameEngine {
 	

@@ -1,4 +1,4 @@
-package com.example.keepthebeat;
+package com.nadt.keepthebeatsurvival;
 
 import android.content.Context;
 import android.view.Gravity;

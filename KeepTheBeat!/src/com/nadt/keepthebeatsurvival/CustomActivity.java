@@ -1,6 +1,6 @@
-package com.example.keepthebeat;
+package com.nadt.keepthebeatsurvival;
 
-import com.example.keepthebeat.title.Title;
+import com.nadt.keepthebeatsurvival.title.Title;
 
 import android.app.Activity;
 import android.app.AlertDialog;

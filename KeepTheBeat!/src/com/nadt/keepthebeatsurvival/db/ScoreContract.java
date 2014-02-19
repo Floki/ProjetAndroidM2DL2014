@@ -1,4 +1,4 @@
-package com.example.keepthebeat.db;
+package com.nadt.keepthebeatsurvival.db;
 
 import android.provider.BaseColumns;
 

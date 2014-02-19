@@ -1,4 +1,4 @@
-package com.example.keepthebeat.game;
+package com.nadt.keepthebeatsurvival.game;
 
 import java.io.ObjectInputStream;
 import android.annotation.SuppressLint;
@@ -11,13 +11,13 @@ import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.example.keepthebeat.CustomActivity;
-import com.example.keepthebeat.R;
-import com.example.keepthebeat.game.engine.GameEngine;
-import com.example.keepthebeat.game.engine.SoundEngine;
-import com.example.keepthebeat.utils.Constants;
-import com.example.keepthebeat.utils.FileAccess;
-import com.example.keepthebeat.utils.Tools;
+import com.nadt.keepthebeatsurvival.CustomActivity;
+import com.nadt.keepthebeatsurvival.R;
+import com.nadt.keepthebeatsurvival.game.engine.GameEngine;
+import com.nadt.keepthebeatsurvival.game.engine.SoundEngine;
+import com.nadt.keepthebeatsurvival.utils.Constants;
+import com.nadt.keepthebeatsurvival.utils.FileAccess;
+import com.nadt.keepthebeatsurvival.utils.Tools;
 
 public class Game extends CustomActivity implements SurfaceHolder.Callback {
 

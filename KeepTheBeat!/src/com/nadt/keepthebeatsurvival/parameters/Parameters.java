@@ -1,10 +1,10 @@
-package com.example.keepthebeat.parameters;
+package com.nadt.keepthebeatsurvival.parameters;
 
-import com.example.keepthebeat.CustomActivity;
-import com.example.keepthebeat.R;
-import com.example.keepthebeat.utils.Constants;
-import com.example.keepthebeat.utils.FileAccess;
-import com.example.keepthebeat.utils.Tools;
+import com.nadt.keepthebeatsurvival.CustomActivity;
+import com.nadt.keepthebeatsurvival.R;
+import com.nadt.keepthebeatsurvival.utils.Constants;
+import com.nadt.keepthebeatsurvival.utils.FileAccess;
+import com.nadt.keepthebeatsurvival.utils.Tools;
 
 import android.os.Bundle;
 import android.view.KeyEvent;

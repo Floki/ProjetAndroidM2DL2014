@@ -1,12 +1,13 @@
-package com.example.keepthebeat.game;
+package com.nadt.keepthebeatsurvival.game;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.keepthebeat.game.engine.GameEngine;
-import com.example.keepthebeat.game.shape.DancingGuyShape;
-import com.example.keepthebeat.game.shape.GameShape;
-import com.example.keepthebeat.utils.Constants;
+import com.nadt.keepthebeatsurvival.game.engine.GameEngine;
+import com.nadt.keepthebeatsurvival.game.shape.DancingGuyShape;
+import com.nadt.keepthebeatsurvival.game.shape.GameShape;
+import com.nadt.keepthebeatsurvival.utils.Constants;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;

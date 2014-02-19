@@ -1,4 +1,4 @@
-package com.example.keepthebeat.utils;
+package com.nadt.keepthebeatsurvival.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
