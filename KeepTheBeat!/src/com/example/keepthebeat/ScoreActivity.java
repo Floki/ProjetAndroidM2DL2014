@@ -22,6 +22,10 @@ public class ScoreActivity extends CustomActivity {
 
 		TableLayout tableL = (TableLayout) findViewById(R.id.tableScore);
 
+		tableL.setShrinkAllColumns(true);
+		tableL.setStretchAllColumns(true);
+		tableL.setPadding(5, 5, 5, 5);
+		
 		// fill the tableLayout with scores
 		ScoreDbHelper scoreDbHelper = new ScoreDbHelper(this);
 		
