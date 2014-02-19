@@ -69,7 +69,7 @@ public class ScoreActivity extends CustomActivity {
 			next = c.moveToNext();
 		}
 
-		
+		db.close();
 	}
 
 	@Override
