@@ -129,7 +129,7 @@ public class DancingGuyShape extends ShapeDrawable{
 				return new Rect(bras.left, bras.top + width, bras.right, bras.top - height + width);
 		// Horizontal
 			case 1:
-				return new Rect(bras.centerX() + invert * width/2, bras.top, bras.centerX() + invert * (height - invert * width / 2), bras.top + width);
+				return new Rect(bras.centerX() + invert * (- width/2 - 1), bras.top, bras.centerX() + invert * (height - invert * width / 2), bras.top + width);
 		}
 		return new Rect(bras);
 	}
