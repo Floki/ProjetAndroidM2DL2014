@@ -28,11 +28,11 @@ public class ScoreActivity extends CustomActivity {
 
 		// Define a projection that specifies which columns from the database
 		// you will actually use after this query.
-		String[] projection = { ScoreEntry.COLUMN_NAME_TRACK,
-				ScoreEntry.COLUMN_NAME_PATTERN, ScoreEntry.COLUMN_NAME_SCORE };
+		String[] projection = { ScoreEntry.COLUMN_NAME_DIFFICULTY,
+					ScoreEntry.COLUMN_NAME_SCORE };
 
 		// How you want the results sorted in the resulting Cursor
-		String sortOrder = ScoreEntry.COLUMN_NAME_TRACK + " ASC";
+		String sortOrder = ScoreEntry.COLUMN_NAME_DIFFICULTY + " ASC";
 
 		Cursor c = db.query(ScoreEntry.TABLE_NAME, // The table to query
 				projection, // The columns to return
@@ -46,22 +46,17 @@ public class ScoreActivity extends CustomActivity {
 		c.moveToFirst();
 		boolean next = c.isFirst();
 		while( next ) {
-			
-			String trackValue = c.getString( c.getColumnIndexOrThrow( ScoreEntry.COLUMN_NAME_TRACK ) );
-			String patternValue = c.getString( c.getColumnIndexOrThrow( ScoreEntry.COLUMN_NAME_PATTERN ) );
+			String difficultyValue = c.getString( c.getColumnIndexOrThrow( ScoreEntry.COLUMN_NAME_DIFFICULTY ) );
 			int scoreValue = c.getInt( c.getColumnIndexOrThrow( ScoreEntry.COLUMN_NAME_SCORE ) );
 
 			TextView trackV = new TextView(this);
-			trackV.setText( trackValue );
-			TextView patternV = new TextView(this);
-			patternV.setText( patternValue );
+			trackV.setText( difficultyValue );
 			TextView scoreV = new TextView(this);
 			scoreV.setText( scoreValue + "" );
 
 			TableRow row = new TableRow(this);
 
 			row.addView(trackV); // Line 39
-			row.addView(patternV);
 			row.addView(scoreV);
 
 			tableL.addView(row);

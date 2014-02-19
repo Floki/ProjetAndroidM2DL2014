@@ -14,8 +14,7 @@ public final class ScoreContract {
     /* Inner class that defines the table contents */
     public static abstract class ScoreEntry implements BaseColumns {
         public static final String TABLE_NAME = "score";
-        public static final String COLUMN_NAME_TRACK = "track";
-        public static final String COLUMN_NAME_PATTERN = "pattern";
+        public static final String COLUMN_NAME_DIFFICULTY = "difficulty";
         public static final String COLUMN_NAME_SCORE = "score";
     }
 

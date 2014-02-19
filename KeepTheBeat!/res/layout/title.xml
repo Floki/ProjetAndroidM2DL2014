@@ -27,18 +27,19 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/logo"
             android:layout_below="@+id/logo"
-            android:text="Best Score :"
+            android:text="Best Score : "
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#FFFFFF"
             android:typeface="monospace" />
 
         <TextView
-            android:id="@+id/bestSongLabel"
-            android:layout_width="match_parent"
+            android:id="@+id/bestScoreValue"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/bestScoreLabel"
-            android:layout_below="@+id/bestScoreLabel"
-            android:text="On Song :"
+            android:layout_below="@+id/logo"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@+id/bestScoreLabel"
+            android:text=""
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#FFFFFF"
             android:typeface="monospace" />
