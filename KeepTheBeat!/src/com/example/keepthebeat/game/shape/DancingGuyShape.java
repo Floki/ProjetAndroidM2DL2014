@@ -28,24 +28,34 @@ public class DancingGuyShape extends ShapeDrawable{
 	private Paint mainPaint;
 	private Paint secondPaint;
 	private Paint visierePaint;
+	private int animationBrasG;
+	private int animationBrasD;
+	private int animationJambeG;
+	private int animationJambeD; 
 	
 	public DancingGuyShape(int x, int y, int poid, int taille, int mainColor, int secondColor, int visiereColor) {
 		this.x = x;
 		this.y = y;
+		this.animationBrasG = 0;
+		this.animationBrasD = 0;
+		this.animationJambeG = 0;
+		this.animationJambeD = 0;
 		this.mainPaint = new Paint();
 		this.mainPaint.setColor(mainColor);
+		this.mainPaint.setAlpha(100);
 		this.secondPaint = new Paint();
 		this.secondPaint.setColor(secondColor);
+		this.secondPaint.setAlpha(200);
 		this.visierePaint = new Paint();
 		this.visierePaint.setColor(visiereColor);
 		this.poid = poid;
 		this.taille = taille;
 		this.tailleJambe = taille / 2 * 3;
 		this.tailleBras = taille / 2 * 3;
-		this.brasD = new Rect(x + poid/2 + 1 + poid /3, y - taille/2, x + poid/2 + 1 , y - taille/2 + tailleBras);
+		this.brasD = new Rect(x + poid/2 + 1 , y - taille/2, x + poid/2 + 1 + poid /3, y - taille/2 + tailleBras);
 		this.brasG = new Rect(x - poid/2 - 1 - poid /3, y - taille/2, x - poid/2 - 1 , y - taille/2 + tailleBras);
 		this.jambeD = new Rect(x + poid/2, y + taille/2 + 1, x + 1 , y + taille/2 + tailleJambe);
-		this.jambeG = new Rect(x - poid/2, y + taille/2 + 1, x - 1 , y + taille/2 + tailleJambe);
+		this.jambeG = new Rect(x - 1, y + taille/2 + 1, x - poid/2 , y + taille/2 + tailleJambe);
 		this.corp = new Rect(x - poid/2, y - taille/2, x + poid/2, y + taille/2);
 		this.tete = new Rect(x + poid/4, y - taille/2 - 1, x - poid/4, y -taille/2- taille/3);
 		this.visiere = new Rect(x + poid/6, y - taille/2 - 1, x - poid/6, y -taille/2- taille/4);
@@ -56,51 +66,42 @@ public class DancingGuyShape extends ShapeDrawable{
 		// Dessine corp
 		canvas.drawRect(corp, mainPaint);
 		// Dessine bras
-		canvas.drawRect(brasG, mainPaint);
-		canvas.drawRect(brasD, mainPaint);
+		Rect brasGDrawn = moveBrasOuJambe(brasG, animationBrasG, true);
+		canvas.drawRect(brasGDrawn, mainPaint);
+		Rect brasDDrawn = moveBrasOuJambe(brasD, animationBrasD, false);
+		canvas.drawRect(brasDDrawn, mainPaint);
 		// Dessine Jambe
-		canvas.drawRect(jambeG, mainPaint);
-		canvas.drawRect(jambeD, mainPaint);
+		Rect jambeGDrawn = moveBrasOuJambe(jambeG, animationJambeG, true);
+		canvas.drawRect(jambeGDrawn, mainPaint);
+		Rect jambeDDrawn = moveBrasOuJambe(jambeD, animationJambeD, false);
+		canvas.drawRect(jambeDDrawn, mainPaint);
 		// Dessine tete
 		canvas.drawRect(tete, 	 mainPaint);
 		canvas.drawRect(visiere, visierePaint);
 		// Dessiner les ligne de lumière
 		// Corp
-		canvas.drawPath(lightLine(corp, 0, 1), secondPaint);
-		canvas.drawPath(lightLine(corp, 0, -1), secondPaint);
-		canvas.drawPath(lightLine(corp, 1, -1), secondPaint);
+		canvas.drawPath(lightLine(corp, 0, true), secondPaint);
+		canvas.drawPath(lightLine(corp, 0, false), secondPaint);
+		canvas.drawPath(lightLine(corp, 1, false), secondPaint);
 		// Bras
-		canvas.drawPath(lightLine(brasG, 0, 1), secondPaint);
-		canvas.drawPath(lightLine(brasD, 0, 1), secondPaint);
-		canvas.drawPath(lightLine(brasD, 1, -1), secondPaint);
-		canvas.drawPath(lightLine(brasG, 1, -1), secondPaint);
+		canvas.drawPath(lightLine(brasGDrawn, 0, true), secondPaint);
+		canvas.drawPath(lightLine(brasDDrawn, 0, true), secondPaint);
+		canvas.drawPath(lightLine(brasDDrawn, 1, false), secondPaint);
+		canvas.drawPath(lightLine(brasGDrawn, 1, false), secondPaint);
 
 		// Jambe
-		canvas.drawPath(lightLine(jambeG, 0, 1), secondPaint);
-		canvas.drawPath(lightLine(jambeD, 0, 1), secondPaint);
-		canvas.drawPath(lightLine(jambeD, 0, -1), secondPaint);
-		canvas.drawPath(lightLine(jambeG, 0, -1), secondPaint);
+		canvas.drawPath(lightLine(jambeGDrawn, 0, true), secondPaint);
+		canvas.drawPath(lightLine(jambeDDrawn, 0, true), secondPaint);
+		canvas.drawPath(lightLine(jambeDDrawn, 0, false), secondPaint);
+		canvas.drawPath(lightLine(jambeGDrawn, 0, false), secondPaint);
 
 		// Tete
-		canvas.drawPath(lightLine(tete, 1, -1), secondPaint);
-		// Bras
-//		lightLine = new Path();
-//		lightLine.moveTo(x - poid / 2 - 2, 			  y - taille / 2);
-//		lightLine.lineTo(x - poid / 2 - 2, 			  y - taille / 2 + bras / 3);
-//		lightLine.lineTo(x - poid / 2 - poid / 4 - 2, y - taille / 2 + bras / 3);
-//		lightLine.lineTo(x - poid / 2 - poid / 4 - 2, y - taille / 2 + bras);
-//		canvas.drawPath(lightLine, secondPaint);
-//		lightLine = new Path();
-//		lightLine.moveTo(x + poid / 2 + 2, y - taille / 2);
-//		lightLine.lineTo(x + poid / 2 + 2, y - taille / 2 + bras / 3);
-//		lightLine.lineTo(x + poid / 2 + poid / 4 + 2, y - taille / 2 + bras / 3);
-//		lightLine.lineTo(x + poid / 2 + poid / 4 + 2, y - taille / 2 + bras);
-//		canvas.drawPath(lightLine, secondPaint);
-		// Jambes
+		canvas.drawPath(lightLine(tete, 1, false), secondPaint);
 	}
 	
-	public Path lightLine(Rect part, int pattern, int invert) {
+	public Path lightLine(Rect part, int pattern, boolean gaucheOrHaut) {
 		Path lightLine = new Path();
+		int invert = gaucheOrHaut ? 1 : -1;
 		switch(pattern) { 
 			case 1:
 				lightLine.moveTo(part.exactCenterX() - part.width() / 4, part.exactCenterY()- invert * part.height()/2);
@@ -116,5 +117,27 @@ public class DancingGuyShape extends ShapeDrawable{
 			break;
 		}
 		return lightLine;
+	}
+	
+	public Rect moveBrasOuJambe(Rect bras, int animation, boolean gauche) {
+		int height = bras.height();
+		int width = bras.width();
+		int invert = gauche ? -1 : 1;
+		switch(animation) { 
+			// Levé
+			case 2:
+				return new Rect(bras.left, bras.top + width, bras.right, bras.top - height + width);
+		// Horizontal
+			case 1:
+				return new Rect(bras.centerX() + invert * width/2, bras.top, bras.centerX() + invert * (height - invert * width / 2), bras.top + width);
+		}
+		return new Rect(bras);
+	}
+	
+	public void setAnimation(int brasG, int brasD, int jambeG, int jambeD) {
+		animationBrasG = brasG;
+		animationBrasD = brasD;
+		animationJambeG = jambeG;
+		animationJambeD = jambeD;
 	}
 }

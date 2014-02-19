@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.keepthebeat.game.engine.GameEngine;
+import com.example.keepthebeat.game.shape.DancingGuyShape;
 import com.example.keepthebeat.game.shape.GameShape;
 import com.example.keepthebeat.utils.Constants;
 import android.annotation.SuppressLint;
@@ -17,7 +18,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 public class GameView extends SurfaceView {
-	private SurfaceHolder holder;
+	private GameEngine gameEngine;
+	private boolean canDraw = false;
 	
 	public GameView(Context context) {
 		super(context);
@@ -38,14 +40,8 @@ public class GameView extends SurfaceView {
 			return;
 		}
 		canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-		if(Constants.pattern != null) {
-			List<GameShape> drawables = new ArrayList<GameShape>(Constants.pattern);
-			for(GameShape drawable : drawables) {
-				if(drawable != null) {
-					drawable.draw(canvas);
-				}
-			}	
-		}
+		
+		
 		
 		if( GameEngine.score != null && GameEngine.score.getScore() != 0 ) {
 			Paint scorePaint = new Paint();
@@ -71,7 +67,22 @@ public class GameView extends SurfaceView {
 			yTop = Game.virtualYToScreenY(Game.virtualSize - 50);
 			yBottom = Game.virtualYToScreenY(Game.virtualSize - 75);
 			canvas.drawRect(xLeft, yTop, xRight, yBottom, durationPaint);
+			if(gameEngine != null) {
+				for(DancingGuyShape dancingGuy : gameEngine.getDancingGuy()) {
+					dancingGuy.draw(canvas);
+				}
+			}
 		}
-		
+		if(Constants.pattern != null) {
+			List<GameShape> drawables = new ArrayList<GameShape>(Constants.pattern);
+			for(GameShape drawable : drawables) {
+				if(drawable != null) {
+					drawable.draw(canvas);
+				}
+			}	
+		}
+	}
+	public void setGameEngine(GameEngine gameEngine) {
+		this.gameEngine = gameEngine;
 	}	
 }

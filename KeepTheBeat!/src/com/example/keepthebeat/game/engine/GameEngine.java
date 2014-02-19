@@ -10,10 +10,12 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import android.app.Activity;
+import android.graphics.Color;
 
 import com.example.keepthebeat.CustomActivity;
 import com.example.keepthebeat.game.Game;
 import com.example.keepthebeat.game.Score;
+import com.example.keepthebeat.game.shape.DancingGuyShape;
 import com.example.keepthebeat.game.shape.GameShape;
 import com.example.keepthebeat.utils.Constants;
 import com.example.keepthebeat.utils.FileAccess;
@@ -63,6 +65,7 @@ public class GameEngine {
 	public static int life = maxLife;
 	// Debut partie
 	public long beginTime;
+	public ArrayList<DancingGuyShape> dancingGuysShapes;
 
 	
 	/**
@@ -89,6 +92,45 @@ public class GameEngine {
 		actionnerMoveX = (float) ((Math.random() - 0.5) * actionnerMoveMinSpeed * 10);
 		actionnerMoveY = (float) ((Math.random() - 0.5) * actionnerMoveMinSpeed * 10);
 		beginTime = System.currentTimeMillis();
+		dancingGuysShapes = new ArrayList<DancingGuyShape>();
+		// Background dancing guy
+		dancingGuysShapes.add(new DancingGuyShape(Game.virtualXToScreenX(100), 
+												  Game.virtualYToScreenY(630), 
+												  Game.virtualXToScreenX(25), 
+												  Game.virtualYToScreenY(30), 
+												  Color.DKGRAY, 
+												  Color.RED, 
+												  Color.BLACK));
+		dancingGuysShapes.add(new DancingGuyShape(Game.virtualXToScreenX(900), 
+												  Game.virtualYToScreenY(630), 
+												  Game.virtualXToScreenX(25), 
+												  Game.virtualYToScreenY(30), 
+												  Color.DKGRAY, 
+												  Color.RED, 
+												  Color.BLACK));
+		// Middleground dancing guy
+		dancingGuysShapes.add(new DancingGuyShape(Game.virtualXToScreenX(300), 
+				  Game.virtualYToScreenY(650), 
+				  Game.virtualXToScreenX(30), 
+				  Game.virtualYToScreenY(40), 
+				  Color.DKGRAY, 
+				  Color.MAGENTA, 
+				  Color.BLACK));
+		dancingGuysShapes.add(new DancingGuyShape(Game.virtualXToScreenX(700), 
+				  Game.virtualYToScreenY(650), 
+				  Game.virtualXToScreenX(30), 
+				  Game.virtualYToScreenY(40), 
+				  Color.DKGRAY, 
+				  Color.MAGENTA, 
+				  Color.BLACK));
+		// Center guy
+		dancingGuysShapes.add(new DancingGuyShape(Game.virtualXToScreenX(500), 
+				  Game.virtualYToScreenY(666), 
+				  Game.virtualXToScreenX(60), 
+				  Game.virtualYToScreenY(50), 
+				  Color.DKGRAY, 
+				  Color.YELLOW, 
+				  Color.BLACK));
 	}
 	
 	/**
@@ -224,6 +266,7 @@ public class GameEngine {
 		if(amplitude > lastGettedAmplitude * 1.01) {
 			// On dessine une image
 			addGameShape(actionnerX, actionnerY);
+			updateDancingGuyAnimation();
 		}
 		// Si le son se calme un instant, on déclenche un évènement
 		else if(amplitude < lastGettedAmplitude * 0.2) {
@@ -242,28 +285,16 @@ public class GameEngine {
 		actionnerX += this.actionnerMoveX;
 		actionnerY += this.actionnerMoveY;
 		if(this.actionnerX < 0) {
-			actionnerMoveX = (float) (actionnerMoveMinSpeed + (Math.random() + 0.1) * actionnerMoveMinSpeed * 6);
+			actionnerMoveX = (float) (actionnerMoveMinSpeed + (Math.random() + 0.1) * actionnerMoveMinSpeed * 6) + 1;
 		}
 		else if(this.actionnerX > gameWidth) {
-			actionnerMoveX = (float) (-actionnerMoveMinSpeed + (Math.random() - 1.01) * actionnerMoveMinSpeed * 6);
+			actionnerMoveX = (float) (-actionnerMoveMinSpeed + (Math.random() - 1.01) * actionnerMoveMinSpeed * 6) - 1;
 		}
-		if(this.actionnerY < 0) {
-			actionnerMoveY = (float) (actionnerMoveMinSpeed + (Math.random() + 0.1) * actionnerMoveMinSpeed * 6);
+		if(this.actionnerY <= Game.topMargin + 5) {
+			actionnerMoveY = (float) (actionnerMoveMinSpeed + (Math.random() + 0.1) * actionnerMoveMinSpeed * 6) + 1;
 		}
-		else if(this.actionnerY > gameHeight) {
-			actionnerMoveY = (float) (-actionnerMoveMinSpeed + (Math.random() - 1.01) * actionnerMoveMinSpeed * 6);
-		}
-		if(actionnerMoveY < 1 && actionnerMoveY >= 0) {
-			actionnerMoveY = 1;
-		}
-		if(actionnerMoveY > -1 && actionnerMoveY <= 0) {
-			actionnerMoveY = -1;
-		}
-		if(actionnerMoveX < 1 && actionnerMoveX >= 0) {
-			actionnerMoveX = 1;
-		}
-		if(actionnerMoveX > -1 && actionnerMoveX <= 0) {
-			actionnerMoveX = -1;
+		else if(this.actionnerY > gameHeight - Game.topMargin - 5) {
+			actionnerMoveY = (float) (-actionnerMoveMinSpeed + (Math.random() - 1.01) * actionnerMoveMinSpeed * 6) - 1;
 		}
 	}
 	
@@ -277,5 +308,19 @@ public class GameEngine {
 
 	public int getScore() {
 		return score.getScore();
+	}
+
+	public List<DancingGuyShape> getDancingGuy() {
+		return dancingGuysShapes;
+	}
+	
+	public void updateDancingGuyAnimation() {
+		int brasG = (int) (Math.random() * 3);
+		int brasD = (int) (Math.random() * 3);
+		int jambeG = (int) (Math.random() * 2);
+		int jambeD = (int) (Math.random() * 2);
+		for(DancingGuyShape d: dancingGuysShapes) {
+			d.setAnimation(brasG, brasD, jambeG, jambeD);
+		}
 	}
 }

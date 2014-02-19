@@ -192,7 +192,7 @@ public class GameShape extends ShapeDrawable{
 	
 	public void setPosition(int x, int y) {
 		xPosition = Math.min(Math.max(x, width/2), Game.screenWidth - width/2);
-		yPosition = Math.min(Math.max(y, height/2), Game.screenHeight - height/2);
+		yPosition = Math.min(Math.max(y, height/2 + Game.topMargin), Game.screenHeight - Game.bottomMargin - height/2);
 		this.setBounds(xPosition - width  / 2
 				  ,yPosition - height / 2
 				  ,xPosition + width  / 2

@@ -23,6 +23,8 @@ public class Game extends CustomActivity implements SurfaceHolder.Callback {
 
 	public static int screenHeight;
 	public static int screenWidth;
+	public static int topMargin = 90;
+	public static int bottomMargin = 75;
 	
 	public static Level level;
 	
@@ -68,12 +70,14 @@ public class Game extends CustomActivity implements SurfaceHolder.Callback {
 		gameView = (GameView)findViewById(R.id.gameView);
 		gameView.getHolder().addCallback(this);
 		
+		
 		Tools.log(this, "Set SoundEngine");
 		soundEngine = new SoundEngine(this, Game.this);
 		
 		// On crée le moteur du jeu
 		Tools.log(this, "Start GameEngine");
 		gameEngine = new GameEngine( this, soundEngine );
+		gameView.setGameEngine(gameEngine);
 		
 		// On envoie la position touché par l'utilisateur
 		gameView.setOnTouchListener(new OnTouchListener() {
