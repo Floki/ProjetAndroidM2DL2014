@@ -1,5 +1,5 @@
 package com.example.keepthebeat.game.shape;
-
+ 
 import com.example.keepthebeat.game.Game;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -8,7 +8,7 @@ import android.graphics.Paint.Align;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.graphics.drawable.shapes.Shape;
-
+ 
 public class GameShape extends ShapeDrawable{
 	private int width;
 	private int height;
@@ -27,6 +27,7 @@ public class GameShape extends ShapeDrawable{
 	private boolean goodMoment = false;
 	private boolean exploding = false;
 	private int maxExplodeTic;
+	private int explodeColor = 0;
 	
 	public GameShape(long showTimer, long hideTimer) {
 		super(new OvalShape());
@@ -55,7 +56,7 @@ public class GameShape extends ShapeDrawable{
 		else {
 			score = Game.level.getBaseScore();
 		}
-
+ 
 	}
 	
 	public GameShape(Shape shape) {
@@ -211,6 +212,9 @@ public class GameShape extends ShapeDrawable{
 		if( isBonus() ) {
 			paint.setColor( Color.rgb(255,215,0) );
 		}
+		if( explodeColor != 0 ) {
+			paint.setColor( explodeColor );
+		}
 		paint.setAlpha( this.getPaint().getAlpha() );
 		int baseHeight = (Game.screenHeight * Game.level.getShapeSizePercent() / 100);
 		paint.setTextSize( baseHeight / 3 );
@@ -258,5 +262,9 @@ public class GameShape extends ShapeDrawable{
 	
 	public boolean notGoodMomentAfterDisplay() {
 		return System.currentTimeMillis() > currentTimeAtAdd + showTimer && !goodMoment;
+	}
+ 
+	public void setExplodeColor(int color) {
+		this.explodeColor = color;
 	}
 }
